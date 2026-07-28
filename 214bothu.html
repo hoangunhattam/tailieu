@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>214 Bộ Thủ — Học Chữ Hán Thông Minh</title>
+<style>
+:root{
+  --primary:#1F7A3D;
+  --primary-dark:#145C2C;
+  --primary-light:#E3F4E8;
+  --accent:#F59E0B;
+  --green:#0D9488;
+  --green-bg:#CCFBF1;
+  --yellow:#D97706;
+  --yellow-bg:#FEF3C7;
+  --gray:#94A3B8;
+  --gray-bg:#F1F5F9;
+  --bg:#F7FAF8;
+  --card:#FFFFFF;
+  --text:#1E293B;
+  --muted:#64748B;
+  --border:#E2E8F0;
+  --danger:#DC2626;
+  --danger-bg:#FEE2E2;
+  --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 12px rgba(15,23,42,.06);
+  --shadow-lg: 0 8px 24px rgba(15,23,42,.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-cn:"Noto Serif SC","Songti SC","SimSun","STSong",serif;
+  --font-vi:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+html[data-theme="dark"]{
+  --primary:#34A65F;
+  --primary-dark:#1F7A3D;
+  --primary-light:#123524;
+  --green:#2DD4BF;
+  --green-bg:#134E4A;
+  --yellow:#F59E0B;
+  --yellow-bg:#4A3410;
+  --gray:#64748B;
+  --gray-bg:#1E293B;
+  --bg:#0F172A;
+  --card:#1E293B;
+  --text:#F1F5F9;
+  --muted:#94A3B8;
+  --border:#334155;
+  --danger:#F87171;
+  --danger-bg:#4C1D1D;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.35);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-vi);
+  background:var(--bg);
+  color:var(--text);
+  transition:background .25s ease, color .25s ease;
+  min-height:100vh;
+}
+.hanzi{font-family:var(--font-cn);}
+a{color:inherit;}
+button{font-family:inherit;}
+::selection{background:var(--primary-light);}
+
+/* ---------- Top hero (full width) ---------- */
+.top-hero{
+  width:100%; background:linear-gradient(120deg,var(--primary-dark),var(--primary) 60%,#2E9159);
+  color:#fff; text-align:center; position:relative; overflow:hidden;
+  padding:30px 20px 24px; box-shadow:0 6px 20px rgba(0,0,0,.15);
+}
+.hero-watermark{
+  position:absolute; font-family:var(--font-cn); font-size:11rem; opacity:.08;
+  right:-20px; top:-30px; line-height:1; pointer-events:none; user-select:none;
+}
+.top-hero-actions{position:absolute; top:14px; right:16px; display:flex; gap:8px; z-index:2;}
+.icon-btn{
+  width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.14); color:#fff; cursor:pointer; font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center; transition:.15s;
+}
+.icon-btn:hover{background:rgba(255,255,255,.28);}
+.hero-logo{width:88px;height:88px;margin:0 auto 12px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.25)); position:relative; z-index:1; border-radius:50%; overflow:hidden;}
+.hero-logo img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%;}
+.hero-brand{font-size:1.05rem; font-weight:800; letter-spacing:.5px; position:relative; z-index:1; opacity:.96;}
+.hero-title{font-size:2.15rem; font-weight:900; line-height:1.25; letter-spacing:.5px; position:relative; z-index:1; margin-top:2px;}
+.hero-sub{font-size:.86rem; opacity:.92; margin-top:6px; position:relative; z-index:1;}
+.hero-badges{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; position:relative; z-index:1;}
+.hero-badge{
+  background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4);
+  padding:6px 14px; border-radius:999px; font-size:.76rem; font-weight:700;
+}
+
+/* ---------- Tab navigation ---------- */
+.tab-nav-wrap{
+  position:sticky; top:0; z-index:40; background:var(--card);
+  border-bottom:1px solid var(--border); box-shadow:var(--shadow);
+}
+.tab-nav{max-width:960px; margin:0 auto; display:flex; gap:8px; padding:10px 16px; overflow-x:auto;}
+.tabnav-btn{
+  flex:1 0 auto; min-width:96px; padding:11px 8px; border-radius:12px;
+  border:1.5px solid var(--border); background:var(--card); color:var(--text);
+  font-weight:700; font-size:.8rem; cursor:pointer; transition:.15s; white-space:nowrap;
+}
+.tabnav-btn .ic{margin-right:4px;}
+.tabnav-btn.active{background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:var(--shadow);}
+.tabnav-btn:hover{border-color:var(--primary);}
+
+/* ---------- Layout ---------- */
+.container{max-width:960px; margin:0 auto; padding:20px 16px 32px;}
+.view{display:none; animation:fadeIn .25s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+h1,h2,h3{margin:0 0 4px;}
+.page-title{font-size:1.35rem; font-weight:800; margin-bottom:2px;}
+.page-sub{color:var(--muted); font-size:.92rem; margin-bottom:18px;}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:18px;
+}
+.stat-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:16px;}
+@media(min-width:640px){.stat-grid{grid-template-columns:repeat(5,1fr);}}
+.stat-card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:14px; text-align:center; box-shadow:var(--shadow);
+}
+.stat-num{font-size:1.5rem; font-weight:800; color:var(--primary);}
+.stat-label{font-size:.75rem; color:var(--muted); margin-top:2px;}
+.stat-card.green .stat-num{color:var(--green);}
+.stat-card.yellow .stat-num{color:var(--yellow);}
+.stat-card.gray .stat-num{color:var(--muted);}
+
+.progress-bar{height:10px; background:var(--gray-bg); border-radius:999px; overflow:hidden; margin:10px 0;}
+.progress-fill{height:100%; background:linear-gradient(90deg,var(--primary),#7C3AED); border-radius:999px; transition:width .4s ease;}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding:11px 18px; border-radius:12px; border:none; cursor:pointer;
+  font-weight:700; font-size:.9rem; transition:.15s; background:var(--primary); color:#fff;
+}
+.btn:hover{background:var(--primary-dark); transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn.secondary{background:var(--gray-bg); color:var(--text);}
+.btn.secondary:hover{background:var(--border);}
+.btn.outline{background:transparent; border:1.5px solid var(--primary); color:var(--primary);}
+.btn.danger{background:var(--danger-bg); color:var(--danger);}
+.btn.block{width:100%;}
+.btn.sm{padding:7px 12px; font-size:.8rem; border-radius:9px;}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+
+/* ---------- Radical grid ---------- */
+.toolbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+.input, select.input{
+  padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+  background:var(--card); color:var(--text); font-size:.88rem; outline:none;
+}
+.input:focus, select.input:focus{border-color:var(--primary);}
+.search-input{flex:1 1 200px;}
+
+.rad-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px;}
+.rad-tile{
+  aspect-ratio:1/1; border-radius:14px; border:2px solid var(--border); background:var(--card);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;
+  transition:.15s; position:relative; padding:4px;
+}
+.rad-tile:hover{transform:translateY(-2px); box-shadow:var(--shadow-lg);}
+.rad-tile .ch{font-family:var(--font-cn); font-size:1.9rem; line-height:1;}
+.rad-tile .idx{position:absolute; top:4px; left:6px; font-size:.62rem; color:var(--muted); font-weight:700;}
+.rad-tile .st{position:absolute; bottom:4px; right:6px; font-size:.6rem; color:var(--muted);}
+.rad-tile.status-1{border-color:var(--yellow); background:var(--yellow-bg);}
+.rad-tile.status-2{border-color:var(--green); background:var(--green-bg);}
+.rad-tile.status-0{border-color:var(--border);}
+
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:.78rem; color:var(--muted); margin-bottom:14px;}
+.legend span{display:inline-flex; align-items:center; gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%; display:inline-block;}
+.dot.gray{background:var(--gray);}
+.dot.yellow{background:var(--yellow);}
+.dot.green{background:var(--green);}
+
+/* ---------- Modal ---------- */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(15,23,42,.55); z-index:100;
+  display:none; align-items:flex-end; justify-content:center; backdrop-filter:blur(2px);
+}
+.modal-overlay.active{display:flex; animation:fadeIn .2s ease;}
+.modal{
+  background:var(--card); border-radius:20px 20px 0 0; width:100%; max-width:560px;
+  max-height:88vh; overflow-y:auto; padding:22px; box-shadow:var(--shadow-lg);
+}
+@media(min-width:640px){
+  .modal-overlay{align-items:center;}
+  .modal{border-radius:20px; margin:20px;}
+}
+.modal-close{
+  float:right; width:34px;height:34px;border-radius:50%; border:none; background:var(--gray-bg);
+  color:var(--text); font-size:1.1rem; cursor:pointer;
+}
+.detail-hero{text-align:center; margin:6px 0 18px;}
+.detail-hero .ch{font-family:var(--font-cn); font-size:5rem; color:var(--primary); line-height:1;}
+.detail-hero .py{font-size:1.15rem; color:var(--muted); margin-top:6px;}
+.badge{display:inline-block; padding:3px 11px; border-radius:999px; font-size:.72rem; font-weight:700; margin:2px;}
+.badge-primary{background:var(--primary-light); color:var(--primary-dark);}
+.badge-green{background:var(--green-bg); color:var(--green);}
+.badge-yellow{background:var(--yellow-bg); color:var(--yellow);}
+.detail-row{display:flex; padding:10px 0; border-bottom:1px solid var(--border); font-size:.9rem; gap:12px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-row .label{width:120px; flex-shrink:0; color:var(--muted); font-weight:600;}
+.detail-row .value{flex:1;}
+.mnemonic-box{background:var(--primary-light); border-radius:12px; padding:12px 14px; margin-top:14px; font-size:.88rem; color:var(--text);}
+html[data-theme="dark"] .mnemonic-box{color:#E2E8F0;}
+.modal-actions{display:flex; gap:10px; margin-top:18px;}
+.modal-nav{display:flex; justify-content:space-between; margin-top:10px;}
+
+/* ---------- Flashcard ---------- */
+.fc-wrap{display:flex; flex-direction:column; align-items:center; gap:18px; padding:10px 0 20px;}
+.fc-progress{color:var(--muted); font-size:.85rem;}
+.flashcard{
+  width:100%; max-width:340px; height:320px; perspective:1200px; cursor:pointer;
+}
+.fc-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;}
+.flashcard.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:22px;
+  background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow-lg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center;
+}
+.fc-face.back{transform:rotateY(180deg); gap:8px;}
+.fc-face .big{font-family:var(--font-cn); font-size:6rem; color:var(--primary);}
+.fc-face .hint{color:var(--muted); font-size:.8rem; margin-top:14px;}
+.fc-back-ch{font-family:var(--font-cn); font-size:2.6rem; color:var(--primary);}
+.fc-back-py{font-size:1.1rem; color:var(--muted);}
+.fc-back-hv{font-weight:700;}
+.fc-back-ex{font-size:.82rem; color:var(--muted); margin-top:6px; padding:0 10px;}
+.fc-actions{display:flex; gap:10px; width:100%; max-width:400px;}
+.fc-actions .btn{flex:1; flex-direction:column; padding:12px 6px; font-size:.78rem;}
+
+/* ---------- Quiz ---------- */
+.quiz-card{max-width:520px; margin:0 auto;}
+.quiz-progress{display:flex; justify-content:space-between; font-size:.82rem; color:var(--muted); margin-bottom:10px;}
+.quiz-q{font-size:1.05rem; font-weight:700; margin-bottom:18px; text-align:center;}
+.quiz-q .ch{font-family:var(--font-cn); font-size:3.2rem; color:var(--primary); display:block; margin-bottom:10px;}
+.quiz-options{display:grid; gap:10px;}
+.opt-btn{
+  padding:13px 16px; border-radius:12px; border:1.5px solid var(--border); background:var(--card);
+  color:var(--text); text-align:left; cursor:pointer; font-size:.92rem; transition:.15s;
+}
+.opt-btn:hover{border-color:var(--primary);}
+.opt-btn.correct{border-color:var(--green); background:var(--green-bg); color:var(--green); font-weight:700;}
+.opt-btn.wrong{border-color:var(--danger); background:var(--danger-bg); color:var(--danger); font-weight:700;}
+.opt-btn:disabled{cursor:default;}
+
+.result-list{margin-top:10px;}
+.result-item{padding:12px; border-radius:12px; background:var(--gray-bg); margin-bottom:8px; font-size:.85rem;}
+.result-item .ch{font-family:var(--font-cn); font-size:1.6rem; margin-right:8px;}
+
+/* ---------- Match ---------- */
+.match-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:10px;}
+.match-col{display:flex; flex-direction:column; gap:10px;}
+.match-item{
+  padding:14px; border-radius:12px; border:1.5px solid var(--border); background:var(--card);
+  cursor:pointer; text-align:center; font-size:.9rem; transition:.15s; min-height:52px;
+  display:flex; align-items:center; justify-content:center;
+}
+.match-item .ch{font-family:var(--font-cn); font-size:1.7rem;}
+.match-item.selected{border-color:var(--primary); background:var(--primary-light);}
+.match-item.matched{border-color:var(--green); background:var(--green-bg); color:var(--green); opacity:.6; cursor:default;}
+.match-item.wrong-flash{border-color:var(--danger); background:var(--danger-bg);}
+
+/* ---------- Groups ---------- */
+.tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.tab-btn{padding:8px 16px; border-radius:999px; border:1.5px solid var(--border); background:var(--card); color:var(--text); cursor:pointer; font-size:.85rem; font-weight:600;}
+.tab-btn.active{background:var(--primary); border-color:var(--primary); color:#fff;}
+.group-chip{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:14px;
+  border:1px solid var(--border); background:var(--card); cursor:pointer; margin:5px; font-size:.88rem; font-weight:600;
+  box-shadow:var(--shadow);
+}
+.group-chip:hover{border-color:var(--primary);}
+.group-chip .count{background:var(--gray-bg); border-radius:999px; padding:1px 9px; font-size:.72rem; color:var(--muted);}
+
+/* ---------- Achievements ---------- */
+.chart-wrap{display:flex; align-items:flex-end; gap:6px; height:140px; padding:10px 4px; overflow-x:auto;}
+.chart-bar{flex:0 0 auto; width:22px; background:linear-gradient(180deg,var(--primary),#7C3AED); border-radius:6px 6px 0 0; position:relative; min-height:4px;}
+.chart-bar .lbl{position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); font-size:.6rem; color:var(--muted); white-space:nowrap;}
+.achieve-badges{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;}
+.achieve-badge{
+  flex:1 1 140px; background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:16px; text-align:center; box-shadow:var(--shadow);
+}
+.achieve-badge .emoji{font-size:1.8rem;}
+
+/* ---------- Settings ---------- */
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between; padding:16px 4px;
+  border-bottom:1px solid var(--border);
+}
+.settings-row:last-child{border-bottom:none;}
+.settings-row .desc{color:var(--muted); font-size:.8rem; margin-top:2px;}
+.switch{position:relative; width:48px; height:28px; flex-shrink:0;}
+.switch input{opacity:0; width:0; height:0;}
+.slider{position:absolute; inset:0; background:var(--gray-bg); border-radius:999px; cursor:pointer; transition:.2s; border:1px solid var(--border);}
+.slider:before{content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,.3);}
+input:checked + .slider{background:var(--primary);}
+input:checked + .slider:before{transform:translateX(20px);}
+
+.empty-state{text-align:center; padding:50px 20px; color:var(--muted);}
+.empty-state .emoji{font-size:2.6rem; margin-bottom:10px;}
+
+.toast{
+  position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--text); color:var(--bg); padding:11px 20px; border-radius:12px; font-size:.85rem;
+  opacity:0; pointer-events:none; transition:.25s; z-index:200; box-shadow:var(--shadow-lg); font-weight:600;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+@media print{
+  .tab-nav-wrap,.top-hero,.icon-btn,.btn,.toolbar{display:none !important;}
+}
+</style>
+</head>
+<body>
+<div class="top-hero">
+  <div class="hero-watermark hanzi">部</div>
+  <div class="top-hero-actions">
+    <button class="icon-btn" id="resetBtn" title="Đặt lại toàn bộ tiến độ">♻️</button>
+    <button class="icon-btn" id="themeToggleBtn" title="Đổi giao diện">🌙</button>
+  </div>
+  <div class="hero-logo">
+    <img src="data:image/png;base64,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" alt="Hoa Ngữ Nhất Tâm">
+  </div>
+  <div class="hero-brand">HOA NGỮ NHẤT TÂM</div>
+  <div class="hero-title">214 BỘ THỦ</div>
+  <div class="hero-sub">Học bộ thủ - Thuộc chữ Hán</div>
+  <div class="hero-badges">
+    <span class="hero-badge">🈴 214 bộ Khang Hy</span>
+    <span class="hero-badge">🈶 Hán Việt · Pinyin</span>
+    <span class="hero-badge">✅ Có ví dụ minh hoạ</span>
+  </div>
+</div>
+
+<div class="tab-nav-wrap">
+  <div class="tab-nav" id="mainTabs">
+    <button class="tabnav-btn active" data-view="view-home">🏠 Trang chủ</button>
+    <button class="tabnav-btn" data-view="view-list">📋 Danh sách</button>
+    <button class="tabnav-btn" data-view="view-flashcard">🗂️ Flashcard</button>
+    <button class="tabnav-btn" data-view="view-match">🔗 Ghép đôi</button>
+    <button class="tabnav-btn" data-view="view-achieve">🏆 Thành tích</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== HOME ===== -->
+  <section class="view active" id="view-home">
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-total">214</div><div class="stat-label">Tổng số bộ</div></div>
+      <div class="stat-card yellow"><div class="stat-num" id="stat-learned">0</div><div class="stat-label">Đã học</div></div>
+      <div class="stat-card green"><div class="stat-num" id="stat-known">0</div><div class="stat-label">Đã thuộc</div></div>
+      <div class="stat-card gray"><div class="stat-num" id="stat-review">0</div><div class="stat-label">Cần ôn</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-percent">0%</div><div class="stat-label">Tiến độ</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <strong>Tiến độ tổng thể</strong>
+        <span id="progress-text" style="color:var(--muted); font-size:.85rem;">0 / 214</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="home-progress-fill" style="width:0%"></div></div>
+      <button class="btn block" id="continueLearningBtn" style="margin-top:12px;">▶️ Tiếp tục học</button>
+    </div>
+
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="card" style="cursor:pointer;" data-goto="view-flashcard"><div style="font-size:1.6rem;">🗂️</div><strong>Flashcard</strong><div class="page-sub" style="margin:0;">Ôn nhanh từng bộ</div></div>
+      <div class="card" style="cursor:pointer;" data-goto="view-list"><div style="font-size:1.6rem;">📋</div><strong>Danh sách</strong><div class="page-sub" style="margin:0;">Tra cứu 214 bộ thủ</div></div>
+      <div class="card" style="cursor:pointer;" data-goto="view-match"><div style="font-size:1.6rem;">🔗</div><strong>Ghép đôi</strong><div class="page-sub" style="margin:0;">Bộ thủ ↔ nghĩa</div></div>
+      <div class="card" style="cursor:pointer;" data-goto="view-achieve"><div style="font-size:1.6rem;">🏆</div><strong>Thành tích</strong><div class="page-sub" style="margin:0;">Xem tiến trình học</div></div>
+    </div>
+  </section>
+
+  <!-- ===== LIST ===== -->
+  <section class="view" id="view-list">
+    <div class="page-title">Danh sách 214 bộ thủ</div>
+    <div class="page-sub">Chạm vào một bộ thủ để xem chi tiết.</div>
+    <div class="toolbar">
+      <input class="input search-input" id="listSearch" placeholder="🔍 Tìm theo chữ, pinyin, Hán Việt, nghĩa...">
+      <select class="input" id="filterStrokes"><option value="">Tất cả số nét</option></select>
+      <select class="input" id="filterStatus">
+        <option value="">Tất cả trạng thái</option>
+        <option value="0">⚪ Chưa học</option>
+        <option value="1">🟡 Đã học</option>
+        <option value="2">🟢 Đã thuộc</option>
+      </select>
+    </div>
+    <div class="legend">
+      <span><span class="dot gray"></span> Chưa học</span>
+      <span><span class="dot yellow"></span> Đã học</span>
+      <span><span class="dot green"></span> Đã thuộc</span>
+      <span id="listCount" style="margin-left:auto;"></span>
+    </div>
+    <div class="rad-grid" id="listGrid"></div>
+  </section>
+
+  <!-- ===== FLASHCARD ===== -->
+  <section class="view" id="view-flashcard">
+    <div class="page-title">Flashcard</div>
+    <div class="page-sub">Chạm vào thẻ để lật, sau đó chọn mức độ nhớ.</div>
+    <div class="fc-wrap">
+      <div class="fc-progress" id="fcProgress">Đã ôn: 0</div>
+      <div class="flashcard" id="flashcard">
+        <div class="fc-inner">
+          <div class="fc-face front">
+            <div class="big hanzi" id="fcFront">—</div>
+            <div class="hint">Chạm để lật thẻ</div>
+          </div>
+          <div class="fc-face back">
+            <div class="fc-back-ch hanzi" id="fcBackCh">—</div>
+            <div class="fc-back-py" id="fcBackPy">—</div>
+            <div class="fc-back-hv" id="fcBackHv">—</div>
+            <div class="fc-back-ex" id="fcBackEx">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-actions">
+        <button class="btn danger" id="fcForget">😵<br>Chưa nhớ</button>
+        <button class="btn secondary" id="fcNormal">🙂<br>Bình thường</button>
+        <button class="btn" id="fcKnown" style="background:var(--green);">😎<br>Đã nhớ</button>
+      </div>
+      <button class="btn outline sm" id="fcShuffle">🔀 Xáo lại bộ thẻ</button>
+    </div>
+  </section>
+
+  <!-- ===== MATCH ===== -->
+  <section class="view" id="view-match">
+    <div class="page-title">Ghép đôi</div>
+    <div class="page-sub">Chọn kiểu ghép rồi bấm để nối các cặp tương ứng.</div>
+    <div class="toolbar">
+      <select class="input" id="matchType">
+        <option value="vi">Bộ thủ ↔ Nghĩa</option>
+        <option value="py">Bộ thủ ↔ Pinyin</option>
+        <option value="hv">Bộ thủ ↔ Hán Việt</option>
+      </select>
+      <button class="btn secondary sm" id="matchNew">🔄 Ván mới</button>
+    </div>
+    <div style="text-align:center; margin-bottom:6px; color:var(--muted); font-size:.85rem;" id="matchStatus"></div>
+    <div class="match-grid" id="matchGrid"></div>
+  </section>
+
+  <!-- ===== ACHIEVEMENTS ===== -->
+  <section class="view" id="view-achieve">
+    <div class="page-title">Thành tích</div>
+    <div class="achieve-badges">
+      <div class="achieve-badge"><div class="emoji">🟢</div><div class="stat-num" id="ach-known">0</div><div class="stat-label">Đã thuộc</div></div>
+      <div class="achieve-badge"><div class="emoji">🔥</div><div class="stat-num" id="ach-streak">0</div><div class="stat-label">Chuỗi ngày học</div></div>
+      <div class="achieve-badge"><div class="emoji">📈</div><div class="stat-num" id="ach-percent">0%</div><div class="stat-label">Tiến độ</div></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <strong>Tiến trình 14 ngày gần nhất</strong>
+      <div class="chart-wrap" id="chartWrap" style="margin-top:16px;"></div>
+    </div>
+  </section>
+
+
+</div>
+
+<!-- ===== DETAIL MODAL ===== -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <button class="modal-close" id="detailClose">✕</button>
+    <div class="detail-hero">
+      <div class="ch hanzi" id="dCh">—</div>
+      <div class="py" id="dPy">—</div>
+      <div style="margin-top:8px;">
+        <span class="badge badge-primary">STT <span id="dId">—</span></span>
+        <span class="badge badge-primary" id="dStBadge">— nét</span>
+        <span class="badge" id="dStatusBadge">—</span>
+      </div>
+    </div>
+    <div>
+      <div class="detail-row"><div class="label">Âm Hán Việt</div><div class="value" id="dHv">—</div></div>
+      <div class="detail-row"><div class="label">Nghĩa tiếng Việt</div><div class="value" id="dVi">—</div></div>
+      <div class="detail-row"><div class="label">Nhóm chủ đề</div><div class="value" id="dGrp">—</div></div>
+      <div class="detail-row"><div class="label">Ví dụ chữ Hán</div><div class="value" id="dEx">—</div></div>
+    </div>
+    <div class="mnemonic-box">💡 <strong>Ghi nhớ:</strong> <span id="dNote">—</span></div>
+    <div class="modal-actions">
+      <button class="btn secondary block" id="dMarkLearned">🟡 Đã học</button>
+      <button class="btn block" id="dMarkKnown" style="background:var(--green);">🟢 Đã thuộc</button>
+    </div>
+    <div class="modal-nav">
+      <button class="btn outline sm" id="dPrev">← Bộ trước</button>
+      <button class="btn outline sm" id="dNext">Bộ sau →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RADICALS = [
+{id:1,ch:'一',st:1,py:'yī',hv:'Nhất',vi:'một, số 1',en:'one',grp:'SO',ex:'一个 yīgè – một cái; 一天 yītiān – một ngày',note:'Một nét ngang duy nhất tượng trưng cho số 1.'},
+{id:2,ch:'丨',st:1,py:'gǔn',hv:'Cổn',vi:'nét sổ thẳng',en:'line, stick',grp:'SO',ex:'中 zhōng – ở giữa; 个 gè – cái (lượng từ)',note:'Một nét sổ thẳng đứng như que gậy xuyên qua.'},
+{id:3,ch:'丶',st:1,py:'zhǔ',hv:'Chủ',vi:'nét chấm',en:'dot',grp:'SO',ex:'主 zhǔ – chủ; 为 wéi – làm',note:'Một chấm nhỏ như giọt nước rơi.'},
+{id:4,ch:'丿',st:1,py:'piě',hv:'Phiệt',vi:'nét phẩy',en:'slash',grp:'SO',ex:'乃 nǎi – bèn, thì; 久 jiǔ – lâu',note:'Một nét phẩy nghiêng từ trên xuống trái.'},
+{id:5,ch:'乙',st:1,py:'yǐ',hv:'Ất',vi:'vị trí thứ 2 (thiên can)',en:'second (ones)',grp:'SO',ex:'乾 qián – trời, khô',note:'Nét cong gấp khúc như con chim nhỏ uốn mình.'},
+{id:6,ch:'亅',st:1,py:'jué',hv:'Quyết',vi:'nét móc',en:'hook',grp:'SO',ex:'了 le – trợ từ hoàn thành; 事 shì – việc',note:'Một nét sổ có móc câu ở cuối.'},
+{id:7,ch:'二',st:2,py:'èr',hv:'Nhị',vi:'hai, số 2',en:'two',grp:'SO',ex:'五 wǔ – năm; 些 xiē – vài, một ít',note:'Hai nét ngang chồng lên nhau chỉ số 2.'},
+{id:8,ch:'亠',st:2,py:'tóu',hv:'Đầu',vi:'đầu nắp (bộ đầu)',en:'lid',grp:'KT',ex:'亡 wáng – mất, chết; 京 jīng – kinh đô',note:'Giống nắp đậy phía trên một vật.'},
+{id:9,ch:'人',st:2,py:'rén',hv:'Nhân',vi:'người',en:'person',grp:'NG',ex:'你 nǐ – bạn; 他 tā – anh ấy',note:'Hình vẽ một người đứng nghiêng, hai chân bước.'},
+{id:10,ch:'儿',st:2,py:'ér',hv:'Nhân/Nhi',vi:'chân người, con người',en:'legs, son',grp:'NG',ex:'儿子 érzi – con trai; 光 guāng – ánh sáng',note:'Hình đôi chân người đang bước đi.'},
+{id:11,ch:'入',st:2,py:'rù',hv:'Nhập',vi:'vào',en:'enter',grp:'NG',ex:'内 nèi – bên trong; 全 quán – toàn bộ',note:'Nét vẽ giống người cúi đầu bước vào cửa.'},
+{id:12,ch:'八',st:2,py:'bā',hv:'Bát',vi:'tám, số 8; chia ra',en:'eight',grp:'SO',ex:'分 fēn – chia, phút; 公 gōng – công cộng',note:'Hai nét chia ra hai bên như vật bị tách đôi.'},
+{id:13,ch:'冂',st:2,py:'jiōng',hv:'Quynh',vi:'vùng biên xa, khung bao ngoài',en:'borders',grp:'KT',ex:'冈 gāng – núi nhỏ; 内 nèi – bên trong',note:'Giống khung cửa mở, bao ba mặt.'},
+{id:14,ch:'冖',st:2,py:'mì',hv:'Mịch',vi:'cái khăn trùm',en:'cover',grp:'DVCU',ex:'写 xiě – viết; 军 jūn – quân đội',note:'Giống một tấm vải trùm lên đồ vật.'},
+{id:15,ch:'冫',st:2,py:'bīng',hv:'Băng',vi:'băng giá',en:'ice',grp:'TN',ex:'冷 lěng – lạnh; 凉 liáng – mát',note:'Hai chấm nhỏ như vết nứt trên băng.'},
+{id:16,ch:'几',st:2,py:'jī',hv:'Kỷ',vi:'cái ghế nhỏ, bàn nhỏ',en:'table',grp:'DVCU',ex:'凡 fán – phàm, mọi; 风 fēng – gió',note:'Hình cái bàn thấp nhỏ có chân.'},
+{id:17,ch:'凵',st:2,py:'kǎn',hv:'Khảm',vi:'hố, miệng há',en:'open box',grp:'TN',ex:'凶 xiōng – hung dữ; 出 chū – ra',note:'Giống một cái hố hoặc miệng há to.'},
+{id:18,ch:'刀',st:2,py:'dāo',hv:'Đao',vi:'con dao',en:'knife',grp:'DVCU',ex:'分 fēn – chia; 切 qiē – cắt',note:'Hình lưỡi dao cong có cán cầm.'},
+{id:19,ch:'力',st:2,py:'lì',hv:'Lực',vi:'sức lực',en:'power',grp:'NG',ex:'男 nán – nam giới; 加 jiā – thêm vào',note:'Giống bắp tay gồng lên khi dùng sức.'},
+{id:20,ch:'勹',st:2,py:'bāo',hv:'Bao',vi:'bao bọc',en:'wrap',grp:'DVCU',ex:'包 bāo – gói, bọc; 勺 sháo – cái muỗng',note:'Nét cong ôm lấy vật bên trong như bao bọc.'},
+{id:21,ch:'匕',st:2,py:'bǐ',hv:'Chuỷ',vi:'cái thìa nhỏ',en:'spoon',grp:'DVCU',ex:'北 běi – phía bắc; 化 huà – biến hoá',note:'Hình cái thìa nhỏ dùng để xúc thức ăn.'},
+{id:22,ch:'匚',st:2,py:'fāng',hv:'Phương',vi:'cái hộp vuông',en:'box',grp:'DVCU',ex:'匠 jiàng – thợ; 区 qū – khu vực',note:'Giống một cái hộp hở một mặt.'},
+{id:23,ch:'匸',st:2,py:'xì',hv:'Hệ',vi:'che giấu',en:'hiding',grp:'DVCU',ex:'匿 nì – trốn giấu',note:'Nét bao giống nơi cất giấu đồ vật.'},
+{id:24,ch:'十',st:2,py:'shí',hv:'Thập',vi:'mười, số 10',en:'ten',grp:'SO',ex:'千 qiān – nghìn; 华 huá – hoa lệ, Trung Hoa',note:'Hai nét ngang dọc giao nhau như dấu cộng chỉ số 10.'},
+{id:25,ch:'卜',st:2,py:'bǔ',hv:'Bốc',vi:'bói toán',en:'divination',grp:'VH',ex:'占 zhàn – chiếm, xem bói; 外 wài – bên ngoài',note:'Giống vết nứt trên mai rùa dùng để bói.'},
+{id:26,ch:'卩',st:2,py:'jié',hv:'Tiết',vi:'cái ấn tín, đốt',en:'seal',grp:'DVCU',ex:'印 yìn – dấu ấn; 却 què – lại, ngược lại',note:'Hình người quỳ gối cầm thẻ tín.'},
+{id:27,ch:'厂',st:2,py:'hǎn',hv:'Hán',vi:'vách núi, xưởng',en:'cliff',grp:'TN',ex:'厅 tīng – phòng khách; 历 lì – lịch sử',note:'Giống một vách đá nhô ra che chở.'},
+{id:28,ch:'厶',st:2,py:'sī',hv:'Khư',vi:'riêng tư',en:'private',grp:'SO',ex:'去 qù – đi; 参 cān – tham gia',note:'Nét cong khép kín tượng trưng cho việc riêng tư.'},
+{id:29,ch:'又',st:2,py:'yòu',hv:'Hựu',vi:'lại, tay phải',en:'again, hand',grp:'NG',ex:'友 yǒu – bạn bè; 双 shuāng – đôi, cặp',note:'Hình bàn tay phải đang cầm nắm.'},
+{id:30,ch:'口',st:3,py:'kǒu',hv:'Khẩu',vi:'miệng',en:'mouth',grp:'NG',ex:'吃 chī – ăn; 喝 hē – uống',note:'Hình vẽ cái miệng đang há mở.'},
+{id:31,ch:'囗',st:3,py:'wéi',hv:'Vi',vi:'vây quanh',en:'enclosure',grp:'KT',ex:'国 guó – đất nước; 图 tú – bản đồ',note:'Nét vuông khép kín bao quanh một khu vực.'},
+{id:32,ch:'土',st:3,py:'tǔ',hv:'Thổ',vi:'đất',en:'earth',grp:'TN',ex:'地 dì – đất, mặt đất; 场 chǎng – sân bãi',note:'Hình đống đất nhô lên khỏi mặt đất.'},
+{id:33,ch:'士',st:3,py:'shì',hv:'Sĩ',vi:'học trò, người có học',en:'scholar',grp:'NG',ex:'壮 zhuàng – khoẻ mạnh; 声 shēng – âm thanh',note:'Người đứng vững vàng, tượng trưng kẻ sĩ.'},
+{id:34,ch:'夂',st:3,py:'zhǐ',hv:'Truy',vi:'đi chậm, đến sau',en:'go slowly',grp:'NG',ex:'冬 dōng – mùa đông; 处 chù – nơi chốn',note:'Hình bàn chân bước chậm rãi phía sau.'},
+{id:35,ch:'夊',st:3,py:'suī',hv:'Tuy',vi:'đi chậm chạp',en:'go slowly',grp:'NG',ex:'夏 xià – mùa hè',note:'Nét chân kéo lê chậm chạp.'},
+{id:36,ch:'夕',st:3,py:'xī',hv:'Tịch',vi:'buổi tối',en:'evening',grp:'TN',ex:'名 míng – tên; 多 duō – nhiều',note:'Hình mặt trăng khuyết xuất hiện lúc chiều tối.'},
+{id:37,ch:'大',st:3,py:'dà',hv:'Đại',vi:'to, lớn',en:'big',grp:'NG',ex:'天 tiān – trời; 太 tài – quá, thái',note:'Người dang rộng hai tay hai chân ra tỏ ý to lớn.'},
+{id:38,ch:'女',st:3,py:'nǚ',hv:'Nữ',vi:'phụ nữ, con gái',en:'woman',grp:'NG',ex:'妈 mā – mẹ; 好 hǎo – tốt',note:'Hình người phụ nữ ngồi khoan thai, dịu dàng.'},
+{id:39,ch:'子',st:3,py:'zǐ',hv:'Tử',vi:'con, con cái',en:'child',grp:'NG',ex:'孩子 háizi – đứa trẻ; 学 xué – học',note:'Hình đứa bé quấn tã, đầu to thân nhỏ.'},
+{id:40,ch:'宀',st:3,py:'mián',hv:'Miên',vi:'mái nhà',en:'roof',grp:'KT',ex:'家 jiā – nhà; 安 ān – an toàn',note:'Giống mái nhà che chở phía trên.'},
+{id:41,ch:'寸',st:3,py:'cùn',hv:'Thốn',vi:'tấc (đơn vị đo)',en:'inch',grp:'SO',ex:'对 duì – đúng; 寺 sì – chùa',note:'Hình bàn tay đo khoảng cách một tấc.'},
+{id:42,ch:'小',st:3,py:'xiǎo',hv:'Tiểu',vi:'nhỏ, bé',en:'small',grp:'SO',ex:'少 shǎo – ít; 尘 chén – bụi',note:'Ba nét nhỏ tượng trưng cho vật bé xíu.'},
+{id:43,ch:'尢',st:3,py:'wāng',hv:'Uông',vi:'chân khoèo, đi khập khiễng',en:'lame',grp:'NG',ex:'尤 yóu – đặc biệt; 尴 gān – ngượng ngùng',note:'Hình người có chân bị cong, đi khập khiễng.'},
+{id:44,ch:'尸',st:3,py:'shī',hv:'Thi',vi:'xác chết, thân người nằm',en:'corpse',grp:'NG',ex:'尺 chǐ – cái thước; 尾 wěi – cái đuôi',note:'Hình người nằm co, gợi tư thế thân thể.'},
+{id:45,ch:'屮',st:3,py:'chè',hv:'Triệt',vi:'mầm cây non',en:'sprout',grp:'CA',ex:'屯 tún – đóng quân, thôn xóm',note:'Hình mầm cây vừa nhú lên khỏi đất.'},
+{id:46,ch:'山',st:3,py:'shān',hv:'Sơn',vi:'núi',en:'mountain',grp:'TN',ex:'岛 dǎo – hòn đảo; 岁 suì – tuổi',note:'Ba đỉnh núi nhấp nhô liền nhau.'},
+{id:47,ch:'巛',st:3,py:'chuān',hv:'Xuyên',vi:'dòng sông',en:'river',grp:'NU',ex:'州 zhōu – châu, tỉnh; 巡 xún – tuần tra',note:'Ba nét cong tượng trưng dòng nước chảy.'},
+{id:48,ch:'工',st:3,py:'gōng',hv:'Công',vi:'công việc, thợ',en:'work',grp:'DVCU',ex:'左 zuǒ – bên trái; 差 chà – khác biệt, kém',note:'Hình cái thước thợ dùng để đo đạc.'},
+{id:49,ch:'己',st:3,py:'jǐ',hv:'Kỷ',vi:'bản thân, chính mình',en:'oneself',grp:'NG',ex:'已 yǐ – đã rồi; 巷 xiàng – ngõ hẻm',note:'Nét cong khép kín như dáng người tự cuộn mình.'},
+{id:50,ch:'巾',st:3,py:'jīn',hv:'Cân',vi:'khăn vải',en:'cloth',grp:'VH',ex:'布 bù – vải; 帮 bāng – giúp đỡ',note:'Hình mảnh khăn vải rủ xuống có dải buộc.'},
+{id:51,ch:'干',st:3,py:'gān',hv:'Can',vi:'khô, can thiệp',en:'dry, shield',grp:'TN',ex:'平 píng – bằng phẳng; 年 nián – năm',note:'Hình cây gậy dài, thẳng đứng, khô ráo.'},
+{id:52,ch:'幺',st:3,py:'yāo',hv:'Yêu',vi:'nhỏ bé, tơ non',en:'tiny',grp:'SO',ex:'幼 yòu – ấu thơ; 幻 huàn – ảo, hư ảo',note:'Hình sợi tơ nhỏ mảnh mai.'},
+{id:53,ch:'广',st:3,py:'guǎng',hv:'Nghiễm',vi:'mái hiên, rộng lớn',en:'shelter',grp:'KT',ex:'店 diàn – cửa hàng; 床 chuáng – cái giường',note:'Mái hiên nhô ra che một bên, ba mặt trống.'},
+{id:54,ch:'廴',st:3,py:'yǐn',hv:'Dẫn',vi:'bước dài, kéo dài',en:'stride',grp:'NG',ex:'建 jiàn – xây dựng; 延 yán – kéo dài',note:'Nét kéo dài như bước chân đi xa.'},
+{id:55,ch:'廾',st:3,py:'gǒng',hv:'Củng',vi:'hai tay chắp lại',en:'two hands',grp:'NG',ex:'弄 nòng – nghịch, làm; 弃 qì – vứt bỏ',note:'Hai tay cùng nâng đỡ một vật.'},
+{id:56,ch:'弋',st:3,py:'yì',hv:'Dặc',vi:'cây cọc, bắn tên có dây',en:'dart',grp:'DVCU',ex:'式 shì – kiểu, cách thức',note:'Hình cây cọc có buộc dây để bẫy.'},
+{id:57,ch:'弓',st:3,py:'gōng',hv:'Cung',vi:'cây cung',en:'bow',grp:'DVCU',ex:'张 zhāng – mở ra, họ Trương; 引 yǐn – dẫn dắt',note:'Hình cây cung cong dùng để bắn tên.'},
+{id:58,ch:'彐',st:3,py:'jì',hv:'Kệ',vi:'đầu con lợn',en:'snout',grp:'DV',ex:'归 guī – trở về; 彗 huì – sao chổi',note:'Hình đầu con heo nhọn mõm.'},
+{id:59,ch:'彡',st:3,py:'shān',hv:'Sam',vi:'lông tơ, nét vẽ',en:'bristle',grp:'NG',ex:'形 xíng – hình dáng; 影 yǐng – bóng',note:' Ba nét phẩy song song như vệt lông mềm.'},
+{id:60,ch:'彳',st:3,py:'chì',hv:'Xích',vi:'bước chân trái, đi lại',en:'step',grp:'NG',ex:'行 xíng – đi; 很 hěn – rất',note:'Nét vẽ giống bước chân trái đang đi.'},
+{id:61,ch:'心',st:4,py:'xīn',hv:'Tâm',vi:'trái tim, tâm trí',en:'heart',grp:'NG',ex:'想 xiǎng – nghĩ; 快 kuài – nhanh, vui',note:'Hình trái tim với các ngăn bên trong.'},
+{id:62,ch:'戈',st:4,py:'gē',hv:'Qua',vi:'cây giáo, vũ khí',en:'spear',grp:'DVCU',ex:'我 wǒ – tôi; 战 zhàn – chiến đấu',note:'Hình cây giáo dài có lưỡi bên cạnh.'},
+{id:63,ch:'戶',st:4,py:'hù',hv:'Hộ',vi:'cửa một cánh',en:'door',grp:'KT',ex:'房 fáng – phòng; 所 suǒ – nơi chốn',note:'Hình một cánh cửa gỗ đơn.'},
+{id:64,ch:'手',st:4,py:'shǒu',hv:'Thủ',vi:'bàn tay',en:'hand',grp:'NG',ex:'打 dǎ – đánh; 找 zhǎo – tìm',note:'Hình bàn tay xoè năm ngón.'},
+{id:65,ch:'支',st:4,py:'zhī',hv:'Chi',vi:'chi nhánh, cành',en:'branch',grp:'CA',ex:'branch – nhánh cây; 支持 zhīchí – ủng hộ',note:'Bàn tay cầm một cành cây nhỏ.'},
+{id:66,ch:'攴',st:4,py:'pū',hv:'Phộc',vi:'gõ nhẹ, đánh khẽ',en:'tap',grp:'NG',ex:'改 gǎi – sửa đổi; 教 jiào – dạy',note:'Bàn tay cầm que gõ nhẹ vào vật.'},
+{id:67,ch:'文',st:4,py:'wén',hv:'Văn',vi:'chữ viết, văn chương',en:'script',grp:'VH',ex:'字 zì – chữ; 学 xué (liên quan)',note:'Hình nét vẽ hoa văn trang trí.'},
+{id:68,ch:'斗',st:4,py:'dǒu',hv:'Đấu',vi:'cái đấu đong lường',en:'dipper',grp:'DVCU',ex:'料 liào – nguyên liệu; 斜 xié – nghiêng',note:'Hình cái đấu có cán dùng để đong.'},
+{id:69,ch:'斤',st:4,py:'jīn',hv:'Cân',vi:'cân, rìu',en:'axe',grp:'DVCU',ex:'新 xīn – mới; 断 duàn – cắt đứt',note:'Hình lưỡi rìu có cán cầm.'},
+{id:70,ch:'方',st:4,py:'fāng',hv:'Phương',vi:'vuông, phương hướng',en:'square',grp:'SO',ex:'放 fàng – thả, đặt; 旁 páng – bên cạnh',note:'Hình lá cờ vuông trên cán cắm phương hướng.'},
+{id:71,ch:'无',st:4,py:'wú',hv:'Vô',vi:'không có',en:'without',grp:'SO',ex:'既 jì – đã, rồi',note:'Hình người giơ tay tỏ ý không có gì.'},
+{id:72,ch:'日',st:4,py:'rì',hv:'Nhật',vi:'mặt trời, ngày',en:'sun, day',grp:'TN',ex:'明 míng – sáng; 时 shí – thời gian',note:'Hình mặt trời tròn với một chấm ở giữa.'},
+{id:73,ch:'曰',st:4,py:'yuē',hv:'Viết',vi:'nói rằng',en:'say',grp:'NG',ex:'书 shū (liên quan); 曲 qū – bài hát, cong',note:'Hình cái miệng đang phát ra lời nói.'},
+{id:74,ch:'月',st:4,py:'yuè',hv:'Nguyệt',vi:'mặt trăng, tháng; thịt',en:'moon, month',grp:'TN',ex:'明 míng – sáng; 期 qī – kỳ hạn',note:'Hình mặt trăng khuyết trên bầu trời.'},
+{id:75,ch:'木',st:4,py:'mù',hv:'Mộc',vi:'cây, gỗ',en:'tree, wood',grp:'CA',ex:'树 shù – cây; 林 lín – rừng',note:'Hình cái cây có rễ, thân và cành.'},
+{id:76,ch:'欠',st:4,py:'qiàn',hv:'Khiếm',vi:'thiếu, ngáp',en:'lack, yawn',grp:'NG',ex:'歌 gē – bài hát; 次 cì – lần',note:'Người há miệng ngáp vì thiếu ngủ.'},
+{id:77,ch:'止',st:4,py:'zhǐ',hv:'Chỉ',vi:'dừng lại, bàn chân',en:'stop, foot',grp:'NG',ex:'正 zhèng – ngay chính; 步 bù – bước đi',note:'Hình bàn chân dừng lại một chỗ.'},
+{id:78,ch:'歹',st:4,py:'dǎi',hv:'Ngạt',vi:'xương tàn, xấu',en:'bad, death',grp:'SO',ex:'死 sǐ – chết; 残 cán – tàn tật, tàn khốc',note:'Hình mẩu xương gãy tượng trưng điều xấu.'},
+{id:79,ch:'殳',st:4,py:'shū',hv:'Thù',vi:'cây gậy, binh khí dài',en:'weapon',grp:'DVCU',ex:'段 duàn – đoạn; 殿 diàn – cung điện',note:'Bàn tay cầm cây gậy dài để đánh.'},
+{id:80,ch:'毋',st:4,py:'wú',hv:'Vô',vi:'chớ, đừng',en:'do not',grp:'SO',ex:'母 mǔ (liên quan); 每 měi – mỗi',note:' Nét gạch chéo qua như lời cấm đoán.'},
+{id:81,ch:'比',st:4,py:'bǐ',hv:'Tỷ',vi:'so sánh',en:'compare',grp:'NG',ex:'比较 bǐjiào – so sánh; 皆 jiē – đều',note:'Hai người đứng cạnh nhau để so sánh.'},
+{id:82,ch:'毛',st:4,py:'máo',hv:'Mao',vi:'lông',en:'fur, hair',grp:'DV',ex:'毛衣 máoyī – áo len; 尾 wěi (liên quan)',note:'Hình sợi lông mềm mại, cong nhẹ.'},
+{id:83,ch:'氏',st:4,py:'shì',hv:'Thị',vi:'họ, dòng họ',en:'clan',grp:'NG',ex:'民 mín – nhân dân; 纸 zhǐ – giấy',note:'Hình rễ cây cắm sâu, tượng trưng gốc gác dòng họ.'},
+{id:84,ch:'气',st:4,py:'qì',hv:'Khí',vi:'hơi, khí',en:'steam, air',grp:'TN',ex:'气候 qìhòu – khí hậu; 汽 qì – hơi nước',note:'Ba nét cong như làn hơi bốc lên.'},
+{id:85,ch:'水',st:4,py:'shuǐ',hv:'Thuỷ',vi:'nước',en:'water',grp:'NU',ex:'河 hé – sông; 汽 qì – hơi nước',note:'Hình dòng nước chảy uốn lượn.'},
+{id:86,ch:'火',st:4,py:'huǒ',hv:'Hoả',vi:'lửa',en:'fire',grp:'LU',ex:'烧 shāo – đốt; 灯 dēng – đèn',note:'Hình ngọn lửa bốc cháy lên cao.'},
+{id:87,ch:'爪',st:4,py:'zhǎo',hv:'Trảo',vi:'móng vuốt',en:'claw',grp:'DV',ex:'采 cǎi – hái; 爬 pá – bò, trèo',note:'Hình bàn tay/móng vuốt quắp xuống.'},
+{id:88,ch:'父',st:4,py:'fù',hv:'Phụ',vi:'cha, bố',en:'father',grp:'NG',ex:'爸爸 bàba – bố; 爷爷 yéye – ông',note:'Hình người cha cầm roi dạy dỗ con cái.'},
+{id:89,ch:'爻',st:4,py:'yáo',hv:'Hào',vi:'hào (Kinh Dịch), giao nhau',en:'lines',grp:'VH',ex:'爽 shuǎng – sảng khoái; 希 xī (liên quan)',note:'Hai nét chéo đan xen như quẻ trong Kinh Dịch.'},
+{id:90,ch:'爿',st:4,py:'qiáng',hv:'Tường',vi:'mảnh gỗ, giường (nửa trái)',en:'half tree, bed',grp:'DVCU',ex:'状 zhuàng – hình trạng; 将 jiāng – sắp, tướng',note:'Nửa thân cây tách ra làm tấm ván giường.'},
+{id:91,ch:'片',st:4,py:'piàn',hv:'Phiến',vi:'mảnh, lát mỏng',en:'slice',grp:'DVCU',ex:'牌 pái – biển hiệu, thẻ bài',note:'Nửa thân cây bổ dọc thành tấm ván mỏng.'},
+{id:92,ch:'牙',st:4,py:'yá',hv:'Nha',vi:'răng nanh',en:'tooth',grp:'NG',ex:'牙齿 yáchǐ – răng',note:'Hình chiếc răng nanh nhọn cong.'},
+{id:93,ch:'牛',st:4,py:'niú',hv:'Ngưu',vi:'con trâu, con bò',en:'cow',grp:'DV',ex:'牛奶 niúnǎi – sữa bò; 特 tè – đặc biệt',note:'Hình đầu con trâu với hai sừng cong.'},
+{id:94,ch:'犬',st:4,py:'quǎn',hv:'Khuyển',vi:'con chó',en:'dog',grp:'DV',ex:'狗 gǒu – con chó; 状 zhuàng (liên quan)',note:'Hình con chó với đuôi cong lên.'},
+{id:95,ch:'玄',st:5,py:'xuán',hv:'Huyền',vi:'huyền bí, màu đen huyền',en:'dark, mysterious',grp:'SO',ex:'率 lǜ – tỉ lệ; 兹 zī – nay, đây',note:'Sợi tơ xoắn lại tạo màu thâm huyền bí.'},
+{id:96,ch:'玉',st:5,py:'yù',hv:'Ngọc',vi:'ngọc quý',en:'jade',grp:'DVCU',ex:'玩 wán – chơi đùa; 班 bān – lớp học',note:'Viên ngọc quý được xâu dây, có chấm điểm sáng.'},
+{id:97,ch:'瓜',st:5,py:'guā',hv:'Qua',vi:'dưa, bầu bí',en:'melon',grp:'CA',ex:'瓜子 guāzǐ – hạt dưa',note:'Hình quả dưa với dây leo cong quanh.'},
+{id:98,ch:'瓦',st:5,py:'wǎ',hv:'Ngoã',vi:'ngói',en:'tile',grp:'KT',ex:'瓶 píng – cái chai, cái bình',note:'Hình viên ngói cong lợp mái nhà.'},
+{id:99,ch:'甘',st:5,py:'gān',hv:'Cam',vi:'ngọt',en:'sweet',grp:'TP',ex:'甜 tián – ngọt; 某 mǒu – nào đó',note:'Vật ngọt ngậm trong miệng, có nét chỉ vị.'},
+{id:100,ch:'生',st:5,py:'shēng',hv:'Sinh',vi:'sinh ra, sống',en:'life, birth',grp:'NG',ex:'学生 xuéshēng – học sinh; 星 xīng – ngôi sao',note:'Mầm cây mọc lên khỏi mặt đất, tượng trưng sự sống.'},
+{id:101,ch:'用',st:5,py:'yòng',hv:'Dụng',vi:'dùng, sử dụng',en:'use',grp:'DVCU',ex:'甩 shuǎi – vung, vẩy; 甫 fǔ – vừa mới',note:'Hình cái thùng có công dụng chứa đựng.'},
+{id:102,ch:'田',st:5,py:'tián',hv:'Điền',vi:'ruộng',en:'field',grp:'TN',ex:'男 nán – nam giới; 界 jiè – ranh giới',note:'Hình thửa ruộng chia thành các ô vuông.'},
+{id:103,ch:'疋',st:5,py:'pǐ',hv:'Sơ',vi:'tấm vải, chân',en:'bolt of cloth',grp:'VH',ex:'疑 yí (liên quan hình); 疏 shū – thưa thớt',note:'Hình tấm vải dài được đo đếm.'},
+{id:104,ch:'疒',st:5,py:'nè',hv:'Nạch',vi:'bệnh tật',en:'sickness',grp:'NG',ex:'病 bìng – bệnh; 疼 téng – đau',note:'Hình người nằm trên giường vì ốm đau.'},
+{id:105,ch:'癶',st:5,py:'bō',hv:'Bát',vi:'bước chân đi ngược chiều',en:'footsteps',grp:'NG',ex:'登 dēng – lên, đăng; 发 fā – phát ra',note:'Hai bàn chân bước ngược hướng nhau.'},
+{id:106,ch:'白',st:5,py:'bái',hv:'Bạch',vi:'màu trắng',en:'white',grp:'SO',ex:'的 de – trợ từ; 百 bǎi – trăm',note:'Hình hạt gạo trắng có một tia sáng nhỏ.'},
+{id:107,ch:'皮',st:5,py:'pí',hv:'Bì',vi:'da',en:'skin',grp:'NG',ex:'皮肤 pífū – làn da; 破 pò – rách, vỡ',note:'Bàn tay lột lớp da của một vật.'},
+{id:108,ch:'皿',st:5,py:'mǐn',hv:'Mãnh',vi:'bát đĩa, đồ đựng',en:'dish',grp:'DVCU',ex:'盘 pán – cái đĩa; 盒 hé – hộp',note:'Hình cái bát có chân đế rộng.'},
+{id:109,ch:'目',st:5,py:'mù',hv:'Mục',vi:'mắt',en:'eye',grp:'NG',ex:'看 kàn – nhìn; 眼 yǎn – mắt',note:'Hình con mắt với con ngươi ở giữa.'},
+{id:110,ch:'矛',st:5,py:'máo',hv:'Mâu',vi:'cây mâu, giáo dài',en:'spear',grp:'DVCU',ex:'矜 jīn – kiêu căng, thương xót',note:'Hình cây giáo dài có ngạnh nhọn.'},
+{id:111,ch:'矢',st:5,py:'shǐ',hv:'Thỉ',vi:'mũi tên',en:'arrow',grp:'DVCU',ex:'知 zhī – biết; 短 duǎn – ngắn',note:'Hình mũi tên có đầu nhọn và đuôi lông.'},
+{id:112,ch:'石',st:5,py:'shí',hv:'Thạch',vi:'đá',en:'stone',grp:'TN',ex:'破 pò – vỡ; 硬 yìng – cứng',note:'Hòn đá nằm dưới vách núi.'},
+{id:113,ch:'示',st:5,py:'shì',hv:'Thị',vi:'bày tỏ, thần linh',en:'reveal, altar',grp:'VH',ex:'礼 lǐ – lễ nghi; 神 shén – thần linh',note:'Bàn thờ cúng tế bày tỏ lòng thành.'},
+{id:114,ch:'禸',st:5,py:'róu',hv:'Nhựu',vi:'dấu chân thú',en:'footprint',grp:'DV',ex:'禽 qín – chim muông; 禹 yǔ – tên vua Vũ',note:'Dấu vết bàn chân thú để lại trên đất.'},
+{id:115,ch:'禾',st:5,py:'hé',hv:'Hoà',vi:'lúa',en:'grain',grp:'CA',ex:'种 zhǒng – giống, trồng; 秋 qiū – mùa thu',note:'Cây lúa trĩu bông cúi đầu.'},
+{id:116,ch:'穴',st:5,py:'xué',hv:'Huyệt',vi:'hang, lỗ hổng',en:'cave',grp:'KT',ex:'空 kōng – trống rỗng; 究 jiū – nghiên cứu',note:'Mái hang có lỗ hổng phía trên.'},
+{id:117,ch:'立',st:5,py:'lì',hv:'Lập',vi:'đứng',en:'stand',grp:'NG',ex:'站 zhàn – đứng, trạm; 章 zhāng – chương',note:'Người đứng thẳng hai chân vững trên đất.'},
+{id:118,ch:'竹',st:6,py:'zhú',hv:'Trúc',vi:'cây tre',en:'bamboo',grp:'CA',ex:'笑 xiào – cười; 筷子 kuàizi – đôi đũa',note:'Hình hai nhánh tre với lá rủ xuống.'},
+{id:119,ch:'米',st:6,py:'mǐ',hv:'Mễ',vi:'gạo',en:'rice',grp:'TP',ex:'粉 fěn – bột; 类 lèi – loại',note:'Hạt gạo tách ra từ bông lúa, có nét chéo.'},
+{id:120,ch:'糸',st:6,py:'mì',hv:'Mịch',vi:'sợi tơ nhỏ',en:'silk',grp:'VH',ex:'红 hóng – màu đỏ; 线 xiàn – sợi chỉ',note:'Cuộn tơ nhỏ được se lại thành sợi.'},
+{id:121,ch:'缶',st:6,py:'fǒu',hv:'Phẫu',vi:'cái vò, chum sành',en:'jar',grp:'DVCU',ex:'缺 quē – thiếu, khuyết',note:'Hình cái vò sành có nắp đậy.'},
+{id:122,ch:'网',st:6,py:'wǎng',hv:'Võng',vi:'cái lưới',en:'net',grp:'DVCU',ex:'罗 luó – lưới bắt chim; 罪 zuì – tội lỗi',note:'Hình tấm lưới đan các mắt lưới.'},
+{id:123,ch:'羊',st:6,py:'yáng',hv:'Dương',vi:'con dê, con cừu',en:'sheep',grp:'DV',ex:'美 měi – đẹp; 群 qún – bầy đàn',note:'Hình đầu con dê với hai sừng cong.'},
+{id:124,ch:'羽',st:6,py:'yǔ',hv:'Vũ',vi:'lông vũ, cánh chim',en:'feather',grp:'DV',ex:'翻 fān – lật, dịch; 习 xí – ôn tập, thói quen',note:'Hai cánh chim với lông vũ xoè ra.'},
+{id:125,ch:'老',st:6,py:'lǎo',hv:'Lão',vi:'già',en:'old',grp:'NG',ex:'考 kǎo – thi cử; 者 zhě – người, kẻ',note:'Người già lưng còng chống gậy.'},
+{id:126,ch:'而',st:6,py:'ér',hv:'Nhi',vi:'mà, và',en:'and yet',grp:'SO',ex:'耐 nài – chịu đựng',note:'Hình bộ râu dài rủ xuống cằm.'},
+{id:127,ch:'耒',st:6,py:'lěi',hv:'Lỗi',vi:'cái cày',en:'plow',grp:'DVCU',ex:'耕 gēng – cày cấy',note:'Cây cày bằng gỗ dùng để cày ruộng.'},
+{id:128,ch:'耳',st:6,py:'ěr',hv:'Nhĩ',vi:'tai',en:'ear',grp:'NG',ex:'听 tīng – nghe; 取 qǔ – lấy',note:'Hình vành tai với ống tai bên trong.'},
+{id:129,ch:'聿',st:6,py:'yù',hv:'Duật',vi:'cây bút',en:'writing brush',grp:'VH',ex:'肃 sù – nghiêm túc; 律 lǜ (liên quan)',note:'Bàn tay cầm cây bút thẳng đứng.'},
+{id:130,ch:'肉',st:6,py:'ròu',hv:'Nhục',vi:'thịt',en:'meat',grp:'TP',ex:'肚子 dùzi – cái bụng; 脸 liǎn – khuôn mặt',note:'Miếng thịt có vân thớ bên trong.'},
+{id:131,ch:'臣',st:6,py:'chén',hv:'Thần',vi:'bề tôi, quan',en:'minister',grp:'NG',ex:'卧 wò – nằm (liên quan); 臧 zāng – tốt lành',note:'Con mắt cúi nhìn xuống, dáng vẻ khuất phục của bề tôi.'},
+{id:132,ch:'自',st:6,py:'zì',hv:'Tự',vi:'tự mình, cái mũi',en:'self, nose',grp:'NG',ex:'自己 zìjǐ – bản thân; 息 xī – nghỉ ngơi, hơi thở',note:'Hình cái mũi, người Trung Quốc xưa chỉ vào mũi khi nói "tôi".'},
+{id:133,ch:'至',st:6,py:'zhì',hv:'Chí',vi:'đến, tới',en:'arrive',grp:'NG',ex:'到 dào – đến; 致 zhì – gửi đến',note:'Mũi tên bay tới và cắm xuống đất.'},
+{id:134,ch:'臼',st:6,py:'jiù',hv:'Cữu',vi:'cái cối giã gạo',en:'mortar',grp:'DVCU',ex:'舅 jiù – cậu (em trai mẹ); 与 yǔ – và, cho',note:'Hình cái cối đá có lòng trũng để giã.'},
+{id:135,ch:'舌',st:6,py:'shé',hv:'Thiệt',vi:'cái lưỡi',en:'tongue',grp:'NG',ex:'甜 tián (liên quan); 舔 tiǎn – liếm',note:'Cái lưỡi thè ra khỏi miệng.'},
+{id:136,ch:'舛',st:6,py:'chuǎn',hv:'Suyễn',vi:'trái ngược, sai lệch',en:'oppose',grp:'SO',ex:'舜 shùn – vua Thuấn; 舞 wǔ – nhảy múa',note:'Hai bàn chân hướng ngược chiều nhau.'},
+{id:137,ch:'舟',st:6,py:'zhōu',hv:'Chu',vi:'thuyền',en:'boat',grp:'DVCU',ex:'船 chuán – thuyền; 航 háng – hàng hải',note:'Hình chiếc thuyền nhỏ có mũi và đuôi.'},
+{id:138,ch:'艮',st:6,py:'gèn',hv:'Cấn',vi:'dừng lại, quẻ Cấn',en:'stopping',grp:'SO',ex:'很 hěn – rất; 良 liáng – tốt lành',note:'Con mắt nhìn ngoái lại phía sau rồi dừng.'},
+{id:139,ch:'色',st:6,py:'sè',hv:'Sắc',vi:'màu sắc, vẻ mặt',en:'color',grp:'SO',ex:'颜色 yánsè – màu sắc; 绝 jué (liên quan)',note:'Người quỳ với nét vẽ thể hiện sắc diện.'},
+{id:140,ch:'艸',st:6,py:'cǎo',hv:'Thảo',vi:'cỏ',en:'grass',grp:'CA',ex:'花 huā – hoa; 茶 chá – trà',note:'Hai mầm cỏ non mọc song song.'},
+{id:141,ch:'虍',st:6,py:'hū',hv:'Hô',vi:'vằn hổ, dáng hổ',en:'tiger',grp:'DV',ex:'虎 hǔ – con hổ; 虑 lǜ – lo lắng',note:'Hình đầu con hổ với vằn vện đặc trưng.'},
+{id:142,ch:'虫',st:6,py:'chóng',hv:'Trùng',vi:'sâu bọ, côn trùng',en:'insect',grp:'DV',ex:'蛇 shé – con rắn; 蚂蚁 mǎyǐ – con kiến',note:'Hình con sâu nhỏ cong mình.'},
+{id:143,ch:'血',st:6,py:'xuè',hv:'Huyết',vi:'máu',en:'blood',grp:'NG',ex:'流血 liúxuè – chảy máu',note:'Bát đựng máu tế trong nghi lễ cổ.'},
+{id:144,ch:'行',st:6,py:'xíng',hv:'Hành',vi:'đi, hành động',en:'go, act',grp:'NG',ex:'银行 yínháng – ngân hàng; 行动 xíngdòng – hành động',note:'Ngã tư đường tượng trưng cho việc đi lại.'},
+{id:145,ch:'衣',st:6,py:'yī',hv:'Y',vi:'áo, quần áo',en:'clothes',grp:'VH',ex:'衣服 yīfu – quần áo; 裤子 kùzi – quần',note:'Hình chiếc áo với cổ áo và hai vạt.'},
+{id:146,ch:'襾',st:6,py:'yà',hv:'Á',vi:'che phủ, phương Tây',en:'cover',grp:'KT',ex:'要 yào – muốn, cần; 西 xī – hướng tây',note:'Nắp đậy úp lên trên một vật để che phủ.'},
+{id:147,ch:'見',st:7,py:'jiàn',hv:'Kiến',vi:'nhìn thấy',en:'see',grp:'NG',ex:'看见 kànjiàn – nhìn thấy; 视 shì (liên quan)',note:'Con mắt to đặt trên đôi chân người, ý là nhìn thấy.'},
+{id:148,ch:'角',st:7,py:'jiǎo',hv:'Giác',vi:'sừng, góc',en:'horn, angle',grp:'DV',ex:'解 jiě – giải quyết; 角度 jiǎodù – góc độ',note:'Hình cái sừng thú có vân xoắn.'},
+{id:149,ch:'言',st:7,py:'yán',hv:'Ngôn',vi:'lời nói',en:'speech',grp:'VH',ex:'说 shuō – nói; 语言 yǔyán – ngôn ngữ',note:'Cái miệng phát ra từng lời như sóng âm.'},
+{id:150,ch:'谷',st:7,py:'gǔ',hv:'Cốc',vi:'thung lũng',en:'valley',grp:'TN',ex:'欲 yù – muốn (liên quan); 俗 sú (liên quan)',note:'Dòng nước chảy ra từ khe núi tạo thành thung lũng.'},
+{id:151,ch:'豆',st:7,py:'dòu',hv:'Đậu',vi:'đậu, hạt đậu',en:'bean, vessel',grp:'TP',ex:'豆腐 dòufu – đậu phụ; 短 duǎn (liên quan hình)',note:'Hình cái bát có chân đế cao đựng đồ tế.'},
+{id:152,ch:'豕',st:7,py:'shǐ',hv:'Thỉ',vi:'con lợn',en:'pig',grp:'DV',ex:'家 jiā – nhà (lợn dưới mái); 象 xiàng (liên quan)',note:'Hình con lợn với cái bụng to và đuôi cong.'},
+{id:153,ch:'豸',st:7,py:'zhì',hv:'Trãi',vi:'loài thú không chân',en:'legless beast',grp:'DV',ex:'豹 bào – con báo; 貌 mào – dáng vẻ',note:'Con thú dài rình mồi, lưng cong chuẩn bị vồ.'},
+{id:154,ch:'貝',st:7,py:'bèi',hv:'Bối',vi:'vỏ sò, tiền tệ',en:'shell, money',grp:'DVCU',ex:'买 mǎi – mua; 贵 guì – đắt, quý',note:'Vỏ sò được dùng làm tiền tệ thời cổ.'},
+{id:155,ch:'赤',st:7,py:'chì',hv:'Xích',vi:'màu đỏ',en:'red',grp:'SO',ex:'赤字 chìzì – thâm hụt (đỏ)',note:'Người đứng trên đống lửa, mặt đỏ ửng.'},
+{id:156,ch:'走',st:7,py:'zǒu',hv:'Tẩu',vi:'đi bộ, chạy',en:'walk, run',grp:'NG',ex:'起 qǐ – dậy, bắt đầu; 越 yuè – vượt qua',note:'Người vung tay bước nhanh về phía trước.'},
+{id:157,ch:'足',st:7,py:'zú',hv:'Túc',vi:'bàn chân, đủ',en:'foot, enough',grp:'NG',ex:'跑 pǎo – chạy; 路 lù – đường',note:'Hình bàn chân với ống chân phía trên.'},
+{id:158,ch:'身',st:7,py:'shēn',hv:'Thân',vi:'thân thể',en:'body',grp:'NG',ex:'身体 shēntǐ – cơ thể; 射 shè – bắn',note:'Hình dáng người với cái bụng nhô ra.'},
+{id:159,ch:'車',st:7,py:'chē',hv:'Xa',vi:'xe cộ',en:'cart',grp:'DVCU',ex:'车站 chēzhàn – bến xe; 轻 qīng – nhẹ',note:'Nhìn từ trên xuống một chiếc xe có trục bánh.'},
+{id:160,ch:'辛',st:7,py:'xīn',hv:'Tân',vi:'cay, vất vả',en:'bitter, spicy',grp:'TP',ex:'辣 là – cay; 辨 biàn – phân biệt',note:'Cây kim khắc lên tội nhân, ý chỉ sự cay đắng.'},
+{id:161,ch:'辰',st:7,py:'chén',hv:'Thìn',vi:'giờ Thìn, ngày tháng',en:'time, star',grp:'SO',ex:'辱 rǔ – nhục nhã; 农 nóng (liên quan)',note:'Hình cái mai sò cổ dùng làm nông cụ, chỉ thời gian mùa vụ.'},
+{id:162,ch:'辵',st:7,py:'chuò',hv:'Sước',vi:'đi bước, đi (bộ thủ 辶)',en:'walk',grp:'NG',ex:'这 zhè – này; 过 guò – qua, trải qua',note:'Bước chân trên con đường, thường viết thành 辶.'},
+{id:163,ch:'邑',st:7,py:'yì',hv:'Ấp',vi:'thôn ấp, thành phố',en:'city',grp:'KT',ex:'那 nà – kia, đó; 都 dōu/dū – đều/thủ đô',note:'Vùng đất có ranh giới, dân cư sinh sống, thường viết 阝bên phải.'},
+{id:164,ch:'酉',st:7,py:'yǒu',hv:'Dậu',vi:'rượu, giờ Dậu',en:'wine, bird (zodiac)',grp:'TP',ex:'酒 jiǔ – rượu; 醒 xǐng – tỉnh dậy',note:'Hình cái vò đựng rượu có miệng nhỏ.'},
+{id:165,ch:'釆',st:7,py:'biàn',hv:'Biện',vi:'phân biệt, dấu chân thú',en:'distinguish',grp:'DV',ex:'释 shì – giải thích, thả; 番 fān – lượt, phiên',note:'Dấu chân thú để lại trên đất, dùng để phân biệt loài.'},
+{id:166,ch:'里',st:7,py:'lǐ',hv:'Lý',vi:'dặm, làng xóm',en:'village, mile',grp:'KT',ex:'里面 lǐmiàn – bên trong; 重 zhòng – nặng',note:'Ruộng đất bên trên, đất đai bên dưới hợp thành làng xóm.'},
+{id:167,ch:'金',st:8,py:'jīn',hv:'Kim',vi:'vàng, kim loại',en:'gold, metal',grp:'DVCU',ex:'钱 qián – tiền; 银行 yínháng – ngân hàng',note:'Kim loại quý được nung chảy trong khuôn.'},
+{id:168,ch:'長',st:8,py:'cháng',hv:'Trường',vi:'dài, trưởng',en:'long, chief',grp:'SO',ex:'长城 chángchéng – Vạn Lý Trường Thành',note:'Hình người tóc dài, râu dài bay theo gió.'},
+{id:169,ch:'門',st:8,py:'mén',hv:'Môn',vi:'cửa (hai cánh)',en:'gate, door',grp:'KT',ex:'问 wèn – hỏi; 间 jiān – khoảng, giữa',note:'Hai cánh cửa lớn đối xứng nhau.'},
+{id:170,ch:'阜',st:8,py:'fù',hv:'Phụ',vi:'gò đất, đồi (bộ 阝trái)',en:'mound',grp:'TN',ex:'阳 yáng – dương, mặt trời; 队 duì – đội ngũ',note:'Bậc thang đất đắp lên như những gò đồi nối tiếp.'},
+{id:171,ch:'隶',st:8,py:'dài',hv:'Đãi',vi:'kịp, nô lệ',en:'reach, slave',grp:'NG',ex:'隸 lì (dạng khác) – lệ thuộc',note:'Bàn tay với tới nắm lấy đuôi con thú, ý là bắt kịp.'},
+{id:172,ch:'隹',st:8,py:'zhuī',hv:'Chuy',vi:'chim đuôi ngắn',en:'short-tailed bird',grp:'DV',ex:'雀 què – chim sẻ; 集 jí – tập hợp',note:'Hình con chim nhỏ đứng trên cành.'},
+{id:173,ch:'雨',st:8,py:'yǔ',hv:'Vũ',vi:'mưa',en:'rain',grp:'TN',ex:'雪 xuě – tuyết; 雷 léi – sấm',note:'Những giọt mưa rơi từ đám mây trên trời.'},
+{id:174,ch:'靑',st:8,py:'qīng',hv:'Thanh',vi:'màu xanh',en:'blue, green',grp:'SO',ex:'请 qǐng – mời, xin; 清 qīng – trong sạch',note:'Mầm cây (青 phần trên) mọc lên xanh tươi bên giếng nước.'},
+{id:175,ch:'非',st:8,py:'fēi',hv:'Phi',vi:'không phải, sai',en:'wrong, not',grp:'SO',ex:'非常 fēicháng – rất, vô cùng',note:'Hai cánh chim xoè ngược chiều nhau, ý trái ngược.'},
+{id:176,ch:'面',st:9,py:'miàn',hv:'Diện',vi:'mặt, bề mặt',en:'face, surface',grp:'NG',ex:'面条 miàntiáo – mì sợi; 见面 jiànmiàn – gặp mặt',note:'Khuôn mặt người được vẽ khung viền rõ nét.'},
+{id:177,ch:'革',st:9,py:'gé',hv:'Cách',vi:'da thuộc, cải cách',en:'leather, reform',grp:'DVCU',ex:'鞋 xié – giày; 改革 gǎigé – cải cách',note:'Tấm da thú đã được thuộc căng phẳng ra.'},
+{id:178,ch:'韋',st:9,py:'wéi',hv:'Vi',vi:'da thuộc mềm',en:'tanned leather',grp:'DVCU',ex:'韩 hán – Hàn Quốc',note:'Bàn chân người đi vòng quanh một khu vực.'},
+{id:179,ch:'韭',st:9,py:'jiǔ',hv:'Cửu',vi:'rau hẹ',en:'leek',grp:'CA',ex:'韭菜 jiǔcài – rau hẹ',note:'Bụi rau hẹ mọc thành hàng trên mặt đất.'},
+{id:180,ch:'音',st:9,py:'yīn',hv:'Âm',vi:'âm thanh',en:'sound',grp:'VH',ex:'音乐 yīnyuè – âm nhạc; 意 yì (liên quan)',note:'Lời nói phát ra từ miệng tạo thành âm thanh.'},
+{id:181,ch:'頁',st:9,py:'yè',hv:'Hiệt',vi:'cái đầu, trang giấy',en:'page, head',grp:'NG',ex:'顶 dǐng – đỉnh đầu; 顾 gù – đoái hoài',note:'Hình cái đầu người với nét mặt rõ ràng.'},
+{id:182,ch:'風',st:9,py:'fēng',hv:'Phong',vi:'gió',en:'wind',grp:'TN',ex:'台风 táifēng – bão; 飘 piāo – bay phất phơ',note:'Côn trùng bay theo luồng không khí chuyển động, tức gió.'},
+{id:183,ch:'飛',st:9,py:'fēi',hv:'Phi',vi:'bay',en:'fly',grp:'DV',ex:'飞机 fēijī – máy bay',note:'Hình đôi cánh chim đang dang rộng bay lên.'},
+{id:184,ch:'食',st:9,py:'shí',hv:'Thực',vi:'ăn, thức ăn',en:'eat, food',grp:'TP',ex:'饭 fàn – cơm; 饿 è – đói',note:'Nắp đậy trên chiếc bát đầy thức ăn.'},
+{id:185,ch:'首',st:9,py:'shǒu',hv:'Thủ',vi:'đầu, cái đầu tiên',en:'head, first',grp:'NG',ex:'首都 shǒudū – thủ đô',note:'Cái đầu với mái tóc và đôi mắt, ý người đứng đầu.'},
+{id:186,ch:'香',st:9,py:'xiāng',hv:'Hương',vi:'thơm',en:'fragrant',grp:'TP',ex:'香蕉 xiāngjiāo – chuối; 香水 xiāngshuǐ – nước hoa',note:'Lúa (禾) chín toả mùi thơm ngọt ngào.'},
+{id:187,ch:'馬',st:10,py:'mǎ',hv:'Mã',vi:'con ngựa',en:'horse',grp:'DV',ex:'骑马 qímǎ – cưỡi ngựa; 妈妈 māma (âm liên quan)',note:'Hình con ngựa với bờm dài và bốn chân.'},
+{id:188,ch:'骨',st:10,py:'gǔ',hv:'Cốt',vi:'xương',en:'bone',grp:'NG',ex:'骨头 gǔtou – xương; 骨折 gǔzhé – gãy xương',note:'Khớp xương với phần thịt bao quanh.'},
+{id:189,ch:'高',st:10,py:'gāo',hv:'Cao',vi:'cao',en:'tall, high',grp:'SO',ex:'高兴 gāoxìng – vui mừng; 高铁 gāotiě – tàu cao tốc',note:'Hình một toà lầu cao có mái và tầng.'},
+{id:190,ch:'髟',st:10,py:'biāo',hv:'Bưu',vi:'tóc dài rủ',en:'long hair',grp:'NG',ex:'发 fà – tóc (phồn thể 髮); 鬓 bìn – tóc mai',note:'Mái tóc dài buông xoã trên đầu người già.'},
+{id:191,ch:'鬥',st:10,py:'dòu',hv:'Đấu',vi:'đánh nhau, chiến đấu',en:'fight',grp:'NG',ex:'斗 (giản thể) – đấu tranh',note:'Hai người đang vật lộn giằng co với nhau.'},
+{id:192,ch:'鬯',st:10,py:'chàng',hv:'Sưởng',vi:'rượu cúng tế',en:'sacrificial wine',grp:'TP',ex:'鬱 yù (liên quan) – u uất',note:'Bình rượu thơm dùng trong tế lễ, có hạt nếp bên trong.'},
+{id:193,ch:'鬲',st:10,py:'gé',hv:'Cách',vi:'cái vạc ba chân',en:'cauldron',grp:'DVCU',ex:'鬻 yù – bán, nấu ăn',note:'Cái vạc cổ có ba chân dùng để nấu.'},
+{id:194,ch:'鬼',st:10,py:'guǐ',hv:'Quỷ',vi:'con quỷ, ma',en:'ghost',grp:'VH',ex:'鬼故事 guǐ gùshi – chuyện ma',note:'Hình đầu to đáng sợ của con quỷ trong truyền thuyết.'},
+{id:195,ch:'魚',st:11,py:'yú',hv:'Ngư',vi:'con cá',en:'fish',grp:'DV',ex:'鱼肉 yúròu – thịt cá; 渔 yú – đánh cá',note:'Hình con cá với đầu, thân vảy và đuôi.'},
+{id:196,ch:'鳥',st:11,py:'niǎo',hv:'Điểu',vi:'con chim',en:'bird',grp:'DV',ex:'小鸟 xiǎoniǎo – chim nhỏ; 鸣 míng – (chim) kêu',note:'Hình con chim với đầu, cánh và đuôi dài.'},
+{id:197,ch:'鹵',st:11,py:'lǔ',hv:'Lỗ',vi:'muối, đầm lầy mặn',en:'salt',grp:'TN',ex:'咸 xián (liên quan) – mặn',note:'Túi muối kết tinh từ nước biển bốc hơi.'},
+{id:198,ch:'鹿',st:11,py:'lù',hv:'Lộc',vi:'con hươu, nai',en:'deer',grp:'DV',ex:'鹿角 lùjiǎo – sừng hươu',note:'Hình con hươu với gạc sừng và bốn chân dài.'},
+{id:199,ch:'麥',st:11,py:'mài',hv:'Mạch',vi:'lúa mì',en:'wheat',grp:'CA',ex:'麦子 màizi – lúa mì; 麦克风 màikèfēng – micro',note:'Cây lúa mì với rễ cắm sâu và bông trĩu hạt.'},
+{id:200,ch:'麻',st:11,py:'má',hv:'Ma',vi:'cây gai dầu',en:'hemp',grp:'CA',ex:'麻烦 máfan – phiền phức; 芝麻 zhīma – vừng',note:'Sợi gai được phơi dưới mái nhà để làm vải.'},
+{id:201,ch:'黃',st:12,py:'huáng',hv:'Hoàng',vi:'màu vàng',en:'yellow',grp:'SO',ex:'黄色 huángsè – màu vàng; 黄河 huánghé – Hoàng Hà',note:'Người đeo ngọc bội màu vàng nơi thắt lưng.'},
+{id:202,ch:'黍',st:12,py:'shǔ',hv:'Thử',vi:'kê (loại ngũ cốc)',en:'millet',grp:'TP',ex:'黍子 shǔzi – hạt kê',note:'Bông kê rủ hạt được tưới bởi nước mưa.'},
+{id:203,ch:'黑',st:12,py:'hēi',hv:'Hắc',vi:'màu đen',en:'black',grp:'SO',ex:'黑板 hēibǎn – bảng đen; 黑夜 hēiyè – đêm tối',note:'Khói bồ hóng bám đen quanh cửa sổ lò lửa.'},
+{id:204,ch:'黹',st:12,py:'zhǐ',hv:'Chỉ',vi:'thêu thùa, may vá',en:'embroider',grp:'VH',ex:'黻 fú – hoa văn thêu trên lễ phục',note:'Kim chỉ đan xen tạo thành hoa văn thêu.'},
+{id:205,ch:'黽',st:13,py:'mǐn',hv:'Mãnh',vi:'con ếch, con ba ba',en:'frog, toad',grp:'DV',ex:'鼋 yuán – con giải (rùa lớn)',note:'Hình con ếch với thân tròn và bốn chân xoè rộng.'},
+{id:206,ch:'鼎',st:13,py:'dǐng',hv:'Đỉnh',vi:'cái đỉnh (vạc ba chân)',en:'tripod',grp:'DVCU',ex:'鼐 nài – cái đỉnh lớn',note:'Cái đỉnh đồng ba chân dùng để nấu tế lễ thời cổ.'},
+{id:207,ch:'鼓',st:13,py:'gǔ',hv:'Cổ',vi:'cái trống',en:'drum',grp:'DVCU',ex:'鼓励 gǔlì – khích lệ, cổ vũ',note:'Bàn tay cầm dùi gõ vào mặt trống căng.'},
+{id:208,ch:'鼠',st:13,py:'shǔ',hv:'Thử',vi:'con chuột',en:'rat, mouse',grp:'DV',ex:'老鼠 lǎoshǔ – con chuột',note:'Hình con chuột với răng nhọn, đuôi dài.'},
+{id:209,ch:'鼻',st:14,py:'bí',hv:'Tỵ',vi:'cái mũi',en:'nose',grp:'NG',ex:'鼻子 bízi – cái mũi',note:'Luồng khí (自) đi qua sống mũi khi hít thở.'},
+{id:210,ch:'齊',st:14,py:'qí',hv:'Tề',vi:'ngay ngắn, chỉnh tề',en:'even, uniform',grp:'SO',ex:'整齐 zhěngqí – ngay ngắn, gọn gàng',note:'Ba bông lúa mọc đều nhau, ngay hàng thẳng lối.'},
+{id:211,ch:'齒',st:15,py:'chǐ',hv:'Xỉ',vi:'răng',en:'tooth',grp:'NG',ex:'牙齿 yáchǐ – răng',note:'Hàm răng với các chiếc răng đều đặn xếp hàng.'},
+{id:212,ch:'龍',st:16,py:'lóng',hv:'Long',vi:'con rồng',en:'dragon',grp:'VH',ex:'龙年 lóngnián – năm Rồng',note:'Hình con rồng uốn lượn với vảy và móng vuốt.'},
+{id:213,ch:'龜',st:16,py:'guī',hv:'Quy',vi:'con rùa',en:'turtle',grp:'DV',ex:'乌龟 wūguī – con rùa',note:'Hình con rùa nhìn từ trên xuống với mai và chân.'},
+{id:214,ch:'龠',st:17,py:'yuè',hv:'Thược',vi:'ống sáo (nhạc cụ cổ)',en:'flute',grp:'VH',ex:'龢 hé – hài hoà (âm nhạc)',note:'Nhiều ống sáo trúc được ghép lại thành một bộ nhạc cụ.'},
+];
+/* ================== CONSTANTS ================== */
+const GROUP_NAMES = {
+  NG:'Con người', TN:'Thiên nhiên', DV:'Động vật', NU:'Nước', LU:'Lửa',
+  CA:'Cây cối', DVCU:'Đồ vật - Công cụ', KT:'Kiến trúc - Nơi chốn',
+  SO:'Số đếm - Trừu tượng', VH:'Văn tự - Lễ nghi', TP:'Thực phẩm'
+};
+const RAD_BY_ID = {};
+RADICALS.forEach(r => RAD_BY_ID[r.id] = r);
+const STORAGE_KEY = 'bothu214_state_v1';
+
+/* ================== STATE ================== */
+function todayStr(d){ d = d || new Date(); return d.toISOString().slice(0,10); }
+function dateMinus(days){ const d = new Date(); d.setDate(d.getDate()-days); return todayStr(d); }
+
+function defaultState(){
+  return { progress:{}, streak:{lastDate:null, count:0}, history:{}, theme:'light' };
+}
+let STATE = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return Object.assign(defaultState(), parsed, {
+      progress: parsed.progress || {},
+      streak: parsed.streak || {lastDate:null,count:0},
+      history: parsed.history || {}
+    });
+  }catch(e){ return defaultState(); }
+}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE)); }
+
+function getStatus(id){ return STATE.progress[id] || 0; }
+
+function touchStreak(){
+  const today = todayStr();
+  if(STATE.streak.lastDate === today) return;
+  if(STATE.streak.lastDate === dateMinus(1)){ STATE.streak.count += 1; }
+  else { STATE.streak.count = 1; }
+  STATE.streak.lastDate = today;
+}
+function snapshotHistory(){
+  STATE.history[todayStr()] = computeStats().known;
+}
+
+function setStatus(id, status){
+  if(status === 0) delete STATE.progress[id];
+  else STATE.progress[id] = status;
+  touchStreak();
+  snapshotHistory();
+  saveState();
+  refreshGlobalUI();
+}
+
+function computeStats(){
+  let learned=0, known=0;
+  Object.values(STATE.progress).forEach(s => { if(s===1) learned++; else if(s===2) known++; });
+  const total = RADICALS.length;
+  const percent = Math.round((known/total)*100);
+  return { total, learned, known, review: learned, percent };
+}
+
+/* ================== UTIL ================== */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function sample(arr,n){ return shuffle(arr).slice(0,n); }
+let toastTimer=null;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+/* ================== NAVIGATION ================== */
+function switchView(viewId){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+  document.querySelectorAll('.tabnav-btn').forEach(b=>b.classList.toggle('active', b.dataset.view===viewId));
+  window.scrollTo({top:0, behavior:'instant'});
+  if(viewId==='view-home') renderHome();
+  if(viewId==='view-list') renderList();
+  if(viewId==='view-achieve') renderAchievements();
+}
+document.querySelectorAll('.tabnav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>switchView(btn.dataset.view));
+});
+document.querySelectorAll('[data-goto]').forEach(el=>{
+  el.addEventListener('click', ()=>switchView(el.dataset.goto));
+});
+
+function refreshGlobalUI(){
+  const activeView = document.querySelector('.view.active');
+  if(activeView && activeView.id==='view-home') renderHome();
+  if(activeView && activeView.id==='view-list') renderList();
+  if(activeView && activeView.id==='view-achieve') renderAchievements();
+  if(detailCurrentId!=null) renderDetailBadges();
+}
+
+/* ================== HOME ================== */
+function renderHome(){
+  const s = computeStats();
+  document.getElementById('stat-total').textContent = s.total;
+  document.getElementById('stat-learned').textContent = s.learned;
+  document.getElementById('stat-known').textContent = s.known;
+  document.getElementById('stat-review').textContent = s.review;
+  document.getElementById('stat-percent').textContent = s.percent + '%';
+  document.getElementById('home-progress-fill').style.width = s.percent + '%';
+  document.getElementById('progress-text').textContent = s.known + ' / ' + s.total + ' đã thuộc';
+}
+document.getElementById('continueLearningBtn').addEventListener('click', ()=>{
+  let target = RADICALS.find(r=>getStatus(r.id)===0);
+  if(!target) target = RADICALS.find(r=>getStatus(r.id)===1);
+  if(!target){ showToast('🎉 Bạn đã học và thuộc hết 214 bộ thủ!'); return; }
+  openDetail(target.id);
+});
+
+/* ================== LIST / GRID ================== */
+function buildRadTile(r){
+  const st = getStatus(r.id);
+  const div = document.createElement('div');
+  div.className = 'rad-tile status-' + st;
+  div.innerHTML = '<span class="idx">'+r.id+'</span><span class="ch hanzi">'+r.ch+'</span><span class="st">'+r.st+' nét</span>';
+  div.addEventListener('click', ()=>openDetail(r.id));
+  return div;
+}
+function populateStrokeFilter(){
+  const sel = document.getElementById('filterStrokes');
+  const strokes = Array.from(new Set(RADICALS.map(r=>r.st))).sort((a,b)=>a-b);
+  strokes.forEach(s=>{
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s + ' nét';
+    sel.appendChild(opt);
+  });
+}
+function renderList(){
+  const q = document.getElementById('listSearch').value.trim().toLowerCase();
+  const stF = document.getElementById('filterStrokes').value;
+  const statF = document.getElementById('filterStatus').value;
+  const grid = document.getElementById('listGrid');
+  grid.innerHTML = '';
+  let list = RADICALS.filter(r=>{
+    if(stF!=='' && String(r.st)!==stF) return false;
+    if(statF!=='' && String(getStatus(r.id))!==statF) return false;
+    if(q){
+      const hay = (r.ch+' '+r.py+' '+r.hv+' '+r.vi).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  document.getElementById('listCount').textContent = list.length + ' / 214 bộ';
+  if(list.length===0){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="emoji">🔍</div>Không tìm thấy bộ thủ phù hợp.</div>';
+    return;
+  }
+  list.forEach(r=>grid.appendChild(buildRadTile(r)));
+}
+document.getElementById('listSearch').addEventListener('input', renderList);
+document.getElementById('filterStrokes').addEventListener('change', renderList);
+document.getElementById('filterStatus').addEventListener('change', renderList);
+
+/* ================== DETAIL MODAL ================== */
+let detailCurrentId = null;
+function openDetail(id){
+  detailCurrentId = id;
+  const r = RAD_BY_ID[id];
+  document.getElementById('dCh').textContent = r.ch;
+  document.getElementById('dPy').textContent = r.py;
+  document.getElementById('dId').textContent = r.id;
+  document.getElementById('dStBadge').textContent = r.st + ' nét';
+  document.getElementById('dHv').textContent = r.hv;
+  document.getElementById('dVi').textContent = r.vi;
+  document.getElementById('dGrp').textContent = GROUP_NAMES[r.grp] || r.grp;
+  document.getElementById('dEx').textContent = r.ex;
+  document.getElementById('dNote').textContent = r.note;
+  renderDetailBadges();
+  document.getElementById('detailModal').classList.add('active');
+}
+function renderDetailBadges(){
+  const st = getStatus(detailCurrentId);
+  const badge = document.getElementById('dStatusBadge');
+  badge.className = 'badge ' + (st===2?'badge-green':st===1?'badge-yellow':'');
+  badge.style.background = st===0 ? 'var(--gray-bg)' : '';
+  badge.style.color = st===0 ? 'var(--muted)' : '';
+  badge.textContent = st===2?'🟢 Đã thuộc':st===1?'🟡 Đã học':'⚪ Chưa học';
+}
+function closeDetail(){ document.getElementById('detailModal').classList.remove('active'); detailCurrentId=null; }
+document.getElementById('detailClose').addEventListener('click', closeDetail);
+document.getElementById('detailModal').addEventListener('click', (e)=>{ if(e.target.id==='detailModal') closeDetail(); });
+document.getElementById('dMarkLearned').addEventListener('click', ()=>{ setStatus(detailCurrentId,1); renderDetailBadges(); showToast('🟡 Đã đánh dấu: Đã học'); });
+document.getElementById('dMarkKnown').addEventListener('click', ()=>{ setStatus(detailCurrentId,2); renderDetailBadges(); showToast('🟢 Đã đánh dấu: Đã thuộc'); });
+document.getElementById('dPrev').addEventListener('click', ()=>{ const nid = detailCurrentId>1?detailCurrentId-1:214; openDetail(nid); });
+document.getElementById('dNext').addEventListener('click', ()=>{ const nid = detailCurrentId<214?detailCurrentId+1:1; openDetail(nid); });
+
+/* ================== FLASHCARD ================== */
+let fcDeck = [];
+let fcIdx = 0;
+let fcReviewed = 0;
+function buildFcDeck(){ fcDeck = shuffle(RADICALS.map(r=>r.id)); fcIdx = 0; fcReviewed = 0; }
+function renderFlashcard(){
+  if(fcDeck.length===0) buildFcDeck();
+  if(fcIdx >= fcDeck.length){ fcIdx = 0; fcDeck = shuffle(fcDeck); }
+  const r = RAD_BY_ID[fcDeck[fcIdx]];
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fcFront').textContent = r.ch;
+  document.getElementById('fcBackCh').textContent = r.ch;
+  document.getElementById('fcBackPy').textContent = r.py;
+  document.getElementById('fcBackHv').textContent = r.hv + ' — ' + r.vi;
+  document.getElementById('fcBackEx').textContent = 'VD: ' + r.ex;
+  document.getElementById('fcProgress').textContent = 'Đã ôn: ' + fcReviewed + ' | Thẻ ' + (fcIdx+1) + '/' + fcDeck.length;
+}
+document.getElementById('flashcard').addEventListener('click', function(){ this.classList.toggle('flipped'); });
+function fcAnswer(newStatus){
+  const id = fcDeck[fcIdx];
+  const cur = getStatus(id);
+  if(newStatus==='forget') setStatus(id, cur===0?0:1);
+  else if(newStatus==='normal') setStatus(id, 1);
+  else if(newStatus==='known') setStatus(id, 2);
+  fcReviewed++;
+  fcIdx++;
+  renderFlashcard();
+}
+document.getElementById('fcForget').addEventListener('click', ()=>fcAnswer('forget'));
+document.getElementById('fcNormal').addEventListener('click', ()=>fcAnswer('normal'));
+document.getElementById('fcKnown').addEventListener('click', ()=>fcAnswer('known'));
+document.getElementById('fcShuffle').addEventListener('click', ()=>{ buildFcDeck(); renderFlashcard(); showToast('🔀 Đã xáo bộ thẻ'); });
+
+/* ================== MATCH (Ghép đôi) ================== */
+let matchState = null;
+function buildMatchValue(r, type){ return type==='vi'? r.vi : type==='py'? r.py : r.hv; }
+function newMatchRound(){
+  const type = document.getElementById('matchType').value;
+  const ids = sample(RADICALS.map(r=>r.id), 6);
+  matchState = { ids, type, matched:new Set(), selL:null, selR:null, mistakes:0 };
+  const left = shuffle(ids.slice());
+  const right = shuffle(ids.slice());
+  const grid = document.getElementById('matchGrid');
+  grid.innerHTML = '';
+  const colL = document.createElement('div'); colL.className='match-col'; colL.id='matchColL';
+  const colR = document.createElement('div'); colR.className='match-col'; colR.id='matchColR';
+  left.forEach(id=>{
+    const r = RAD_BY_ID[id];
+    const el = document.createElement('div');
+    el.className='match-item'; el.dataset.id=id; el.dataset.side='L';
+    el.innerHTML = '<span class="ch hanzi">'+r.ch+'</span>';
+    el.addEventListener('click', onMatchClick);
+    colL.appendChild(el);
+  });
+  right.forEach(id=>{
+    const r = RAD_BY_ID[id];
+    const el = document.createElement('div');
+    el.className='match-item'; el.dataset.id=id; el.dataset.side='R';
+    el.textContent = buildMatchValue(r, type);
+    el.addEventListener('click', onMatchClick);
+    colR.appendChild(el);
+  });
+  grid.appendChild(colL); grid.appendChild(colR);
+  document.getElementById('matchStatus').textContent = 'Ghép ' + ids.length + ' cặp — Sai: 0';
+}
+function onMatchClick(e){
+  const el = e.currentTarget;
+  const id = parseInt(el.dataset.id,10);
+  if(matchState.matched.has(id)) return;
+  const side = el.dataset.side;
+  if(side==='L'){
+    document.querySelectorAll('#matchColL .match-item').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    matchState.selL = {id, el};
+  } else {
+    document.querySelectorAll('#matchColR .match-item').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    matchState.selR = {id, el};
+  }
+  if(matchState.selL && matchState.selR){
+    if(matchState.selL.id === matchState.selR.id){
+      matchState.selL.el.classList.remove('selected'); matchState.selL.el.classList.add('matched');
+      matchState.selR.el.classList.remove('selected'); matchState.selR.el.classList.add('matched');
+      matchState.matched.add(matchState.selL.id);
+      const cur = getStatus(matchState.selL.id);
+      if(cur===0) setStatus(matchState.selL.id, 1);
+      matchState.selL=null; matchState.selR=null;
+      if(matchState.matched.size === matchState.ids.length){
+        document.getElementById('matchStatus').textContent = '🎉 Hoàn thành! Sai: ' + matchState.mistakes + ' lần';
+      } else {
+        document.getElementById('matchStatus').textContent = 'Ghép ' + matchState.ids.length + ' cặp — Sai: ' + matchState.mistakes;
+      }
+    } else {
+      matchState.mistakes++;
+      matchState.selL.el.classList.add('wrong-flash');
+      matchState.selR.el.classList.add('wrong-flash');
+      const l = matchState.selL.el, rr = matchState.selR.el;
+      setTimeout(()=>{
+        l.classList.remove('selected','wrong-flash');
+        rr.classList.remove('selected','wrong-flash');
+      }, 500);
+      matchState.selL=null; matchState.selR=null;
+      document.getElementById('matchStatus').textContent = 'Ghép ' + matchState.ids.length + ' cặp — Sai: ' + matchState.mistakes;
+    }
+  }
+}
+document.getElementById('matchNew').addEventListener('click', newMatchRound);
+document.getElementById('matchType').addEventListener('change', newMatchRound);
+
+/* ================== ACHIEVEMENTS ================== */
+function renderAchievements(){
+  const s = computeStats();
+  document.getElementById('ach-known').textContent = s.known;
+  document.getElementById('ach-streak').textContent = STATE.streak.count || 0;
+  document.getElementById('ach-percent').textContent = s.percent + '%';
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = '';
+  let lastVal = 0;
+  const days = [];
+  for(let i=13;i>=0;i--){ days.push(dateMinus(i)); }
+  const sortedHistDates = Object.keys(STATE.history).sort();
+  days.forEach(d=>{
+    for(const hd of sortedHistDates){ if(hd<=d) lastVal = STATE.history[hd]; }
+    const bar = document.createElement('div');
+    bar.className='chart-bar';
+    const h = Math.max(4, Math.round((lastVal/214)*110));
+    bar.style.height = h + 'px';
+    const lbl = d.slice(5).replace('-','/');
+    bar.innerHTML = '<span class="lbl">'+lbl+'</span>';
+    bar.title = d + ': ' + lastVal + ' bộ đã thuộc';
+    wrap.appendChild(bar);
+  });
+}
+
+/* ================== SETTINGS ================== */
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', STATE.theme);
+  document.getElementById('themeToggleBtn').textContent = STATE.theme==='dark' ? '☀️' : '🌙';
+}
+document.getElementById('themeToggleBtn').addEventListener('click', ()=>{
+  STATE.theme = STATE.theme==='dark' ? 'light':'dark'; saveState(); applyTheme();
+});
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('Bạn chắc chắn muốn xoá toàn bộ tiến độ học đã lưu?')){
+    STATE = defaultState();
+    saveState(); applyTheme(); refreshGlobalUI();
+    showToast('🗑️ Đã đặt lại dữ liệu');
+  }
+});
+
+/* ================== INIT ================== */
+populateStrokeFilter();
+applyTheme();
+renderHome();
+buildFcDeck();
+renderFlashcard();
+newMatchRound();
+</script>
+</body>
+</html>
