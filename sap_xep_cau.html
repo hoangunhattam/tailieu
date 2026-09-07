@@ -34,7 +34,7 @@ input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px #1f7f3e18}
 
 <div><h2>Thiết lập</h2><div class="field"><label for="timeLimit">Thời gian mỗi câu (giây)</label><input id="timeLimit" type="number" min="5" max="120" value="20"><div class="note">5–120 giây. Trong lúc chơi có thể bấm <b>↺ RESET GIÂY</b>.</div></div>
 <div class="stats"><div class="stat"><span>Học viên</span><b id="n">0</b></div><div class="stat"><span>Tổng câu</span><b id="bankCount">—</b></div><div class="stat"><span>Thời gian</span><b id="timeDisplay">20s</b></div></div>
-<div class="upload"><div style="font-size:13px;font-weight:900;margin-bottom:7px">NGÂN HÀNG CÂU HỎI</div><label class="upload-label" for="fileInput">+ IMPORT WORD / PDF</label><input id="fileInput" type="file" accept=".docx,.pdf,.txt" style="display:none"><span id="bankStatus" style="font-size:12px;color:var(--muted);margin-left:8px">Chưa tải ngân hàng</span><div class="note">Word (.docx), PDF (.pdf), TXT. Với Word/PDF, mỗi câu một dòng. PDF cần có lớp văn bản.</div></div>
+<div class="upload"><div style="font-size:13px;font-weight:900;margin-bottom:7px">NGÂN HÀNG CÂU HỎI</div><label class="upload-label" for="fileInput">+ IMPORT WORD / PDF</label><input id="fileInput" type="file" accept=".docx,.pdf,.txt" style="display:none"><span id="bankStatus" style="font-size:12px;color:var(--muted);margin-left:8px">Chưa tải ngân hàng</span><div class="note">Word (.docx), PDF (.pdf), TXT. Mỗi câu một dòng. Có thể dùng "/" để tự đánh dấu cụm, ví dụ: 我 / 明天上午 / 要去北京 / 出差。 Nếu không có "/", hệ thống tự chia cụm. PDF cần có lớp văn bản.</div></div>
 <div class="dist"><div class="dist-title">PHÂN BỔ TỰ ĐỘNG</div><div id="dist"><span class="help">Import ngân hàng và thêm học viên.</span></div></div>
 <button id="startBtn" class="primary" type="button">BẮT ĐẦU ÔN TẬP</button></div>
 </div></section>
@@ -42,7 +42,7 @@ input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px #1f7f3e18}
 <section id="game" class="hidden"><div class="game-head"><div class="game-title"><b id="classTitle">Lớp</b> · <span id="lessonDisplay">Ôn tập</span></div><div class="progress"><div id="progress-fill"></div></div><button id="resetTimerBtn" class="timer-reset" type="button">↺ RESET GIÂY</button></div>
 <div class="game-layout"><aside class="panel side-panel"><div class="side-title">TIẾN ĐỘ HỌC VIÊN</div><div id="students" class="students"></div></aside>
 <main class="panel game-card"><div id="turn" class="turn">CÂU</div><div class="timer-wrap"><div id="gameTimer" class="timer">20</div><span>GIÂY</span></div><div id="question" class="question">—</div><div id="tiles" class="tile-pool"></div><div id="answerBox" class="answer-strip"><span class="strip-placeholder">Chọn các mảnh bên trên…</span></div><div id="sub" class="sub">Giáo viên xác nhận khi học viên trả lời đúng.</div>
-<div class="game-buttons"><button id="correctBtn" class="correct-btn" type="button">✓ ĐÚNG — GIỎI QUÁ!</button><button id="passBtn" class="pass-btn" type="button">PASS / QUA CÂU</button></div>
+<div class="game-buttons"><button id="passBtn" class="pass-btn" type="button">PASS / QUA CÂU</button></div>
 <div id="celebrate" class="overlay"><div class="applause">👏 👏 👏</div><div class="great">GIỎI QUÁ!</div><p>Chính xác! Tiếp tục phát huy.</p><button id="celebrateNext" class="next-btn" type="button">TIẾP TỤC →</button></div>
 <div id="timeoutOverlay" class="overlay"><div id="timeoutTitle" class="great" style="color:var(--red)">HẾT GIỜ!</div><p id="timeoutText">Giáo viên và học viên cùng giải đáp câu này.</p><button id="timeoutNext" class="next-btn" type="button">TIẾP TỤC →</button></div></main></div>
 <div class="next-row"><button id="nextBtn" class="next-btn" type="button">TIẾP TỤC →</button></div><footer>Hoa Ngữ Nhất Tâm · Ôn tập sắp xếp câu</footer></section>
@@ -56,8 +56,96 @@ const $=id=>document.getElementById(id);
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function lines(s){return String(s||'').replace(/\uFEFF/g,'').replace(/\u00A0/g,' ').split(/\r?\n/).map(x=>x.replace(/[\t ]+/g,' ').trim()).filter(Boolean)}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function splitSentence(s){s=s.trim();let chunks=[];if(/\s/.test(s)){let w=s.split(/\s+/),i=0;while(i<w.length){let r=w.length-i,max=Math.min(3,r),take=r===1?1:1+Math.floor(Math.random()*max);chunks.push(w.slice(i,i+take).join(' '));i+=take}}else{let c=Array.from(s),b='';for(let i=0;i<c.length;i++){b+=c[i];let p=/[，。！？；：、,.!?;:）)】》」』’”"\]]/.test(c[i]);if(p||i===c.length-1){chunks.push(b);b=''}else if(Array.from(b).length>=1+Math.floor(Math.random()*4)){chunks.push(b);b=''}}if(b)chunks.push(b)}if(chunks.length===1&&Array.from(s).length>=4){let c=Array.from(s),k=Math.floor(c.length/2);chunks=[c.slice(0,k).join(''),c.slice(k).join('')]}return shuffle(chunks)}
+function splitSentence(s){
+ s=String(s||'').replace(/\s+/g,' ').trim();
+ if(!s)return [];
 
+ // Nếu người soạn dùng "/", ưu tiên tuyệt đối các cụm đã đánh dấu.
+ // Ví dụ: "我 / 明天上午 / 要去北京 / 出差。" -> 4 cụm.
+ if(s.includes('/')){
+   const explicit=s.split('/')
+     .map(x=>x.trim())
+     .filter(Boolean);
+   if(explicit.length>=2){
+     return shuffle(explicit);
+   }
+ }
+
+ // Không có "/" -> tự động chia cụm như phương án dự phòng.
+ // Punctuation luôn đi cùng cụm phía trước.
+ const punct=/[，。！？；：、,.!?;:）)】》」』’”"\]]/;
+ const units=[];
+ let buf='';
+ for(const ch of Array.from(s)){
+   buf+=ch;
+   if(punct.test(ch)){units.push(buf);buf=''}
+ }
+ if(buf)units.push(buf);
+
+ function segmentText(t){
+   t=t.trim();
+   if(!t)return [];
+   if(/\s/.test(t)) return t.split(/\s+/).filter(Boolean);
+   try{
+     if(window.Intl && Intl.Segmenter){
+       const seg=new Intl.Segmenter('zh',{granularity:'word'});
+       return [...seg.segment(t)].map(x=>x.segment).filter(x=>x.trim());
+     }
+   }catch(e){}
+   return Array.from(t);
+ }
+
+ const boundaryAfter=new Set([
+   '在','从','到','向','对','给','跟','和','与','把','被','为','用','比',
+   '因为','所以','但是','可是','如果','虽然','然后','现在','今天','明天',
+   '首先','最后','除了','关于'
+ ]);
+ const boundaryBefore=new Set([
+   '的','地','得','了','着','过','吗','呢','吧','啊','呀','哦',
+   '而且','也','都','很','非常','最','还','再','又','才','就',
+   '能','会','可以','应该','想','要','不要','没有','不是'
+ ]);
+
+ let chunks=[];
+ for(const part of units){
+   let words=segmentText(part);
+   if(words.length<=1){chunks.push(part);continue}
+
+   let cur=[];
+   function flush(){if(cur.length){chunks.push(cur.join(/\s/.test(part)?' ':''));cur=[]}}
+
+   for(let i=0;i<words.length;i++){
+     const w=words[i], next=words[i+1];
+     cur.push(w);
+     let cut=false;
+     if(boundaryAfter.has(w)){
+       cut=false;
+     }else if(boundaryBefore.has(next)){
+       cut=false;
+     }else{
+       const len=cur.length;
+       if(len>=2){
+         if(/[了着过]$/.test(w)) cut=true;
+         else if(len>=4) cut=true;
+         else if(len>=2 && Math.random()<0.42) cut=true;
+       }
+     }
+     if(cut)flush();
+   }
+   flush();
+ }
+ chunks=chunks.filter(Boolean);
+
+ if(chunks.length===1 && Array.from(s).length>=8){
+   const words=segmentText(s.replace(/[，。！？；：、,.!?;:）)】》」』’”"\]]+$/,''));
+   if(words.length>=2){
+     const mid=Math.ceil(words.length/2);
+     const joiner=/\s/.test(s)?' ':'';
+     chunks=[words.slice(0,mid).join(joiner),words.slice(mid).join(joiner)];
+   }
+ }
+ return shuffle(chunks);
+}
 function renderClasses(){let box=$('classList');box.innerHTML='';classes.forEach(c=>{let d=document.createElement('div');d.className='class-item';d.innerHTML='<div class="class-row"><input class="class-name" type="text"><button class="remove-class" type="button">Xóa</button></div><textarea class="class-students" placeholder="Mỗi dòng một học viên"></textarea>';d.querySelector('.class-name').value=c.name;d.querySelector('.class-students').value=c.students.join('\n');d.querySelector('.class-name').oninput=e=>c.name=e.target.value.trim()||'Lớp chưa đặt tên';d.querySelector('.class-students').oninput=e=>{c.students=lines(e.target.value);updateSetup()};d.onclick=()=>selectedClassId=c.id;d.querySelector('.remove-class').onclick=e=>{e.stopPropagation();if(classes.length===1)return alert('Phải có ít nhất 1 lớp.');classes=classes.filter(x=>x.id!==c.id);if(selectedClassId===c.id)selectedClassId=classes[0].id;renderClasses()};box.appendChild(d)});updateSetup()}
 function updateSetup(){let c=classes.find(x=>x.id===selectedClassId)||classes[0];$('n').textContent=c.students.length;if(!DATA.length){$('dist').innerHTML='<span class="help">Import ngân hàng để xem phân bổ.</span>';return}if(!c.students.length){$('dist').innerHTML='<span class="help">Thêm học viên vào lớp.</span>';return}let b=Math.floor(DATA.length/c.students.length),r=DATA.length%c.students.length,cnt={};shuffle(c.students).forEach((x,i)=>cnt[x]=b+(i<r?1:0));$('dist').innerHTML=c.students.map(x=>'<div class="distrow"><span>'+esc(x)+'</span><b>'+cnt[x]+' câu</b></div>').join('')}
 $('addClassBtn').onclick=()=>{let id=Date.now();classes.push({id,name:'Lớp '+(classes.length+1),students:[]});selectedClassId=id;renderClasses()};renderClasses();
@@ -76,14 +164,127 @@ function startTimer(){stopTimer();timeLeft=timeLimit;timerUI();timer=setInterval
 function resetTimer(){if(!locked)startTimer()}
 function clearOverlays(){$('celebrate').classList.remove('show');$('timeoutOverlay').classList.remove('show');document.querySelectorAll('.confetti').forEach(x=>x.remove())}
 function fireworks(){let c=$('celebrate');for(let i=0;i<70;i++){let x=document.createElement('span');x.className='confetti';x.style.left=Math.random()*100+'%';x.style.setProperty('--x',((Math.random()-.5)*300)+'px');x.style.animationDelay=Math.random()*.4+'s';x.style.background=['#1f7f3e','#c58a2c','#c84b43','#3c8db5','#e57b31'][i%5];c.appendChild(x)}c.classList.add('show')}
-function applauseSound(){try{let AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;let ac=new AC(),now=ac.currentTime;for(let i=0;i<10;i++){let o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=1100+(i%4)*170;g.gain.setValueAtTime(.0001,now+i*.065);g.gain.exponentialRampToValueAtTime(.035,now+i*.065+.012);g.gain.exponentialRampToValueAtTime(.0001,now+i*.065+.055);o.connect(g);g.connect(ac.destination);o.start(now+i*.065);o.stop(now+i*.065+.06)}setTimeout(()=>ac.close(),1000)}catch(e){}}
-function showQuestion(){clearOverlays();locked=false;if(current>=game.length)return finish();let item=game[current].q;$('turn').textContent='CÂU '+(current+1)+' / '+game.length+' · '+game[current].student;$('question').textContent=item.text;$('progress-fill').style.width=current/game.length*100+'%';$('sub').textContent='Giáo viên xác nhận khi học viên trả lời đúng.';let pool=$('tiles'),box=$('answerBox');pool.innerHTML='';box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';shuffle(item.tiles.map((_,i)=>i)).forEach(i=>{let b=document.createElement('button');b.type='button';b.className='tile';b.textContent=item.tiles[i];b.onclick=()=>{if(locked||b.classList.contains('used'))return;b.classList.add('used');let t=document.createElement('button');t.type='button';t.className='token';t.textContent=item.tiles[i];t.onclick=()=>{if(locked)return;t.remove();b.classList.remove('used')};if(box.querySelector('.strip-placeholder'))box.innerHTML='';box.appendChild(t)};pool.appendChild(b)});renderStudents();startTimer()}
+async function applauseSound(){
+ try{
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)return;
+   const ac=new AC();
+   if(ac.state==='suspended')await ac.resume();
+
+   const now=ac.currentTime;
+   // Short bursts of filtered noise imitate hand claps.
+   for(let i=0;i<14;i++){
+     const t=now+i*0.085;
+     const buffer=ac.createBuffer(1,Math.floor(ac.sampleRate*0.075),ac.sampleRate);
+     const data=buffer.getChannelData(0);
+     for(let j=0;j<data.length;j++){
+       const env=Math.pow(1-j/data.length,3);
+       data[j]=(Math.random()*2-1)*env;
+     }
+     const src=ac.createBufferSource();
+     const filter=ac.createBiquadFilter();
+     const gain=ac.createGain();
+     filter.type='bandpass';
+     filter.frequency.value=1200+(i%3)*450;
+     filter.Q.value=0.7;
+     gain.gain.setValueAtTime(0.0001,t);
+     gain.gain.exponentialRampToValueAtTime(0.16,t+0.006);
+     gain.gain.exponentialRampToValueAtTime(0.0001,t+0.07);
+     src.buffer=buffer;
+     src.connect(filter);filter.connect(gain);gain.connect(ac.destination);
+     src.start(t);src.stop(t+0.075);
+   }
+
+   // A short celebratory chime layered on top.
+   [660,880,1046].forEach((freq,i)=>{
+     const o=ac.createOscillator(),g=ac.createGain(),t=now+0.18+i*0.09;
+     o.type='sine';o.frequency.value=freq;
+     g.gain.setValueAtTime(0.0001,t);
+     g.gain.exponentialRampToValueAtTime(0.08,t+0.02);
+     g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);
+     o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+0.3);
+   });
+   setTimeout(()=>ac.close(),1800);
+ }catch(e){}
+}
+function showQuestion(){
+ clearOverlays();locked=false;
+ if(current>=game.length)return finish();
+
+ let item=game[current].q;
+ $('turn').textContent='CÂU '+(current+1)+' / '+game.length+' · '+game[current].student;
+ $('question').textContent=item.text;
+ $('progress-fill').style.width=current/game.length*100+'%';
+ $('sub').textContent='Chọn các mảnh theo đúng thứ tự. Ghép đúng sẽ tự động có pháo hoa và vỗ tay.';
+
+ let pool=$('tiles'),box=$('answerBox');
+ pool.innerHTML='';
+ box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
+
+ let answer=[];
+ let order=shuffle(item.tiles.map((_,i)=>i));
+
+ function checkAuto(){
+   const built=answer.map(i=>item.tiles[i]).join('');
+   if(built===item.text && answer.length===item.tiles.length){
+      correct();
+   }
+ }
+
+ order.forEach(i=>{
+   let b=document.createElement('button');
+   b.type='button';
+   b.className='tile';
+   b.textContent=item.tiles[i];
+
+   b.onclick=()=>{
+     if(locked || b.classList.contains('used'))return;
+
+     b.classList.add('used');
+     answer.push(i);
+
+     if(box.querySelector('.strip-placeholder'))box.innerHTML='';
+
+     let t=document.createElement('button');
+     t.type='button';
+     t.className='token';
+     t.textContent=item.tiles[i];
+
+     t.onclick=()=>{
+       if(locked)return;
+       const pos=answer.indexOf(i);
+       if(pos>=0)answer.splice(pos,1);
+       t.remove();
+       b.classList.remove('used');
+
+       if(!box.children.length){
+         box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
+       }
+     };
+
+     box.appendChild(t);
+     checkAuto();
+   };
+
+   pool.appendChild(b);
+ });
+
+ renderStudents();
+ startTimer();
+}
 function timeUp(){locked=true;stopTimer();$('timeoutTitle').textContent='HẾT GIỜ!';$('timeoutText').textContent='Giáo viên và học viên cùng giải đáp câu này.';$('timeoutOverlay').classList.add('show')}
-function correct(){if(locked)return;locked=true;stopTimer();$('sub').textContent='Chính xác!';fireworks();applauseSound()}
+function correct(){
+ if(locked)return;
+ locked=true;
+ stopTimer();
+ $('sub').textContent='Chính xác!';
+ fireworks();
+ applauseSound();
+}
 function pass(){if(locked)return;locked=true;stopTimer();$('timeoutTitle').textContent='PASS';$('timeoutText').textContent='Bỏ qua câu này để chuyển tiếp.';$('timeoutOverlay').classList.add('show')}
 function next(){current++;showQuestion()}
 function finish(){clearOverlays();locked=true;stopTimer();$('progress-fill').style.width='100%';$('turn').textContent='HOÀN THÀNH';$('question').textContent='Đã hoàn thành toàn bộ bài ôn tập.';$('sub').textContent='Toàn bộ ngân hàng đã được sử dụng.';$('gameTimer').textContent='✓';renderStudents()}
 $('startBtn').onclick=()=>{let c=classes.find(x=>x.id===selectedClassId)||classes[0];if(!c.students.length)return alert('Hãy thêm ít nhất 1 học viên vào lớp.');if(!DATA.length)return alert('Hãy import ngân hàng câu hỏi trước.');timeLimit=Math.max(5,Math.min(120,Number($('timeLimit').value)||20));game=buildGame(c.students);current=0;$('setup').classList.add('hidden');$('game').classList.remove('hidden');$('classTitle').textContent=c.name;$('lessonDisplay').textContent=$('lessonTitle').value.trim()||'Ôn tập sắp xếp câu';showQuestion()}
-$('resetTimerBtn').onclick=resetTimer;$('correctBtn').onclick=correct;$('passBtn').onclick=pass;$('nextBtn').onclick=next;$('celebrateNext').onclick=next;$('timeoutNext').onclick=next;
+$('resetTimerBtn').onclick=resetTimer;$('passBtn').onclick=pass;$('nextBtn').onclick=next;$('celebrateNext').onclick=next;$('timeoutNext').onclick=next;
 </script>
 </body></html>
