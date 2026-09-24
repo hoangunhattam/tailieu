@@ -21,7 +21,7 @@ input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px #1f7f3e18}
 .game-buttons{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.correct-btn,.pass-btn,.timer-reset,.next-btn{border-radius:12px;padding:10px 15px;font-weight:900;min-height:44px}.correct-btn{border:1px solid #a9d3b4;background:#eff9f1;color:var(--gd)}.pass-btn{border:1px solid #e1b7b3;background:#fff8f7;color:#a13f38}.timer-reset{border:1px solid var(--g);background:#fff;color:var(--gd)}.timer-reset:hover{background:var(--gs)}.next-row{display:flex;justify-content:center;margin-top:12px}.next-btn{border:0;background:var(--g);color:#fff;min-width:180px}
 .overlay{display:none;position:absolute;inset:0;background:rgba(255,255,255,.97);align-items:center;justify-content:center;flex-direction:column;z-index:20}.overlay.show{display:flex}.great{font-size:52px;font-weight:950;color:var(--g);animation:greatPop .55s cubic-bezier(.2,1.5,.4,1)}.applause{font-size:42px;letter-spacing:5px;animation:clap .7s ease-in-out infinite}.overlay p{margin:8px 0;color:var(--muted);font-size:14px;font-weight:700}.confetti{position:absolute;top:-18px;width:9px;height:15px;border-radius:2px;animation:fall 1.8s linear forwards}
 @keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}@keyframes tileReturn{0%{transform:scale(.85);opacity:.35}100%{transform:scale(1);opacity:1}}@keyframes pulse{50%{transform:scale(1.04)}}@keyframes danger{50%{transform:scale(1.07)}}@keyframes greatPop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}@keyframes clap{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}@keyframes fall{to{transform:translate3d(var(--x),110vh,0) rotate(720deg);opacity:0}}
-@media(max-width:800px){.grid,.game-layout{grid-template-columns:1fr}.side-panel{min-height:auto;order:2}.students{display:grid;grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.app{padding:11px}.question{font-size:24px}.tile,.token{font-size:25px;padding:8px 11px}.students{grid-template-columns:1fr}}
+@media(max-width:800px){.grid,.game-layout{grid-template-columns:1fr}.side-panel{min-height:auto;order:2}.students{display:grid;grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.tile .py,.token .py{font-size:16px}.answer-py{font-size:19px}.app{padding:11px}.question{font-size:24px}.tile,.token{font-size:25px;padding:8px 11px}.students{grid-template-columns:1fr}}
 </style>
 
 <style>
@@ -30,6 +30,31 @@ input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px #1f7f3e18}
 .answer-label{font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
 .answer-text{font-size:29px;font-weight:950;color:var(--gd);line-height:1.35}
 #revealBtn{border:1px solid #c58a2c;background:#fff8e7;color:#8d681b}
+.answer-reveal.good{border-color:#a9d3b4;background:linear-gradient(135deg,#eaf5ed,#f7fcf8)}
+.answer-sub{font-size:13px;color:var(--muted);margin-top:6px;font-weight:700}
+.token.solved{background:var(--gs);color:var(--gd);border-color:#a9d3b4;cursor:default}
+.token.solved:hover{background:var(--gs)}
+.overlay-answer{margin:10px 18px 4px;padding:10px 18px;border-radius:12px;background:var(--gs);border:1px solid #a9d3b4;font-size:30px;font-weight:950;color:var(--gd);line-height:1.35;max-width:90%}
+.overlay-actions{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px}
+.skip-link{border:0;background:none;color:var(--muted);font-size:13px;font-weight:800;text-decoration:underline;padding:6px}
+.class-badge{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:99px;background:#fff8e7;border:1px solid #e9cf9a;color:#8d681b;font-size:12px;font-weight:900}
+.pass-btn:disabled,.next-btn:disabled{opacity:.45;cursor:not-allowed}
+.pause-btn{border-radius:12px;padding:10px 15px;font-weight:900;min-height:44px;border:1px solid #d9b56a;background:#fff8e7;color:#8d681b}
+.pause-btn.on{background:var(--gold);border-color:var(--gold);color:#fff}
+.pause-btn:disabled,.py-btn:disabled{opacity:.45;cursor:not-allowed}
+.py-btn{border-radius:12px;padding:10px 15px;font-weight:900;min-height:44px;border:1px solid #9cc3dc;background:#f1f8fd;color:#2c6d94}
+.py-btn.on{background:#3c8db5;border-color:#3c8db5;color:#fff}
+.timer.paused{color:var(--muted);border-color:#e3e8e5;animation:none}
+.paused-note{display:none;font-size:12px;font-weight:900;color:#8d681b;margin-top:4px}
+#game.is-paused .paused-note{display:block}
+.tile,.token{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15}
+.tile .py,.token .py{display:none;font-size:18px;font-weight:600;color:#2c6d94;margin-bottom:3px;letter-spacing:.01em;white-space:nowrap;font-family:system-ui,sans-serif}
+#game.show-py .tile .py,#game.show-py .token .py{display:block}
+.answer-py{display:none;font-size:22px;color:#2c6d94;font-weight:600;margin-top:4px}
+#game.show-py .answer-py{display:block}
+.stu{cursor:pointer;align-items:center}.stu .pyflag{display:none;margin-left:6px;font-size:11px;padding:1px 6px;border-radius:99px;background:#3c8db5;color:#fff;font-weight:900}
+.stu.py .pyflag{display:inline-block}
+.side-hint{font-size:11px;color:var(--muted);line-height:1.45;margin-top:10px}
 @keyframes answerPop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 </style>
 
@@ -51,24 +76,30 @@ input:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px #1f7f3e18}
 
 <div><h2>Thiết lập</h2><div class="field"><label for="timeLimit">Thời gian mỗi câu (giây)</label><input id="timeLimit" type="number" min="5" max="120" value="20"><div class="note">5–120 giây. Trong lúc chơi có thể bấm <b>↺ RESET GIÂY</b>.</div></div>
 <div class="stats"><div class="stat"><span>Học viên</span><b id="n">0</b></div><div class="stat"><span>Tổng câu</span><b id="bankCount">—</b></div><div class="stat"><span>Thời gian</span><b id="timeDisplay">20s</b></div></div>
-<div class="upload"><div style="font-size:13px;font-weight:900;margin-bottom:7px">NGÂN HÀNG CÂU HỎI</div><label class="upload-label" for="fileInput">+ IMPORT WORD / PDF</label><input id="fileInput" type="file" accept=".docx,.pdf,.txt" style="display:none"><span id="bankStatus" style="font-size:12px;color:var(--muted);margin-left:8px">Chưa tải ngân hàng</span><div class="note">Word (.docx), PDF (.pdf), TXT. Mỗi câu một dòng. Có thể nhập nguyên câu hoặc tách từng mảnh bằng "/", ví dụ: 我/今天/不/忙。 Mỗi mảnh giữa hai dấu "/" là một phần chọn riêng. Nếu không có "/", hệ thống tự chia cụm. PDF cần có lớp văn bản.</div></div>
+<div class="upload"><div style="font-size:13px;font-weight:900;margin-bottom:7px">NGÂN HÀNG CÂU HỎI</div><label class="upload-label" for="fileInput">+ IMPORT WORD / PDF</label><input id="fileInput" type="file" accept=".docx,.pdf,.txt" style="display:none"><span id="bankStatus" style="font-size:12px;color:var(--muted);margin-left:8px">Chưa tải ngân hàng</span><div class="note">Word (.docx), PDF (.pdf), TXT. Mỗi câu một dòng. Có thể nhập nguyên câu hoặc tách từng mảnh bằng "/", ví dụ: 我/今天/不/忙。 Mỗi mảnh giữa hai dấu "/" là một phần chọn riêng. Nếu không có "/", hệ thống tự chia cụm. PDF cần có lớp văn bản.<br><b>Phiên âm (không bắt buộc)</b>, chọn 1 trong 3 cách:<br>① Cùng dòng, sau dấu "|": 我/今天/不/忙。|wǒ/jīntiān/bù/máng (pinyin tách mảnh bằng "/" hoặc "|" đều được)<br>② Dòng pinyin ngay dưới câu chữ Hán: wǒ / jīntiān / bù / máng<br>③ Trong ngoặc sau từng mảnh: 我(wǒ)/今天(jīntiān)/不(bù)/忙(máng)。<br>Pinyin tách "/" khớp số mảnh thì hiện được trên từng mảnh để gợi ý. Nếu chỉ có pinyin cả câu, pinyin chỉ hiện ở phần đáp án (hiện sớm sẽ lộ thứ tự câu).</div></div>
 <div class="dist"><div class="dist-title">PHÂN BỔ TỰ ĐỘNG</div><div id="dist"><span class="help">Import ngân hàng và thêm học viên.</span></div></div>
 <button id="startBtn" class="primary" type="button">BẮT ĐẦU ÔN TẬP</button></div>
 </div></section>
 
 <section id="game" class="hidden"><div class="game-head"><div class="game-title"><b id="classTitle">DANH SÁCH HỌC VIÊN</b> · <span id="lessonDisplay">Ôn tập</span></div><div class="progress"><div id="progress-fill"></div></div><button id="resetTimerBtn" class="timer-reset" type="button">↺ RESET GIÂY</button></div>
-<div class="game-layout"><aside class="panel side-panel"><div class="side-title">TIẾN ĐỘ HỌC VIÊN</div><div id="students" class="students"></div></aside>
-<main class="panel game-card"><div id="turn" class="turn">CÂU</div><div class="timer-wrap"><div id="gameTimer" class="timer">20</div><span>GIÂY</span></div><div id="question" class="question">—</div><div id="tiles" class="tile-pool"></div><div id="answerBox" class="answer-strip"><span class="strip-placeholder">Chọn các mảnh bên trên…</span></div><div id="answerReveal" class="answer-reveal"><div class="answer-label">ĐÁP ÁN CHÍNH XÁC</div><div id="answerText" class="answer-text">—</div></div><div id="sub" class="sub">Chọn mảnh ở trên để đưa xuống. Bấm mảnh đã chọn để đưa lên lại.</div>
-<div class="game-buttons"><button id="passBtn" class="pass-btn" type="button">PASS / QUA CÂU</button><button id="revealBtn" class="correct-btn hidden" type="button">HIỆN ĐÁP ÁN</button></div>
-<div id="celebrate" class="overlay"><div class="applause">👏 👏 👏</div><div class="great">GIỎI QUÁ!</div><p>Chính xác! Tiếp tục phát huy.</p><button id="celebrateNext" class="next-btn" type="button">TIẾP TỤC →</button></div>
-<div id="timeoutOverlay" class="overlay"><div id="timeoutTitle" class="great" style="color:var(--red)">HẾT GIỜ!</div><p id="timeoutText">Hết giờ. Giáo viên và học viên cùng sắp xếp và thảo luận câu này.</p><button id="timeoutNext" class="next-btn" type="button">CÙNG GIẢI →</button></div></main></div>
+<div class="game-layout"><aside class="panel side-panel"><div class="side-title">TIẾN ĐỘ HỌC VIÊN</div><div id="students" class="students"></div><div class="side-hint">Bấm vào tên học viên để bật/tắt <b>拼</b> — tự hiện phiên âm mỗi khi đến lượt bạn đó.</div></aside>
+<main class="panel game-card"><div id="turn" class="turn">CÂU</div><div id="classBadge" class="class-badge hidden">👥 CẢ LỚP CÙNG GIẢI</div><div class="timer-wrap"><div id="gameTimer" class="timer">20</div><span>GIÂY</span></div><div class="paused-note">⏸ ĐANG TẠM DỪNG — bấm TIẾP TỤC GIỜ (hoặc phím P)</div><div id="question" class="question">—</div><div id="tiles" class="tile-pool"></div><div id="answerBox" class="answer-strip"><span class="strip-placeholder">Chọn các mảnh bên trên…</span></div><div id="answerReveal" class="answer-reveal"><div id="answerLabel" class="answer-label">ĐÁP ÁN CHÍNH XÁC</div><div id="answerText" class="answer-text">—</div><div id="answerPy" class="answer-py"></div><div id="answerSub" class="answer-sub"></div></div><div id="sub" class="sub">Chọn mảnh ở trên để đưa xuống. Bấm mảnh đã chọn để đưa lên lại.</div>
+<div class="game-buttons"><button id="pauseBtn" class="pause-btn" type="button">⏸ TẠM DỪNG</button><button id="pyBtn" class="py-btn" type="button">拼 HIỆN PHIÊN ÂM</button><button id="passBtn" class="pass-btn" type="button">PASS / QUA CÂU</button><button id="revealBtn" class="correct-btn hidden" type="button">HIỆN ĐÁP ÁN</button></div>
+<div id="celebrate" class="overlay"><div class="applause">👏 👏 👏</div><div class="great">GIỎI QUÁ!</div><p id="celebrateText">Chính xác! Cả lớp cùng xem lại đáp án chuẩn.</p><div id="celebrateAnswer" class="overlay-answer">—</div><div class="overlay-actions"><button id="celebrateNext" class="next-btn" type="button">XEM LẠI CÂU ĐÚNG →</button></div></div>
+<div id="timeoutOverlay" class="overlay"><div id="timeoutTitle" class="great" style="color:var(--red)">HẾT GIỜ!</div><p id="timeoutText">Hết giờ. Giáo viên và học viên cùng sắp xếp và thảo luận câu này.</p><div class="overlay-actions"><button id="timeoutNext" class="next-btn" type="button">CẢ LỚP CÙNG GIẢI →</button><button id="skipBtn" class="skip-link" type="button">Bỏ qua, sang câu tiếp</button></div></div></main></div>
 <div class="next-row"><button id="nextBtn" class="next-btn" type="button">TIẾP TỤC →</button></div><footer>Hoa Ngữ Nhất Tâm · Ôn tập sắp xếp câu</footer></section>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-let DATA=[],game=[],students=[],current=0,timer=null,timeLeft=20,timeLimit=20,locked=false,passMode=false;
+let DATA=[],game=[],students=[],current=0,timer=null,timeLeft=20,timeLimit=20,locked=false,mode='student',PLAN=null,paused=false,pyOn=false,pyStudents=new Set();
+// Chia đều số câu: mỗi người floor(N/n) câu; số câu dư được trao NGẪU NHIÊN cho r học viên (không ưu tiên người đứng đầu danh sách).
+function makePlan(list){
+  const n=list.length,b=Math.floor(DATA.length/n),r=DATA.length%n;
+  const lucky=new Set(shuffle(list.map((_,i)=>i)).slice(0,r));
+  return {key:list.join('\n')+'|'+DATA.length,counts:list.map((_,i)=>b+(lucky.has(i)?1:0))};
+}
 const $=id=>document.getElementById(id);
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function lines(s){return String(s||'').replace(/\uFEFF/g,'').replace(/\u00A0/g,' ').split(/\r?\n/).map(x=>x.replace(/[\t ]+/g,' ').trim()).filter(Boolean)}
@@ -180,42 +211,111 @@ function updateStudentCount(){
     return;
   }
 
-  let b=Math.floor(DATA.length/students.length),r=DATA.length%students.length,cnt={};
-  shuffle(students).forEach((x,i)=>cnt[x]=b+(i<r?1:0));
-  $('dist').innerHTML=students.map(x=>'<div class="distrow"><span>'+esc(x)+'</span><b>'+cnt[x]+' câu</b></div>').join('');
+  PLAN=makePlan(students);
+  $('dist').innerHTML=students.map((x,i)=>'<div class="distrow"><span>'+esc(x)+'</span><b>'+PLAN.counts[i]+' câu</b></div>').join('');
 }
 
 $('studentInput').addEventListener('input',updateStudentCount);
 $('clearStudentsBtn').onclick=()=>{
   $('studentInput').value='';
-  window.addEventListener('error',e=>{
-  console.error('Lỗi ứng dụng:',e.error||e.message);
-  const s=$('bankStatus');
-  if(s && !DATA.length) s.textContent='Có lỗi khi chạy. Hãy tải lại trang.';
-});
-updateStudentCount();
+  updateStudentCount();
 };
 
 async function parseDocx(f){if(!window.JSZip)throw Error('Không tải được thư viện đọc Word. Hãy mở file khi có Internet.');let z=await JSZip.loadAsync(await f.arrayBuffer()),xml=await z.file('word/document.xml').async('string'),doc=new DOMParser().parseFromString(xml,'application/xml');return [...doc.getElementsByTagNameNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main','p')].map(p=>[...p.getElementsByTagNameNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main','t')].map(t=>t.textContent).join('')).filter(Boolean)}
 async function parsePdf(f){if(!window.pdfjsLib)throw Error('Không tải được thư viện đọc PDF. Hãy mở file khi có Internet.');let pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,out=[];for(let n=1;n<=pdf.numPages;n++){let page=await pdf.getPage(n),items=(await page.getTextContent()).items.filter(x=>x.str&&x.str.trim()),rows=[];for(let x of items){let y=Math.round(x.transform[5]),r=rows.find(a=>Math.abs(a.y-y)<=3);if(!r){r={y,items:[]};rows.push(r)}r.items.push(x)}rows.sort((a,b)=>b.y-a.y);rows.forEach(r=>{r.items.sort((a,b)=>a.transform[4]-b.transform[4]);out.push(r.items.map(x=>x.str).join(''))})}return out}
 async function readFile(f){let n=f.name.toLowerCase();if(n.endsWith('.docx'))return parseDocx(f);if(n.endsWith('.pdf'))return parsePdf(f);return lines(await f.text())}
-$('fileInput').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let l=lines((await readFile(f)).join('\n'));if(!l.length)throw Error('Không tìm thấy câu nào. Mỗi câu một dòng.');DATA=l.map(raw=>{
-  const parts=raw.includes('/')
-    ? raw.split('/').map(x=>x.trim()).filter(Boolean)
-    : null;
-  const tiles=parts && parts.length>=2 ? parts : splitSentence(raw.trim());
+const HAN=/[\u3400-\u9fff\uf900-\ufaff]/;
+const VI_ONLY=/[ăâđêôơưĂÂĐÊÔƠƯạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸ]/;
+const PY_MARK=/[āēīōūǖĀĒĪŌŪǍĚǏǑǓǎěǐǒǔǚǜǘüÜ]|[a-z][1-5](\s|\/|$)/i;
+// Dòng pinyin: không có chữ Hán, không có chữ cái riêng của tiếng Việt, có dấu thanh pinyin (ā ǎ ü…) hoặc số thanh (ni3).
+function isPinyin(t){t=String(t||'').trim();return !!t&&!HAN.test(t)&&!VI_ONLY.test(t)&&/[a-z]/i.test(t)&&PY_MARK.test(t)}
+// Pinyin theo mảnh có thể tách bằng "/" hoặc "|" (cả ｜ toàn角)
+function splitPy(p){p=String(p||'').trim();if(!p)return [];return /[\/|｜]/.test(p)?p.split(/[\/|｜]/).map(x=>x.trim()).filter(Boolean):[p]}
+function buildItem(raw,pyRaw){
+  raw=String(raw).trim();
+  // Cách 1: "câu | pinyin" trên cùng một dòng
+  const bar=raw.search(/[|｜]/);
+  if(bar>=0&&isPinyin(raw.slice(bar+1))){pyRaw=raw.slice(bar+1);raw=raw.slice(0,bar).trim()}
+  const parts=raw.includes('/')?raw.split('/').map(x=>x.trim()).filter(Boolean):null;
+  let tiles=parts&&parts.length>=2?parts:splitSentence(raw);
+  // Cách 3: pinyin trong ngoặc sau từng mảnh: 今天(jīntiān)
+  let inlinePy=null;
+  if(tiles.some(t=>/[（(][^()（）]*[)）]/.test(t))){
+    const found=tiles.map(t=>{let py='';const clean=t.replace(/[（(]([^()（）]*)[)）]/g,(m,g)=>{if(isPinyin(g)||(!HAN.test(g)&&/^[a-zA-Z\sü'’·-]+$/.test(g.trim()))){py+=(py?' ':'')+g.trim();return ''}return m}).trim();return {clean,py}});
+    if(found.some(x=>x.py)){tiles=found.map(x=>x.clean);inlinePy=found.map(x=>x.py)}
+  }
+  tiles=tiles.filter(Boolean);
+  let py=null,pySentence='';
+  if(inlinePy&&inlinePy.length===tiles.length&&inlinePy.every(Boolean)){py=inlinePy;pySentence=inlinePy.join(' ')}
+  else if(pyRaw){
+    const ps=splitPy(pyRaw);
+    if(ps.length===tiles.length&&tiles.length>1)py=ps;
+    pySentence=ps.join(' ');
+  }
   // Đáp án chuẩn luôn được tạo từ chính các mảnh được hiển thị.
-  const text=tiles.join('');
-  return {text,tiles};
-}).filter(x=>x.tiles.length);$('bankCount').textContent=DATA.length;$('bankStatus').textContent='Đã đọc '+DATA.length+' câu';updateStudentCount()}catch(err){$('bankStatus').textContent='Lỗi: '+err.message;$('bankCount').textContent='—'}};
+  return {text:tiles.join(''),tiles,py,pySentence};
+}
+$('fileInput').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let l=lines((await readFile(f)).join('\n'));if(!l.length)throw Error('Không tìm thấy câu nào. Mỗi câu một dòng.');
+  // Gom cặp: dòng pinyin đứng ngay sau câu chữ Hán -> phiên âm của câu đó (Cách 2)
+  const rows=[];
+  for(const x of l){
+    const last=rows[rows.length-1];
+    if(isPinyin(x)&&last&&!last.py&&HAN.test(last.raw)){last.py=x;continue}
+    if(isPinyin(x))continue; // dòng pinyin lẻ, không gắn được với câu nào
+    rows.push({raw:x,py:''});
+  }
+  DATA=rows.map(r=>buildItem(r.raw,r.py)).filter(x=>x.tiles.length);
+  const nPy=DATA.filter(x=>x.pySentence).length,nTile=DATA.filter(x=>x.py).length;
+  $('bankCount').textContent=DATA.length;
+  $('bankStatus').textContent='Đã đọc '+DATA.length+' câu'+(nPy?' · '+nPy+' câu có phiên âm'+(nTile<nPy?' ('+nTile+' câu gợi ý được trên từng mảnh)':''):'');
+  updateStudentCount()}catch(err){$('bankStatus').textContent='Lỗi: '+err.message;$('bankCount').textContent='—'}};
 
-function buildGame(students){let buckets=students.map(()=>[]);shuffle(DATA).forEach((q,i)=>buckets[i%students.length].push(q));let result=[],last=-1;while(result.length<DATA.length){let av=buckets.map((b,i)=>b.length&&i!==last?i:-1).filter(i=>i>=0);if(!av.length)av=buckets.map((b,i)=>b.length?i:-1).filter(i=>i>=0);let i=av[Math.floor(Math.random()*av.length)];result.push({q:buckets[i].shift(),student:students[i]});last=i}return result}
-function renderStudents(){let total={},done={};game.forEach(x=>total[x.student]=(total[x.student]||0)+1);game.slice(0,current).forEach(x=>done[x.student]=(done[x.student]||0)+1);$('students').innerHTML=Object.keys(total).map(s=>'<div class="stu '+(game[current]&&game[current].student===s?'active':'')+'"><span>'+esc(s)+'</span><small>'+(done[s]||0)+'/'+total[s]+'</small></div>').join('')}
+// Xếp lượt theo VÒNG: mỗi vòng, mọi học viên còn câu đều được gọi đúng 1 lần, thứ tự trong vòng xáo ngẫu nhiên.
+// => Không ai làm dồn nhiều câu ở đầu, không ai bị đẩy hết về cuối; không ai bị gọi 2 lần liên tiếp (khi có ≥2 người).
+function buildGame(list){
+  const plan=(PLAN&&PLAN.key===list.join('\n')+'|'+DATA.length)?PLAN:makePlan(list);
+  const qs=shuffle(DATA),remain=plan.counts.slice(),result=[];
+  let last=-1,qi=0;
+  while(result.length<qs.length){
+    let round=shuffle(list.map((_,i)=>i).filter(i=>remain[i]>0));
+    if(round.length>1&&round[0]===last){
+      const k=1+Math.floor(Math.random()*(round.length-1));
+      [round[0],round[k]]=[round[k],round[0]];
+    }
+    round.forEach(i=>{result.push({q:qs[qi++],student:list[i],sid:i});remain[i]--;last=i});
+  }
+  return result;
+}
+function renderStudents(){let total={},done={};game.forEach(x=>total[x.sid]=(total[x.sid]||0)+1);game.slice(0,current).forEach(x=>done[x.sid]=(done[x.sid]||0)+1);$('students').innerHTML=students.map((s,i)=>total[i]?'<div class="stu '+(game[current]&&game[current].sid===i?'active':'')+(pyStudents.has(i)?' py':'')+'" data-sid="'+i+'" title="Bấm để bật/tắt tự hiện phiên âm cho học viên này"><span>'+esc(s)+'<span class="pyflag">拼</span></span><small>'+(done[i]||0)+'/'+total[i]+'</small></div>':'').join('')}
 function timerUI(){let e=$('gameTimer');e.textContent=timeLeft;e.className='timer';if(timeLeft<=Math.ceil(timeLimit/3))e.classList.add('warn');if(timeLeft<=5)e.classList.add('danger');e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),120)}
 let timerStartedAt=0;
 function stopTimer(){
   if(timer){clearInterval(timer);timer=null}
   timerStartedAt=0;
+  setPaused(false);
+}
+function setPaused(v){
+  paused=v;
+  $('game').classList.toggle('is-paused',v);
+  const b=$('pauseBtn');
+  b.classList.toggle('on',v);
+  b.textContent=v?'▶ TIẾP TỤC GIỜ':'⏸ TẠM DỪNG';
+  b.disabled=!timer&&!v;
+  if(v)$('gameTimer').className='timer paused';
+}
+function togglePause(){
+  if(!timer||locked||mode!=='student')return;
+  if(!paused){
+    const elapsed=Math.floor((Date.now()-timerStartedAt)/1000);
+    timeLeft=Math.max(0,timeLimit-elapsed);
+    $('gameTimer').textContent=timeLeft;
+    setPaused(true);
+  }else{
+    // Tính lại mốc bắt đầu để đồng hồ chạy tiếp đúng số giây còn lại
+    timerStartedAt=Date.now()-(timeLimit-timeLeft)*1000;
+    setPaused(false);
+    timerUI();
+  }
 }
 function startTimer(){
   stopTimer();
@@ -223,7 +323,7 @@ function startTimer(){
   timerStartedAt=Date.now();
   timerUI();
   timer=setInterval(()=>{
-    if(locked)return;
+    if(locked||paused)return;
     const elapsed=Math.floor((Date.now()-timerStartedAt)/1000);
     const remaining=Math.max(0,timeLimit-elapsed);
     if(remaining!==timeLeft){
@@ -235,9 +335,10 @@ function startTimer(){
       timeUp();
     }
   },250);
+  setPaused(false);
 }
 function resetTimer(){if(!locked)startTimer()}
-function clearOverlays(){$('celebrate').classList.remove('show');$('timeoutOverlay').classList.remove('show');$('answerReveal').classList.remove('show');$('answerText').textContent='—';$('revealBtn').classList.add('hidden');document.querySelectorAll('.confetti').forEach(x=>x.remove())}
+function clearOverlays(){$('celebrate').classList.remove('show');$('timeoutOverlay').classList.remove('show');$('answerReveal').classList.remove('show','good');$('answerText').textContent='—';$('answerSub').textContent='';$('revealBtn').classList.add('hidden');$('classBadge').classList.add('hidden');document.querySelectorAll('.confetti').forEach(x=>x.remove())}
 function fireworks(){let c=$('celebrate');for(let i=0;i<70;i++){let x=document.createElement('span');x.className='confetti';x.style.left=Math.random()*100+'%';x.style.setProperty('--x',((Math.random()-.5)*300)+'px');x.style.animationDelay=Math.random()*.4+'s';x.style.background=['#1f7f3e','#c58a2c','#c84b43','#3c8db5','#e57b31'][i%5];c.appendChild(x)}c.classList.add('show')}
 async function applauseSound(){
  try{
@@ -286,132 +387,158 @@ function showQuestion(){
  stopTimer();
  clearOverlays();
  locked=false;
+ mode='student';
  $('nextBtn').disabled=true;
  if(current>=game.length)return finish();
-
- let item=game[current].q;
+ $('passBtn').disabled=false;
+ pyOn=pyStudents.has(game[current].sid);
  $('turn').textContent='CÂU '+(current+1)+' / '+game.length+' · '+game[current].student;
  $('question').textContent='';
  $('progress-fill').style.width=current/game.length*100+'%';
  $('sub').textContent='Chọn các mảnh theo đúng thứ tự để tự ghép câu. Đáp án chưa được hiển thị.';
+ renderTiles();
+ renderStudents();
+ updatePyUI();
+ startTimer();
+}
 
- let pool=$('tiles'),box=$('answerBox');
+// Vẽ lại bộ mảnh (xáo trộn mới) cho câu hiện tại. Dùng cho cả lượt cá nhân và lượt cả lớp cùng giải.
+function tileHTML(item,i){return (item.py?'<span class="py">'+esc(item.py[i])+'</span>':'')+'<span class="hz">'+esc(item.tiles[i])+'</span>'}
+function updatePyUI(){
+  const item=game[current]&&game[current].q;
+  const has=!!(item&&(item.py||item.pySentence));
+  $('game').classList.toggle('show-py',pyOn&&has);
+  $('pyBtn').disabled=!has;
+  $('pyBtn').classList.toggle('on',pyOn&&has);
+  $('pyBtn').textContent=!has?'拼 KHÔNG CÓ PHIÊN ÂM':pyOn?'拼 ẨN PHIÊN ÂM':'拼 HIỆN PHIÊN ÂM';
+}
+function togglePy(){
+  pyOn=!pyOn;updatePyUI();
+  const item=game[current]&&game[current].q;
+  if(pyOn&&item&&!item.py&&item.pySentence&&mode!=='done')
+    $('sub').textContent='Câu này chỉ có pinyin cả câu (không tách theo mảnh) nên sẽ hiện ở phần đáp án, tránh lộ thứ tự.';
+}
+function renderTiles(){
+ const item=game[current].q;
+ const pool=$('tiles'),box=$('answerBox');
+ pool.classList.remove('hidden');
  pool.innerHTML='';
+ box.classList.remove('wrong');
  box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
-
- let answer=[];
- window.currentReviewMode=false;
+ const answer=[];
  let order=shuffle(item.tiles.map((_,i)=>i));
+ // Tránh trường hợp xáo xong trùng đúng thứ tự đáp án
+ if(item.tiles.length>1){let tries=0;while(order.map(i=>item.tiles[i]).join('')===item.text&&tries++<10)order=shuffle(order)}
 
  function clearAnswer(){
   answer.forEach(i=>{
-    const tile=pool.querySelector('.tile[data-index="'+i+'"]');
-    if(tile){
-      tile.classList.remove('used');
-      tile.classList.add('returning');
-      setTimeout(()=>tile.classList.remove('returning'),300);
-    }
+   const tile=pool.querySelector('.tile[data-index="'+i+'"]');
+   if(tile){tile.classList.remove('used');tile.classList.add('returning');setTimeout(()=>tile.classList.remove('returning'),300)}
   });
   answer.length=0;
   box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
-}
-
-function checkAuto(){
+ }
+ function checkAuto(){
   if(answer.length!==item.tiles.length)return;
   const built=answer.map(i=>item.tiles[i]).join('');
   if(built===item.text){
-    correct();
+   if(mode==='class')showSolution('class');
+   else correct();
   }else{
-    box.classList.remove('wrong');
-    void box.offsetWidth;
-    box.classList.add('wrong');
-    $('sub').textContent='Chưa đúng. Các mảnh sẽ trở lại để sắp xếp lại.';
-    setTimeout(()=>{
-      box.classList.remove('wrong');
-      if(!locked)clearAnswer();
-    },500);
+   box.classList.remove('wrong');void box.offsetWidth;box.classList.add('wrong');
+   $('sub').textContent=mode==='class'?'Chưa đúng. Cả lớp thử sắp xếp lại nhé.':'Chưa đúng. Các mảnh sẽ trở lại để sắp xếp lại.';
+   setTimeout(()=>{box.classList.remove('wrong');if(!locked)clearAnswer()},500);
   }
-}
-order.forEach(i=>{
-  let b=document.createElement('button');
-  b.type='button';
-  b.className='tile';
-  b.dataset.index=i;
-  b.textContent=item.tiles[i];
-
+ }
+ order.forEach(i=>{
+  const b=document.createElement('button');
+  b.type='button';b.className='tile';b.dataset.index=i;b.innerHTML=tileHTML(item,i);
   b.onclick=()=>{
-    if(locked || b.classList.contains('used'))return;
-
-    b.classList.add('used');
-    answer.push(i);
-
-    if(box.querySelector('.strip-placeholder'))box.innerHTML='';
-
-    let t=document.createElement('button');
-    t.type='button';
-    t.className='token';
-    t.dataset.index=i;
-    t.textContent=item.tiles[i];
-
-    t.onclick=()=>{
-      if(locked)return;
-      const pos=answer.indexOf(i);
-      if(pos>=0)answer.splice(pos,1);
-      t.remove();
-      b.classList.remove('used');
-      b.classList.add('returning');
-      setTimeout(()=>b.classList.remove('returning'),300);
-
-      if(!box.children.length){
-        box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
-      }
-      $('sub').textContent='Chọn các mảnh theo đúng thứ tự để tự ghép câu.';
-    };
-
-    box.appendChild(t);
-    checkAuto();
+   if(locked||b.classList.contains('used'))return;
+   b.classList.add('used');answer.push(i);
+   if(box.querySelector('.strip-placeholder'))box.innerHTML='';
+   const t=document.createElement('button');
+   t.type='button';t.className='token';t.dataset.index=i;t.innerHTML=tileHTML(item,i);
+   t.onclick=()=>{
+    if(locked)return;
+    const pos=answer.indexOf(i);if(pos>=0)answer.splice(pos,1);
+    t.remove();b.classList.remove('used');b.classList.add('returning');
+    setTimeout(()=>b.classList.remove('returning'),300);
+    if(!box.children.length)box.innerHTML='<span class="strip-placeholder">Chọn các mảnh bên trên…</span>';
+   };
+   box.appendChild(t);
+   checkAuto();
   };
-
   pool.appendChild(b);
-});
-
-renderStudents();
- startTimer();
+ });
 }
-function timeUp(){passMode=false;locked=true;stopTimer();$('timeoutTitle').textContent='HẾT GIỜ!';$('timeoutText').textContent='Hết giờ. Giáo viên và học viên cùng sắp xếp và thảo luận câu này.';$('timeoutOverlay').classList.add('show')}
+
+// Hiện lại câu đúng cho cả lớp: các mảnh xếp đúng thứ tự + câu hoàn chỉnh.
+function showSolution(kind){
+ if(!game[current])return;
+ const item=game[current].q;
+ locked=true;mode='done';stopTimer();
+ $('celebrate').classList.remove('show');$('timeoutOverlay').classList.remove('show');
+ document.querySelectorAll('.confetti').forEach(x=>x.remove());
+ $('classBadge').classList.add('hidden');
+ $('tiles').classList.add('hidden');
+ $('answerBox').classList.remove('wrong');
+ $('answerBox').innerHTML=item.tiles.map((t,i)=>'<span class="token solved">'+tileHTML(item,i)+'</span>').join('');
+ $('answerPy').textContent=item.pySentence||'';
+ $('answerText').textContent=item.text;
+ const good=kind==='correct'||kind==='class';
+ $('answerReveal').classList.toggle('good',good);
+ $('answerLabel').textContent=good?'✓ ĐÁP ÁN CHUẨN':'ĐÁP ÁN CHÍNH XÁC';
+ $('answerSub').textContent=kind==='correct'?game[current].student+' đã sắp xếp đúng 👏':kind==='class'?'Cả lớp đã ghép đúng!':'';
+ $('answerReveal').classList.add('show');
+ $('sub').textContent=kind==='correct'?'Cả lớp cùng đọc lại câu đúng.':kind==='class'?'Tuyệt! Cả lớp cùng đọc lại câu đúng.':'Cùng đối chiếu, đọc lại và giải thích câu này.';
+ $('revealBtn').classList.add('hidden');
+ $('passBtn').disabled=true;
+ $('nextBtn').disabled=false;
+ updatePyUI();
+}
+
+function timeUp(){
+ if(mode!=='student')return;
+ locked=true;stopTimer();
+ $('timeoutTitle').textContent='HẾT GIỜ!';
+ $('timeoutText').textContent=game[current].student+' chưa giải được. Cả lớp cùng giải câu này nhé!';
+ $('timeoutOverlay').classList.add('show');
+}
 function correct(){
  if(locked)return;
- locked=true;
+ locked=true;mode='done';
  stopTimer();
  $('sub').textContent='Chính xác!';
- $('nextBtn').disabled=false;
+ $('passBtn').disabled=true;
+ $('celebrateAnswer').textContent=game[current].q.text;
  fireworks();
  applauseSound();
 }
-function pass(){if(locked)return;passMode=true;locked=true;stopTimer();$('timeoutTitle').textContent='PASS';$('timeoutText').textContent='Bỏ qua câu này để chuyển tiếp.';$('timeoutOverlay').classList.add('show')}
-function enterReview(){
-  if(passMode){passMode=false;$('timeoutOverlay').classList.remove('show');$('nextBtn').disabled=false;return;}
-  $('timeoutOverlay').classList.remove('show');
-  if(!game[current])return;
-  // Hết giờ nhưng chuyển sang chế độ cùng giải: các mảnh vẫn chọn/bỏ chọn được.
-  locked=false;
-  window.currentReviewMode=true;
-  $('sub').textContent='HẾT GIỜ — Cùng sắp xếp và thảo luận. Bấm mảnh đã chọn để đưa lên lại.';
-  $('revealBtn').classList.remove('hidden');
-  $('nextBtn').disabled=true;
+function pass(){
+ if(locked||mode!=='student')return;
+ locked=true;stopTimer();
+ $('timeoutTitle').textContent='PASS';
+ $('timeoutText').textContent=game[current].student+' bỏ qua câu này. Cả lớp cùng giải nhé!';
+ $('timeoutOverlay').classList.add('show');
 }
-function revealAnswer(){
-  if(!game[current])return;
-  const item=game[current].q;
-  $('answerText').textContent=item.text;
-  $('answerReveal').classList.add('show');
-  $('sub').textContent='Đáp án đã hiện. Cùng đối chiếu với câu đã ghép, sửa và giải thích.';
-  $('revealBtn').classList.add('hidden');
-  $('nextBtn').disabled=false;
-  locked=true;
+// Học viên không giải được (hết giờ / pass) -> hiện lại câu với các mảnh xáo mới cho CẢ LỚP cùng giải.
+function enterClassMode(){
+ $('timeoutOverlay').classList.remove('show');
+ if(!game[current])return;
+ mode='class';locked=false;
+ $('turn').textContent='CÂU '+(current+1)+' / '+game.length+' · Câu của '+game[current].student;
+ $('classBadge').classList.remove('hidden');
+ $('gameTimer').className='timer';$('gameTimer').textContent='👥';
+ renderTiles();
+ $('sub').textContent='Cả lớp cùng sắp xếp và thảo luận. Ghép đúng sẽ tự hiện đáp án, hoặc bấm HIỆN ĐÁP ÁN.';
+ $('revealBtn').classList.remove('hidden');
+ $('passBtn').disabled=true;
+ $('nextBtn').disabled=true;
 }
+function revealAnswer(){showSolution('reveal')}
 function next(){current++;showQuestion()}
-function finish(){clearOverlays();locked=true;stopTimer();$('progress-fill').style.width='100%';$('turn').textContent='HOÀN THÀNH';$('question').textContent='Đã hoàn thành toàn bộ bài ôn tập.';$('sub').textContent='Toàn bộ ngân hàng đã được sử dụng.';$('gameTimer').textContent='✓';renderStudents()}
+function finish(){clearOverlays();locked=true;stopTimer();$('progress-fill').style.width='100%';$('turn').textContent='HOÀN THÀNH';$('question').textContent='Đã hoàn thành toàn bộ bài ôn tập.';$('sub').textContent='Toàn bộ ngân hàng đã được sử dụng.';$('gameTimer').textContent='✓';$('tiles').innerHTML='';$('answerBox').innerHTML='';$('passBtn').disabled=true;$('nextBtn').disabled=true;renderStudents()}
 $('startBtn').onclick=()=>{
   students=getStudents();
   if(!students.length)return alert('Hãy nhập ít nhất 1 học viên.');
@@ -427,7 +554,7 @@ $('startBtn').onclick=()=>{
   showQuestion();
 }
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && timer && !locked){
+  if(document.visibilityState==='visible' && timer && !locked && !paused){
     const elapsed=Math.floor((Date.now()-timerStartedAt)/1000);
     timeLeft=Math.max(0,timeLimit-elapsed);
     timerUI();
@@ -437,7 +564,19 @@ document.addEventListener('visibilitychange',()=>{
     }
   }
 });
-$('resetTimerBtn').onclick=resetTimer;$('passBtn').onclick=pass;$('nextBtn').onclick=next;$('celebrateNext').onclick=next;$('timeoutNext').onclick=enterReview;$('revealBtn').onclick=revealAnswer;
+$('resetTimerBtn').onclick=resetTimer;$('passBtn').onclick=pass;$('nextBtn').onclick=next;$('celebrateNext').onclick=()=>showSolution('correct');$('timeoutNext').onclick=enterClassMode;$('skipBtn').onclick=next;$('revealBtn').onclick=revealAnswer;$('pauseBtn').onclick=togglePause;$('pyBtn').onclick=togglePy;
+$('students').addEventListener('click',e=>{
+  const el=e.target.closest('.stu');if(!el)return;
+  const i=Number(el.dataset.sid);
+  pyStudents.has(i)?pyStudents.delete(i):pyStudents.add(i);
+  if(game[current]&&game[current].sid===i){pyOn=pyStudents.has(i);updatePyUI()}
+  renderStudents();
+});
+document.addEventListener('keydown',e=>{
+  if($('game').classList.contains('hidden'))return;
+  if(/INPUT|TEXTAREA/.test(e.target.tagName))return;
+  if(e.key==='p'||e.key==='P'){e.preventDefault();togglePause()}
+});
 window.addEventListener('error',e=>{
   console.error('Lỗi ứng dụng:',e.error||e.message);
   const s=$('bankStatus');
