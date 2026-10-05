@@ -20,15 +20,15 @@ if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)
 <style>
 :root{
   --bg:#E8E9E2; --card:#FFFFFF; --ink:#23262B; --muted:#6E7064; --line:#D3D4CA; --soft:#F1F2EC;
-  --mustard:#E3A812; --mustard-ink:#23262B; --ok:#3F7D4E; --okbg:#E3F0E2; --miss:#B4472F; --missbg:#F6E3DD;
+  --mustard:#E3A812; --mustard-ink:#23262B; --starline:#A87C0A; --star3:#8A6508; --star2:#E3A812; --star1:#F2D58A; --ok:#3F7D4E; --okbg:#E3F0E2; --miss:#B4472F; --missbg:#F6E3DD;
   --han:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
   --ui:"Be Vietnam Pro",-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){--bg:#1C1E1A;--card:#262822;--ink:#ECEBE4;--muted:#A3A596;--line:#3A3C34;--soft:#2E3029;--mustard:#E9B53A;--mustard-ink:#1C1E1A;--ok:#8CC79A;--okbg:#25362A;--miss:#E58A70;--missbg:#3D2722;}
+  :root:not([data-theme="light"]){--bg:#1C1E1A;--card:#262822;--ink:#ECEBE4;--muted:#A3A596;--line:#3A3C34;--soft:#2E3029;--mustard:#E9B53A;--mustard-ink:#1C1E1A;--starline:#E9B53A;--star3:#F5C542;--star2:#B88A1E;--star1:#6B5520;--ok:#8CC79A;--okbg:#25362A;--miss:#E58A70;--missbg:#3D2722;}
 }
 html{color-scheme:light}
-:root[data-theme="dark"]{--bg:#1C1E1A;--card:#262822;--ink:#ECEBE4;--muted:#A3A596;--line:#3A3C34;--soft:#2E3029;--mustard:#E9B53A;--mustard-ink:#1C1E1A;--ok:#8CC79A;--okbg:#25362A;--miss:#E58A70;--missbg:#3D2722;}
+:root[data-theme="dark"]{--bg:#1C1E1A;--card:#262822;--ink:#ECEBE4;--muted:#A3A596;--line:#3A3C34;--soft:#2E3029;--mustard:#E9B53A;--mustard-ink:#1C1E1A;--starline:#E9B53A;--star3:#F5C542;--star2:#B88A1E;--star1:#6B5520;--ok:#8CC79A;--okbg:#25362A;--miss:#E58A70;--missbg:#3D2722;}
 :root[data-theme="dark"]{color-scheme:dark}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -170,6 +170,63 @@ input[type=checkbox]{width:24px;height:24px;accent-color:var(--mustard)}
 .note textarea:focus{outline:none;border-color:var(--mustard)}
 .word .nt{grid-column:3;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .word .nt::before{content:"✎ ";color:var(--mustard)}
+
+/* Stars */
+.starrow{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:16px;padding:0 6px 0 14px;height:48px;margin-top:10px}
+.starrow .lb{font-size:13px;color:var(--muted)}
+.stars{display:flex}
+.stbtn{width:40px;height:44px;display:grid;place-items:center;flex:none}
+.stbtn svg{width:22px;height:22px;display:block}
+.stbtn path{fill:none;stroke:var(--starline);stroke-width:1.6;stroke-linejoin:round}
+.stbtn.on path{fill:var(--mustard)}
+.starrow .nm{flex:1;text-align:right;font-size:14px;font-weight:600;padding-right:8px;color:var(--muted);white-space:nowrap}
+.starrow .nm.on{color:var(--ink)}
+.actions{margin-top:10px}
+.bankcard{width:100%;text-align:left;background:var(--card);border-radius:20px;padding:16px 18px;margin:-8px 0 20px;display:block}
+.bk-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bk-h b{display:flex;align-items:center;gap:8px;font-weight:600}
+.bk-h b svg{width:20px;height:20px}
+.bk-h b path{fill:var(--mustard);stroke:var(--starline);stroke-width:1.4;stroke-linejoin:round}
+.bk-h small{font-weight:400;color:var(--muted);font-size:14px}
+.bk-h span{font-size:14px;font-weight:600;white-space:nowrap}
+.bk-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.bk-g div{background:var(--soft);border-radius:12px;padding:8px 10px;line-height:1.25}
+.bk-g i{font-style:normal;font-size:13px;color:var(--starline);letter-spacing:1px;display:block}
+.bk-g b{font-size:20px;font-weight:600;display:block}
+.bk-g span{font-size:12px;color:var(--muted)}
+.bk-empty{font-size:13px;color:var(--muted);margin-top:6px}
+.unit .ust{display:block;color:var(--starline);font-size:12px}
+.word .wst{color:var(--starline);font-weight:600;letter-spacing:.5px}
+.bhero{width:100%;text-align:left;background:var(--mustard);color:var(--mustard-ink);border-radius:22px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 16px}
+.bhero small{display:block;font-size:14px;font-weight:500}
+.bhero b{display:block;font-size:30px;font-weight:700;line-height:1.15}
+.bhero em{display:block;font-style:normal;font-size:12px;margin-top:2px}
+.bhero .play{width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;flex:none}
+.bhero[disabled]{background:var(--card);color:var(--muted);cursor:default}
+.bhero[disabled] .play{display:none}
+.unit .mix{display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--line)}
+.mix i{display:block;height:100%}
+.s3{background:var(--star3)}.s2{background:var(--star2)}.s1{background:var(--star1)}
+.unit .n .cur{color:var(--starline);font-weight:600}
+.secsub{font-weight:700;font-size:17px;margin:4px 0 0}
+.rehead{text-align:center;margin:4px 0 14px}
+.rehead b{display:block;font-size:16px}
+.rehead p{margin:4px auto 0;font-size:13px;color:var(--muted);max-width:34ch}
+.relist{background:var(--card);border-radius:20px;padding:2px 8px 2px 16px;margin-bottom:14px}
+.relist .bword:last-child{border:0}
+.rebtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rebtns button{height:56px;border-radius:18px;font-weight:600;font-size:16px}
+.rebtns .ghost{border:2px solid var(--line)}
+.rebtns .go{background:var(--mustard);color:var(--mustard-ink)}
+.blegend{display:flex;justify-content:center;gap:14px;font-size:12px;color:var(--muted);margin-top:14px}
+.blegend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.bword{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.bword .w{flex:1;min-width:0;cursor:pointer}
+.bword .h{font-family:var(--han);font-weight:700;font-size:20px;margin-right:8px}
+.bword .p{font-size:13px;color:var(--miss)}
+.bword .v{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bword .stbtn{width:32px}
+.bword .stbtn svg{width:20px;height:20px}
 @media (prefers-reduced-motion: reduce){.prog i{transition:none}}
 </style>
 </head>
@@ -182,6 +239,7 @@ input[type=checkbox]{width:24px;height:24px;accent-color:var(--mustard)}
     <div class="topbtns"><button class="iconbtn" id="themeBtn" aria-label="Đổi giao diện sáng/tối">☾</button><button class="iconbtn" id="openSettings" aria-label="Cài đặt">⚙︎</button></div>
   </div>
   <button class="today" id="todayBtn"><span id="todayLabel"></span><b id="todayNum">0</b></button>
+  <button class="bankcard" id="bankCard"></button>
   <div class="tabs" role="tablist" id="tabs"></div>
   <div id="units"></div>
 </div>
@@ -221,10 +279,11 @@ input[type=checkbox]{width:24px;height:24px;accent-color:var(--mustard)}
         <div class="src" id="cSrc"></div>
       </div>
     </div>
+    <div class="starrow" id="starRow"><span class="lb">Độ khó</span><div class="stars" id="cardStars"></div><span class="nm" id="starName"></span></div>
     <div class="actions">
-      <button class="act miss" id="missBtn" disabled>Chưa nhớ</button>
+      <button class="act miss" id="missBtn">Chưa nhớ</button>
       <button class="say" id="sayBtn" aria-label="Nghe phát âm">🔊</button>
-      <button class="act hit" id="hitBtn" disabled>Nhớ rồi</button>
+      <button class="act hit" id="hitBtn">Nhớ rồi</button>
     </div>
   </div>
   <div class="done hidden" id="doneArea">
@@ -257,6 +316,25 @@ input[type=checkbox]{width:24px;height:24px;accent-color:var(--mustard)}
   </div>
 </div>
 
+<!-- BANK -->
+<div id="bank" class="screen hidden">
+  <div class="bar"><button class="iconbtn" data-back aria-label="Quay lại">←</button><div class="t" style="font-family:var(--ui)">Ngân hàng sao</div><div class="r" id="bankTotal"></div></div>
+  <button class="bhero" id="bankGo"><span><small id="bgSmall">Đang ôn</small><b id="bgNum"></b><em id="bgSub"></em></span><span class="play"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></button>
+  <div class="secsub" id="packHead">Các gói</div>
+  <div id="packList"></div>
+  <div class="blegend" id="bankLegend"><span><i class="s3"></i>★★★</span><span><i class="s2"></i>★★</span><span><i class="s1"></i>★</span></div>
+  <button class="textlink" id="bankListBtn"></button>
+  <div id="bankWords" class="hidden"></div>
+</div>
+
+<!-- ROUND END -->
+<div id="roundEnd" class="screen hidden">
+  <div class="bar"><button class="iconbtn" data-back aria-label="Về ngân hàng">←</button><div class="t" style="font-family:var(--ui)" id="reTitle"></div><div class="r"></div></div>
+  <div class="rehead"><b id="reLeft"></b><p id="reHint">Từ nào đã chắc thì hạ sao. Về 0 sao là đã thuộc, từ rời khỏi gói.</p></div>
+  <div class="relist" id="reList"></div>
+  <div class="rebtns"><button class="ghost" data-back>Về ngân hàng</button><button class="go" id="reAgain"></button></div>
+</div>
+
 <!-- SETTINGS -->
 <div class="sheet hidden" id="sheet">
   <div class="panel">
@@ -264,9 +342,9 @@ input[type=checkbox]{width:24px;height:24px;accent-color:var(--mustard)}
     <div class="row"><div>Giao diện<p>Tự động: theo chế độ sáng/tối của máy</p></div><div class="seg" id="themeSeg"><button data-t="auto">Tự động</button><button data-t="light">Sáng</button><button data-t="dark">Tối</button></div></div>
     <div class="row"><div>Tự đọc khi lật thẻ<p>Máy đọc từ tiếng Trung ngay khi lật</p></div><input type="checkbox" id="optAuto"></div>
     <div class="row"><div>Trộn thứ tự thẻ<p>Tắt: học theo thứ tự trong sách</p></div><input type="checkbox" id="optShuffle"></div>
-    <div class="row"><div>Sao lưu tiến độ<p>Tải file tiến độ và ghi chú về máy</p></div><button id="exportBtn">Tải về</button></div>
+    <div class="row"><div>Sao lưu tiến độ<p>Tải file tiến độ, ghi chú và sao về máy</p></div><button id="exportBtn">Tải về</button></div>
     <div class="row"><div>Khôi phục tiến độ<p>Chọn file đã sao lưu</p></div><button id="importBtn">Chọn file</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"></div>
-    <div class="row"><div>Xóa toàn bộ tiến độ<p>Mọi thẻ và điểm kiểm tra trở về ban đầu (ghi chú được giữ lại)</p></div><button class="danger" id="resetBtn">Xóa</button></div>
+    <div class="row"><div>Xóa toàn bộ tiến độ<p>Mọi thẻ và điểm kiểm tra trở về ban đầu (ghi chú và sao được giữ lại)</p></div><button class="danger" id="resetBtn">Xóa</button></div>
     <div class="row" style="border:0"><div></div><button id="closeSheet">Đóng</button></div>
   </div>
 </div>
@@ -281,8 +359,8 @@ const $=id=>document.getElementById(id);
 const today=()=>{const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000)};
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast('Không lưu được tiến độ')}}
-const NKEY='sjvocab79.notes.v1';
-let P=load(KEY,{}), T=load(TKEY,{}), O=Object.assign({auto:true,shuffle:false,tab:'h6',theme:'auto'},load(OPT,{})), NT=load(NKEY,{});
+const NKEY='sjvocab79.notes.v1', SKEY='sjvocab79.stars.v1', PKEY='sjvocab79.packs.v1', PACK=20;
+let P=load(KEY,{}), T=load(TKEY,{}), O=Object.assign({auto:true,shuffle:false,tab:'h6',theme:'auto'},load(OPT,{})), NT=load(NKEY,{}), S=load(SKEY,{}), PK=Object.assign({cur:null,open:null,rounds:{},last:{}},load(PKEY,{}));
 if(!BOOKS.some(b=>b.id===O.tab))O.tab='h6';
 /* Theme */
 const mqDark=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
@@ -303,10 +381,10 @@ const bookOf=u=>BOOKS.find(b=>b.id===u.book)||BOOKS[0];
 function unitStats(u){let m=0,d=0,n=0,l=0;u.cards.forEach(c=>{const id=cid(u,c),s=P[id];if(!s)n++;else{if(s.b>=MASTER)m++;else l++;if(s.due<=today())d++;}});return{m,d,n,l}}
 
 /* Navigation */
-const screens=['home','unitPage','study','quiz'];
+const screens=['home','unitPage','study','quiz','bank','roundEnd'];
 let stack=['home'];
 function go(name){screens.forEach(s=>$(s).classList.toggle('hidden',s!==name));stack.push(name);window.scrollTo(0,0)}
-function back(){speechSynthesis&&speechSynthesis.cancel();stack.pop();const to=stack.pop()||'home';if(to==='home')renderHome();if(to==='unitPage')renderUnit();go(to)}
+function back(){speechSynthesis&&speechSynthesis.cancel();round=null;stack.pop();const to=stack.pop()||'home';if(to==='home')renderHome();if(to==='unitPage')renderUnit();if(to==='bank')renderBank();go(to)}
 document.querySelectorAll('[data-back]').forEach(b=>b.onclick=back);
 
 /* Home */
@@ -321,16 +399,17 @@ function renderHome(){
   let vol=null;
   list.forEach(({u,i})=>{
     if(u.vol!==vol){vol=u.vol;const h=document.createElement('div');h.className='vol';h.textContent=u.vol;box.appendChild(h)}
-    const s=unitStats(u), t=T[ukey(u)], N=u.cards.length, pm=s.m/N*100, pl=s.l/N*100;
+    const s=unitStats(u), t=T[ukey(u)], N=u.cards.length, pm=s.m/N*100, pl=s.l/N*100, ns=u.cards.reduce((a,c)=>a+(S[cid(u,c)]?1:0),0);
     const b=document.createElement('button');b.className='unit';
     b.innerHTML=`<div class="u">${esc(u.label)}</div><div class="rg">${esc(u.cards[0].h)} … ${esc(u.cards[u.cards.length-1].h)}${t&&t.best>=PASS?'<span class="badge">Đạt</span>':''}</div>
-      <div class="n"><em>${N-s.n}/${N}</em>${s.d?s.d+' cần ôn':(s.n===N?'chưa học':(s.n?'đã học':'đã học hết'))}</div>
+      <div class="n"><em>${N-s.n}/${N}</em>${s.d?s.d+' cần ôn':(s.n===N?'chưa học':(s.n?'đã học':'đã học hết'))}${ns?`<span class="ust">★ ${ns} từ</span>`:''}</div>
       <div class="meter"><i class="m" style="width:${pm}%"></i><i class="l" style="width:${pl}%"></i></div>`;
     b.onclick=()=>{cur=i;renderUnit();go('unitPage')};box.appendChild(b);
   });
   let due=0;DATA.forEach(u=>u.cards.forEach(c=>{if(isDue(cid(u,c)))due++}));
   $('todayNum').textContent=due;$('todayBtn').disabled=!due;
   $('todayLabel').textContent=due?'Thẻ cần ôn hôm nay':'Hôm nay không có thẻ cần ôn';
+  renderBankCard();
 }
 
 /* Unit page */
@@ -347,10 +426,10 @@ function renderUnit(){
   const w=$('uWords');w.innerHTML='';
   u.cards.forEach(c=>{const b=document.createElement('button');b.className='word';
     const nt=NT[cid(u,c)];
-    b.innerHTML=`<i class="dot ${state(cid(u,c))}"></i><span class="h">${esc(c.h)}</span><span class="pv">${esc(c.p)} · ${esc(shortMean(c.v))}</span>`+(nt?`<span class="nt">${esc(nt.split('\n')[0])}</span>`:'');
+    b.innerHTML=`<i class="dot ${state(cid(u,c))}"></i><span class="h">${esc(c.h)}</span><span class="pv">${S[cid(u,c)]?`<b class="wst">${'★'.repeat(S[cid(u,c)].l)}</b> `:''}${esc(c.p)} · ${esc(shortMean(c.v))}</span>`+(nt?`<span class="nt">${esc(nt.split('\n')[0])}</span>`:'');
     b.onclick=()=>speak(c.h);w.appendChild(b)});
 }
-$('uStudy').onclick=()=>{const u=DATA[cur];let items=u.cards.map(c=>({u,c,id:cid(u,c)}));
+$('uStudy').onclick=()=>{round=null;const u=DATA[cur];let items=u.cards.map(c=>({u,c,id:cid(u,c)}));
   let pick=items.filter(x=>!P[x.id]||isDue(x.id));if(!pick.length)pick=items;beginStudy(pick,u.label)};
 $('uQuiz').onclick=()=>startQuiz(cur,20);
 $('uQuizAll').onclick=()=>startQuiz(cur,9999);
@@ -370,8 +449,8 @@ function showCard(){
   $('cHan').textContent=c.h;$('cPy').textContent=c.p;$('cPos').textContent=c.t;$('cMean').textContent=c.v;$('cEn').textContent=c.e||'';
   $('cEn').classList.toggle('hidden',!c.e);$('cEx').innerHTML=c.z?examples(c):'';$('cEx').classList.toggle('hidden',!c.z);
   $('cSrc').textContent=`${bookOf(u).name} · ${u.vol} · ${u.label}`+(c.part?` · 第${c.part}部分`:'')+` · số ${c.n}`;
+  renderStarRow();
   const nb=$('cNote');nb.value=NT[Q[idx].id]||'';$('noteState').textContent='';fitNote();
-  $('missBtn').disabled=$('hitBtn').disabled=true;
   $('sCount').textContent=(Q.length-idx)+' thẻ';$('sProg').style.width=Math.round((total-(Q.length-idx))/Math.max(total,1)*100)+'%';
 }
 function fitNote(){const t=$('cNote');t.style.height='auto';t.style.height=Math.max(64,t.scrollHeight+2)+'px'}
@@ -380,17 +459,89 @@ $('cNote').addEventListener('input',()=>{fitNote();const id=Q[idx]&&Q[idx].id;if
   if(v.trim())NT[id]=v;else delete NT[id];clearTimeout(noteT);$('noteState').textContent='…';
   noteT=setTimeout(()=>{save(NKEY,NT);$('noteState').textContent='Đã lưu'},400)});
 $('noteBox').addEventListener('click',e=>e.stopPropagation());
-function flip(){if(flipped)return;flipped=true;$('card').classList.add('flipped');setTimeout(fitNote,0);$('missBtn').disabled=$('hitBtn').disabled=false;if(O.auto)speak(Q[idx].c.h)}
-function grade(ok){if(!flipped)return;const item=Q[idx],id=item.id,t=today();let s=P[id]||{b:0,due:t};
+function flip(){if(flipped)return;flipped=true;$('card').classList.add('flipped');setTimeout(fitNote,0);if(O.auto)speak(Q[idx].c.h)}
+function grade(ok){if(!Q[idx])return;if(!ok&&!flipped)return flip();const item=Q[idx],id=item.id,t=today();let s=P[id]||{b:0,due:t};
   if(ok){s.b=failed.has(id)?1:Math.min(s.b+1,INTERVALS.length-1);s.due=t+INTERVALS[s.b];idx++}
   else{failed.add(id);s.b=0;s.due=t;Q.splice(idx,1);Q.splice(Math.min(idx+4,Q.length),0,item);total++}
-  P[id]=s;save(KEY,P);showCard()}
-function finishStudy(){$('cardArea').classList.add('hidden');$('doneArea').classList.remove('hidden');$('sCount').textContent='';$('sProg').style.width='100%';
+  P[id]=s;save(KEY,P);if(S[id]){S[id].r=t;save(SKEY,S)}showCard()}
+function finishStudy(){if(round)return finishRound();$('cardArea').classList.add('hidden');$('doneArea').classList.remove('hidden');$('sCount').textContent='';$('sProg').style.width='100%';
   $('doneText').textContent=`Xong ${sTitle}. Các thẻ sẽ tự quay lại đúng ngày cần ôn.`;$('doneQuiz').classList.toggle('hidden',fromUnit===null)}
 $('card').onclick=flip;$('missBtn').onclick=()=>grade(false);$('hitBtn').onclick=()=>grade(true);
 $('sayBtn').onclick=e=>{e.stopPropagation();if(Q[idx])speak(Q[idx].c.h)};
 $('doneQuiz').onclick=()=>{stack.pop();startQuiz(cur,20)};
-$('todayBtn').onclick=()=>{const pick=[];DATA.forEach(u=>u.cards.forEach(c=>{const id=cid(u,c);if(isDue(id))pick.push({u,c,id})}));if(pick.length)beginStudy(pick,'Ôn hôm nay')};
+$('todayBtn').onclick=()=>{round=null;const pick=[];DATA.forEach(u=>u.cards.forEach(c=>{const id=cid(u,c);if(isDue(id))pick.push({u,c,id})}));if(pick.length)beginStudy(pick,'Ôn hôm nay')};
+
+/* Stars */
+const STARP='M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.3L12 17.1l-5.7 3.1 1.2-6.3-4.7-4.4 6.4-.8z';
+const starSvg=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${STARP}"/></svg>`;
+const LVN=['Chưa gắn sao','★ Hơi khó','★★ Khó','★★★ Rất khó'];
+let IDMAP=null;
+function idMap(){if(!IDMAP){IDMAP={};DATA.forEach(u=>u.cards.forEach(c=>{const id=cid(u,c);IDMAP[id]={u,c,id}}))}return IDMAP}
+const lvOf=id=>S[id]?S[id].l:0;
+function livePacks(){const m={};Object.keys(S).forEach(id=>{const k=S[id].pk;if(k)(m[k]=m[k]||[]).push(id)});return m}
+function assignPack(id){const live=livePacks();delete live[S[id].pk];
+  if(PK.open&&live[PK.open]&&live[PK.open].length<PACK){S[id].pk=PK.open;return}
+  let no=1;while(live[no])no++;S[id].pk=no;PK.open=no;delete PK.rounds[no];delete PK.last[no];save(PKEY,PK)}
+function migrateStars(){const ids=Object.keys(S).filter(id=>!S[id].pk).sort((a,b)=>(S[a].q||0)-(S[b].q||0)||(S[a].at||0)-(S[b].at||0));
+  ids.forEach((id,k)=>{if(!S[id].q)S[id].q=Date.now()+k;S[id].pk=0;assignPack(id)});if(ids.length)save(SKEY,S)}
+function setStar(id,n){const old=lvOf(id),v=old===n?0:n;
+  if(!v){delete S[id]}
+  else if(!old){S[id]={l:v,at:today(),q:Date.now(),r:null,pk:0};assignPack(id)}
+  else S[id].l=v;
+  save(SKEY,S);return v}
+function starBtns(id){const l=lvOf(id);
+  return [1,2,3].map(n=>`<button class="stbtn${n<=l?' on':''}" data-id="${esc(id)}" data-n="${n}" aria-pressed="${n<=l}" aria-label="${n} sao${l===n?' (chạm để bỏ sao)':''}">${starSvg}</button>`).join('')}
+function renderStarRow(){if(!Q[idx])return;const id=Q[idx].id,l=lvOf(id);
+  $('cardStars').innerHTML=starBtns(id);$('starName').textContent=LVN[l];$('starName').classList.toggle('on',!!l)}
+$('cardStars').addEventListener('click',e=>{const b=e.target.closest('.stbtn');if(!b)return;e.stopPropagation();setStar(b.dataset.id,+b.dataset.n);renderStarRow()});
+function bankAll(){const m=idMap();return Object.keys(S).filter(id=>m[id]).map(id=>Object.assign({},m[id],S[id]))}
+function starCounts(list){const c={1:0,2:0,3:0};list.forEach(x=>c[x.l]++);return c}
+function renderBankCard(){const all=bankAll(),c=starCounts(all),b=$('bankCard');
+  const head=`<div class="bk-h"><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${STARP}"/></svg>Ngân hàng sao <small>${all.length} từ</small></b>${all.length?'<span>Ôn lại ›</span>':''}</div>`;
+  b.innerHTML=all.length?head+`<div class="bk-g"><div><i>★</i><b>${c[1]}</b><span>Hơi khó</span></div><div><i>★★</i><b>${c[2]}</b><span>Khó</span></div><div><i>★★★</i><b>${c[3]}</b><span>Rất khó</span></div></div>`
+    :head+`<div class="bk-empty">Lật thẻ rồi chạm ★ ở dưới thẻ để lưu từ khó vào đây.</div>`}
+$('bankCard').onclick=()=>{renderBank();go('bank')};
+function packsList(){const m=idMap(),live=livePacks();
+  return Object.keys(live).map(Number).sort((a,b)=>a-b).map(no=>({no,items:live[no].filter(id=>m[id]).sort((a,b)=>(S[a].q||0)-(S[b].q||0)).map(id=>Object.assign({},m[id],S[id]))})).filter(p=>p.items.length)}
+function curPack(packs){if(!packs.length)return null;return packs.find(p=>p.no===PK.cur)||packs[0]}
+let bankListOpen=false,round=null;
+function renderBank(){
+  const packs=packsList(),all=bankAll(),cur=curPack(packs);
+  $('bankTotal').textContent=all.length?all.length+' từ':'';
+  if(cur){const r=(PK.rounds[cur.no]||0)+1;$('bgSmall').textContent='Đang ôn';$('bgNum').textContent='Gói '+cur.no;$('bgSub').textContent=`${cur.items.length} từ · vòng ${r}`;$('bankGo').disabled=false}
+  else{$('bgSmall').textContent='Ngân hàng trống';$('bgNum').textContent='Chưa có từ';$('bgSub').textContent='Lật thẻ rồi chạm ★ ở dưới thẻ để lưu từ khó vào đây';$('bankGo').disabled=true}
+  $('packHead').classList.toggle('hidden',!packs.length);$('bankLegend').classList.toggle('hidden',!packs.length);
+  $('packList').innerHTML=packs.map(p=>{const n=p.items.length,pc=l=>p.items.filter(x=>x.l===l).length/n*100,on=cur&&p.no===cur.no,rd=PK.rounds[p.no]||0;
+    return `<button class="unit" data-no="${p.no}"><div class="u">Gói ${p.no}</div><div class="rg">${esc(p.items[0].c.h)}${n>1?' … '+esc(p.items[n-1].c.h):''}</div>
+      <div class="n"><em>${n} từ</em>${on?'<span class="cur">đang ôn</span>':(rd?'vòng '+rd:'chưa ôn')}</div>
+      <div class="mix"><i class="s3" style="width:${pc(3)}%"></i><i class="s2" style="width:${pc(2)}%"></i><i class="s1" style="width:${pc(1)}%"></i></div></button>`}).join('');
+  $('bankListBtn').textContent=all.length?(bankListOpen?'Ẩn danh sách từ':`Xem danh sách ${all.length} từ`):'';
+  $('bankListBtn').classList.toggle('hidden',!all.length);
+  const w=$('bankWords');w.classList.toggle('hidden',!bankListOpen||!all.length);
+  if(bankListOpen)w.innerHTML=packs.map(p=>p.items.map(x=>wordRow(x,'Gói '+p.no)).join('')).join('');
+}
+function wordRow(x,extra){return `<div class="bword"><div class="w" data-say="${esc(x.c.h)}"><span class="h">${esc(x.c.h)}</span><span class="p">${esc(x.c.p)}</span><div class="v">${esc(shortMean(x.c.v))}${extra?' · '+esc(extra):''}</div></div><div class="stars">${starBtns(x.id)}</div></div>`}
+function startRound(no){const p=packsList().find(x=>x.no===no);if(!p)return;PK.cur=no;save(PKEY,PK);
+  beginStudy(p.items.map(x=>({u:x.u,c:x.c,id:x.id})),`Gói ${no} · vòng ${(PK.rounds[no]||0)+1}`);round={no}}
+$('bankGo').onclick=()=>{const c=curPack(packsList());if(c)startRound(c.no)};
+$('packList').onclick=e=>{const b=e.target.closest('.unit');if(b)startRound(+b.dataset.no)};
+$('bankListBtn').onclick=()=>{bankListOpen=!bankListOpen;renderBank()};
+function starListClick(e,after){const b=e.target.closest('.stbtn');if(b){setStar(b.dataset.id,+b.dataset.n);after();return}
+  const w=e.target.closest('[data-say]');if(w)speak(w.dataset.say)}
+$('bankWords').onclick=e=>starListClick(e,renderBank);
+function finishRound(){const no=round.no;round=null;PK.rounds[no]=(PK.rounds[no]||0)+1;PK.last[no]=today();save(PKEY,PK);
+  stack.pop();renderRoundEnd(no);go('roundEnd')}
+let reNo=null;
+function renderRoundEnd(no){if(no!=null)reNo=no;const p=packsList().find(x=>x.no===reNo),n=p?p.items.length:0;
+  $('reTitle').textContent=`Gói ${reNo} · vòng ${PK.rounds[reNo]||0} xong`;
+  $('reLeft').textContent=n?`Còn ${n} từ có sao`:'Gói này đã hết từ có sao';
+  $('reHint').classList.toggle('hidden',!n);
+  $('reList').innerHTML=n?p.items.slice().sort((a,b)=>b.l-a.l||(a.q||0)-(b.q||0)).map(x=>wordRow(x)).join(''):'';
+  $('reList').classList.toggle('hidden',!n);
+  $('reAgain').textContent=`Ôn vòng ${(PK.rounds[reNo]||0)+1}`;$('reAgain').classList.toggle('hidden',!n)}
+$('reList').onclick=e=>starListClick(e,()=>renderRoundEnd());
+$('reAgain').onclick=()=>{stack.pop();startRound(reNo)};
+migrateStars();
 
 /* Quiz generation */
 function shortMean(v){return v.replace(/\((danh từ|động từ|tính từ|phó từ|lượng từ|giới từ|liên từ|thán từ)\)\s*/g,'').replace(/\s*①\s*/,'').replace(/\s*②\s*/g,'; ').replace(/\s*③\s*/g,'; ')}
@@ -497,11 +648,11 @@ $('closeSheet').onclick=()=>$('sheet').classList.add('hidden');
 $('sheet').onclick=e=>{if(e.target.id==='sheet')$('sheet').classList.add('hidden')};
 $('optAuto').onchange=e=>{O.auto=e.target.checked;save(OPT,O)};
 $('optShuffle').onchange=e=>{O.shuffle=e.target.checked;save(OPT,O)};
-$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({v:3,date:new Date().toISOString(),progress:P,tests:T,notes:NT})],{type:'application/json'});
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({v:4,date:new Date().toISOString(),progress:P,tests:T,notes:NT,stars:S,packs:PK})],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tien-do-tu-vung-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.progress)throw 0;P=d.progress;T=d.tests||{};if(d.notes){NT=d.notes;save(NKEY,NT)}save(KEY,P);save(TKEY,T);renderHome();toast('Đã khôi phục tiến độ')}catch(x){toast('File không đúng định dạng sao lưu')}};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.progress)throw 0;P=d.progress;T=d.tests||{};if(d.notes){NT=d.notes;save(NKEY,NT)}if(d.stars){S=d.stars;save(SKEY,S)}if(d.packs){PK=Object.assign({cur:null,open:null,rounds:{},last:{}},d.packs);save(PKEY,PK)}migrateStars();save(KEY,P);save(TKEY,T);renderHome();toast('Đã khôi phục tiến độ')}catch(x){toast('File không đúng định dạng sao lưu')}};
   r.readAsText(f);e.target.value=''};
 $('resetBtn').onclick=()=>{if(confirm('Xóa toàn bộ tiến độ và điểm kiểm tra? Không hoàn tác được.')){P={};T={};save(KEY,P);save(TKEY,T);renderHome();toast('Đã xóa tiến độ')}};
 applyTheme();
