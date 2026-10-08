@@ -265,6 +265,42 @@ details.sub summary{cursor:pointer;font-weight:700;color:var(--g-d);padding:6px 
 @keyframes bounce{50%{transform:translateY(-10px) scale(1.06)}}
 .conf{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* simplified teacher layout */
+.tbar{padding:8px 18px}
+.tbar .brand img{width:40px;height:40px}
+.tbar .bt1{font-size:18px}
+button.roomcode{background:var(--g-l);border-radius:12px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12px}
+button.roomcode b{display:inline;font-size:22px}
+button.roomcode:hover{background:#D6EBDB}
+.tmain{grid-template-columns:minmax(0,1fr) 290px;padding:14px 18px;gap:14px;max-width:none}
+@media (max-width:900px){.tmain{grid-template-columns:1fr}}
+.stagecard{display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 100px)}
+.stagecard .phase{padding:8px;font-size:clamp(16px,1.6vw,20px)}
+.stagecard .qstage{flex:1;margin:0;min-height:260px;padding:24px}
+.qstage .qtext{font-size:clamp(32px,4.4vw,68px)}
+.qstage .qtext.ls{font-size:clamp(28px,3.6vw,56px)}
+.qstage .qpy{font-size:clamp(18px,1.9vw,28px)}
+.qstage .chip{font-size:clamp(28px,3.4vw,54px)}
+.qstage .opts{font-size:clamp(22px,2.4vw,36px)}
+.qstage .ansbox .at{font-size:clamp(28px,3.2vw,48px)}
+.stagecard .order{gap:6px}
+.stagecard .order .empty{padding:10px;font-size:14px}
+.stagecard .orow{padding:6px 12px;gap:12px}
+.stagecard .rank{width:34px;height:34px;font-size:16px}
+.stagecard .oname{font-size:clamp(17px,1.6vw,22px)}
+.stagecard .oname small{display:inline;margin-left:8px;font-size:13px}
+.stagecard .judge button{width:40px;height:40px;font-size:19px}
+.sidecard{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+.sidecard .teams{grid-template-columns:1fr;gap:8px;margin:0}
+.sidecard .team{padding:10px 12px}
+.sidecard .team .ts{font-size:34px}
+.sidecard .prow .mini.x{display:none}
+.dback{position:fixed;inset:0;background:rgba(18,32,22,.35);z-index:29}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,94vw);background:var(--paper);box-shadow:-10px 0 40px rgba(0,0,0,.18);transform:translateX(105%);transition:transform .22s ease;z-index:30;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.drawer.open{transform:none}
+.drawer .card{padding:14px}
+.modal{z-index:40}
 </style>
 </head>
 <body>
@@ -314,43 +350,41 @@ details.sub summary{cursor:pointer;font-weight:700;color:var(--g-d);padding:6px 
   <div class="tbar">
     <div class="brand"><img data-logo alt=""><div><span class="bt1">Rung Chuông Vàng</span><small>Hoa Ngữ Nhất Tâm</small></div></div>
     <div class="grow"></div>
-    <div class="seg" id="tMode"><button data-m="solo">👤 Cá nhân</button><button data-m="team">👥 Theo đội</button></div>
     <span class="pill" id="tConn"><i></i><span>Đang kết nối</span></span>
-    <div class="roomcode">MÃ PHÒNG<b id="tCode"></b></div>
-    <button class="btn" id="tInvite">📲 Mời học viên</button>
+    <button class="roomcode" id="tInvite" title="Mời học viên (QR, link)">📲 MÃ PHÒNG<b id="tCode"></b></button>
+    <button class="btn ghost" id="bMenu">☰ Quản lý</button>
   </div>
   <div class="tmain">
-    <div class="col">
-      <div class="card">
-        <div class="stagetop">
-          <div class="qno">Câu<b id="tQ">0</b></div>
-          <div class="phase idle" id="tPhase">Bấm “Câu tiếp” để bắt đầu</div>
-        </div>
-        <div class="qstage" id="tStage"></div>
-        <div class="controls">
-          <button class="btn big ghost" id="bNext" title="Câu tiếp theo trong danh sách">▶ Câu tiếp <kbd>N</kbd></button>
-          <button class="btn big red" id="bOpen">🔔 Mở chuông <kbd>Space</kbd></button>
-          <button class="btn big ghost" id="bClose">✋ Đóng</button>
-          <button class="btn big ghost" id="bPy" title="Hiện / ẩn pinyin">拼音 <kbd>P</kbd></button>
-          <button class="btn big gold" id="bAns">💡 Công bố đáp án <kbd>A</kbd></button>
-        </div>
+    <div class="card stagecard">
+      <div class="stagetop">
+        <div class="qno">Câu<b id="tQ">0</b></div>
+        <div class="phase idle" id="tPhase"></div>
       </div>
-      <div class="card">
-        <div class="head"><h2>Thứ tự ấn chuông</h2><span class="m" id="tTeamRule"></span></div>
-        <ol class="order" id="tOrder"></ol>
-        <div class="locked-note hidden" id="tLocked"></div>
+      <div class="qstage" id="tStage"></div>
+      <div class="controls">
+        <button class="btn ghost" id="bNext">▶ Câu tiếp <kbd>N</kbd></button>
+        <button class="btn red" id="bOpen">🔔 Mở chuông <kbd>Space</kbd></button>
+        <button class="btn ghost" id="bClose">✋ Đóng</button>
+        <button class="btn ghost" id="bPy">拼音 <kbd>P</kbd></button>
+        <button class="btn gold" id="bAns">💡 Đáp án <kbd>A</kbd></button>
       </div>
+      <ol class="order" id="tOrder"></ol>
+      <div class="locked-note hidden" id="tLocked"></div>
     </div>
-    <div class="col">
-      <div class="card">
-        <div class="head"><h2 id="tBoardTitle">Bảng điểm</h2><span class="m" id="tOnline">0 bạn online</span></div>
-        <div class="controls" style="margin-bottom:12px"><button class="btn sm" id="bClass">📋 Danh sách lớp &amp; chia đội</button></div>
-        <div id="tTeamsWrap" class="hidden">
-          <div class="teams" id="tTeams"></div>
-          <details class="sub" id="tMembersBox"><summary>Thành viên &amp; đổi đội</summary><ul class="board" id="tMembers"></ul></details>
-        </div>
-        <ul class="board" id="tBoard"></ul>
-      </div>
+    <div class="card sidecard">
+      <div class="head"><h2 id="tBoardTitle">Bảng điểm</h2><span class="m" id="tOnline"></span></div>
+      <div id="tTeamsWrap" class="hidden"><div class="teams" id="tTeams"></div></div>
+      <ul class="board" id="tBoard"></ul>
+    </div>
+  </div>
+  <div class="dback hidden" id="dBack"></div>
+  <aside class="drawer" id="drawer">
+    <div class="head"><h2 style="font-size:16px">☰ Quản lý</h2><button class="mini x" id="bMenuClose" style="font-size:20px;width:34px">✕</button></div>
+    <div class="card">
+      <div class="head"><h2>Lớp &amp; chế độ</h2><div class="seg" id="tMode"><button data-m="solo">👤 Cá nhân</button><button data-m="team">👥 Theo đội</button></div></div>
+      <button class="btn sm" id="bClass">📋 Danh sách lớp &amp; chia đội</button>
+      <details class="sub" id="tMembersBox" style="margin-top:8px"><summary>Thành viên &amp; đổi đội</summary><ul class="board" id="tMembers"></ul></details>
+    </div>
       <div class="card">
         <div class="head"><h2>Lượt chơi</h2><button class="btn sm ghost" id="bPeek" title="Chỉ mở khi KHÔNG chia sẻ màn hình">👁 Xem danh sách câu</button></div>
         <div class="prog"><div class="pbar"><i id="tProgBar"></i></div><span id="tProg"></span></div>
@@ -380,8 +414,7 @@ details.sub summary{cursor:pointer;font-weight:700;color:var(--g-d);padding:6px 
           </div>
         </details>
       </div>
-    </div>
-  </div>
+  </aside>
 
   <div class="modal hidden" id="mInvite"><div class="card" style="text-align:center;max-width:440px">
     <h3>Mời học viên vào phòng</h3>
@@ -659,6 +692,7 @@ function teacher(){
     cfg:Object.assign({ok:2,no:-1,early:true,auto:5,b:"1",py:false,teamFirst:true,selfPick:true,shuffle:true},sv.cfg||{})
   };
   const seen={};let client=null,openedAt=0,autoT=null,pubT=null;const base=TOPIC_ROOT+code;
+  let pool=store.get("nt3_pool_"+code,[]),peek=false;
   $("tCode").textContent=code;$("tCode2").textContent=code;
   const CF={cfOk:"ok",cfNo:"no",cfEarly:"early",cfAuto:"auto",cfPy:"py",cfShuffle:"shuffle",cfTeamFirst:"teamFirst",cfSelfPick:"selfPick"};
   for(const id in CF){const el=$(id);if(el.type==="checkbox")el.checked=!!S.cfg[CF[id]];else el.value=S.cfg[CF[id]];
@@ -788,16 +822,16 @@ function teacher(){
     if(changed)update();else if(!wasOn)renderBoard();
   }
 
-  const PH={idle:["idle","Bấm “Câu tiếp” để bắt đầu"],closed:["closed","📖 Cô đang đọc câu hỏi, chưa được ấn chuông"],open:["open","🔔 CHUÔNG ĐANG MỞ, ẤN CHUÔNG!"],done:["done","✋ Đã đóng chuông"]};
+  const PH={idle:["idle",(pool.length||S.bank.length?"Bấm “Câu tiếp” để bắt đầu":"Mở ☰ Quản lý → Nhập kho câu hỏi, hoặc bấm “Câu tiếp” để đọc câu hỏi trực tiếp")],closed:["closed","📖 Cô đang đọc câu hỏi, chưa được ấn chuông"],open:["open","🔔 CHUÔNG ĐANG MỞ, ẤN CHUÔNG!"],done:["done","✋ Đã đóng chuông"]};
   function render(){
     $("tQ").textContent=S.q&&S.cur>=0&&S.bank.length?(S.cur+1)+"/"+S.bank.length:S.round;
     const ph=PH[S.phase];$("tPhase").className="phase "+ph[0];$("tPhase").textContent=ph[1];
     const st=$("tStage"),keep=[...st.querySelectorAll(".tfx")];
-    st.innerHTML=(S.q&&S.q.text?qHTML(S.q,S.showPy,S.ans):'<div class="qempty">'+(S.round?"🎤 Cô đọc câu hỏi qua Zoom":"Bấm “Câu tiếp” để bắt đầu")+"</div>")+ansHTML(S.ans,S.ansPy,S.showPy);
+    st.innerHTML=(S.q&&S.q.text?qHTML(S.q,S.showPy,S.ans):'<div class="qempty">'+(S.round?"🎤 Cô đọc câu hỏi qua Zoom":(pool.length||S.bank.length?"Bấm “Câu tiếp” để bắt đầu":"Mở ☰ Quản lý → Nhập kho câu hỏi, hoặc bấm “Câu tiếp” để đọc câu hỏi trực tiếp"))+"</div>")+ansHTML(S.ans,S.ansPy,S.showPy);
     keep.forEach(k=>st.appendChild(k));
     $("bOpen").disabled=S.phase==="open";$("bClose").disabled=S.phase!=="open";
     $("bPy").classList.toggle("on",S.showPy);
-    $("bAns").innerHTML=S.ans!=null?"🙈 Ẩn đáp án <kbd>A</kbd>":"💡 Công bố đáp án <kbd>A</kbd>";
+    $("bAns").innerHTML=S.ans!=null?"🙈 Ẩn đáp án <kbd>A</kbd>":"💡 Đáp án <kbd>A</kbd>";
     $("bAns").disabled=S.round===0;
     document.querySelectorAll("#tMode button").forEach(b=>b.classList.toggle("on",b.dataset.m===S.mode));
     
@@ -1004,7 +1038,6 @@ function teacher(){
 
   /* ---- question pool (kho) ---- */
   try{localStorage.removeItem("nt3_pool")}catch(e){}
-  let pool=store.get("nt3_pool_"+code,[]),peek=false;
   const savePool=()=>store.set("nt3_pool_"+code,pool);
   const lessonsOf=arr=>{const o=[];arr.forEach(q=>{const l=q.lesson||"Chưa phân bài";if(!o.includes(l))o.push(l)});return o};
   function renderPool(){
@@ -1057,9 +1090,12 @@ function teacher(){
     $("mInvite").classList.remove("hidden")};
   $("bCopy").onclick=async()=>{try{await navigator.clipboard.writeText($("tLink").value)}catch(e){$("tLink").select();document.execCommand("copy")}$("bCopy").textContent="Đã chép ✓";setTimeout(()=>$("bCopy").textContent="Chép",1500)};
 
+  const openMenu=()=>{$("drawer").classList.add("open");$("dBack").classList.remove("hidden")},closeMenu=()=>{$("drawer").classList.remove("open");$("dBack").classList.add("hidden")};
+  $("bMenu").onclick=openMenu;$("bMenuClose").onclick=closeMenu;$("dBack").onclick=closeMenu;
+  ["bClass","bDraw","bAdd","bBulk","bPoolIn"].forEach(id=>$(id).addEventListener("click",closeMenu));
   $("bNext").onclick=nextQ;$("bOpen").onclick=openBell;$("bClose").onclick=closeBell;$("bPy").onclick=togglePy;$("bAns").onclick=openReveal;
   document.addEventListener("keydown",e=>{
-    if(e.key==="Escape"){document.querySelectorAll("#vTeacher .modal").forEach(m=>m.classList.add("hidden"));return}
+    if(e.key==="Escape"){document.querySelectorAll("#vTeacher .modal").forEach(m=>m.classList.add("hidden"));$("drawer").classList.remove("open");$("dBack").classList.add("hidden");return}
     if(e.target.matches("input,select,textarea")||e.metaKey||e.ctrlKey||e.altKey)return;
     if(document.querySelector("#vTeacher .modal:not(.hidden)"))return;
     const k=e.key.toLowerCase();
