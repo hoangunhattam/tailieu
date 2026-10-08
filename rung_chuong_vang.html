@@ -649,6 +649,7 @@ function teacher(){
   let code=cleanCode(qs.get("gv"))||store.get("nt3_room",null)||rid(5);
   store.set("nt3_room",code);
   if(cleanCode(qs.get("gv"))!==code)history.replaceState(null,"","?gv="+code+(qs.get("broker")?"&broker="+encodeURIComponent(qs.get("broker")):""));
+  try{sessionStorage.setItem("nt3_ok_"+code,"1")}catch(e){}
   const KEY="nt3_t_"+code,sv=store.get(KEY,{});
   const S={
     round:sv.round||0,phase:sv.round?"done":"idle",order:[],locked:[],
@@ -1002,8 +1003,9 @@ function teacher(){
   };
 
   /* ---- question pool (kho) ---- */
-  let pool=store.get("nt3_pool",[]),peek=false;
-  const savePool=()=>store.set("nt3_pool",pool);
+  try{localStorage.removeItem("nt3_pool")}catch(e){}
+  let pool=store.get("nt3_pool_"+code,[]),peek=false;
+  const savePool=()=>store.set("nt3_pool_"+code,pool);
   const lessonsOf=arr=>{const o=[];arr.forEach(q=>{const l=q.lesson||"Chưa phân bài";if(!o.includes(l))o.push(l)});return o};
   function renderPool(){
     const ls=lessonsOf(pool);
@@ -1209,7 +1211,22 @@ function joinScreen(pref){
   $("joinForm").onsubmit=e=>{e.preventDefault();const code=cleanCode($("jCode").value);if(!code)return;
     const u=new URL(location.href);u.searchParams.set("phong",code);history.replaceState(null,"",u);student(code)};
 }
-if(qs.has("gv"))teacher();
+function startTeacher(){
+  const code0=cleanCode(qs.get("gv"))||store.get("nt3_room",null);
+  const sv=(code0&&store.get("nt3_t_"+code0,null))||{};let ok=null;try{ok=sessionStorage.getItem("nt3_ok_"+code0)}catch(e){}
+  const np=sv?Object.keys(sv.players||{}).length:0;
+  const npool=code0?store.get("nt3_pool_"+code0,[]).length:0;
+  if(!code0||ok||!((sv.round||0)>0||np||(sv.bank||[]).length||npool))return teacher();
+  const ov=document.createElement("div");ov.className="modal";
+  ov.innerHTML='<div class="card" style="max-width:420px;text-align:center"><img data-logo alt="" style="width:64px;height:64px"><h3 style="margin:8px 0 6px">Ván chơi trước vẫn còn</h3><div class="hint" style="margin-bottom:16px">Phòng '+esc(code0)+' · đã chơi '+(sv.round||0)+' câu · '+np+' học viên'+(npool?' · kho '+npool+' câu':'')+'</div><div class="controls" style="justify-content:center"><button class="btn big" id="rsNew">🆕 Bắt đầu ván mới</button><button class="btn big ghost" id="rsOld">↩ Tiếp tục ván cũ</button></div></div>';
+  document.body.appendChild(ov);ov.querySelector("img").src=document.querySelector(".bigLogo").src;
+  ov.querySelector("#rsOld").onclick=()=>{ov.remove();teacher()};
+  ov.querySelector("#rsNew").onclick=()=>{
+    const nc=rid(5);store.set("nt3_t_"+nc,{cfg:sv.cfg||{}});try{localStorage.removeItem("nt3_t_"+code0);localStorage.removeItem("nt3_pool_"+code0);sessionStorage.setItem("nt3_ok_"+nc,"1")}catch(e){}
+    store.set("nt3_room",nc);location.replace(location.pathname+"?gv="+nc+(qs.get("broker")?"&broker="+encodeURIComponent(qs.get("broker")):""));
+  };
+}
+if(qs.has("gv"))startTeacher();
 else if(qs.has("phong")&&cleanCode(qs.get("phong")))student(cleanCode(qs.get("phong")));
 else{show("vLanding");$("goTeacher").onclick=()=>{location.search="?gv"};$("goStudent").onclick=()=>joinScreen("")}
 })();
